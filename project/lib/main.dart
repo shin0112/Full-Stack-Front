@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:project/theme.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/widgets/bars/bottomBar.dart';
+import 'package:project/themes/theme.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,11 +12,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      color: Theme.of(context).colorScheme.surfaceDim,
-      title: _title,
-      theme: lightTheme,
-      home: const MyStatefulWidget(),
+    return ScreenUtilInit(
+      designSize: const Size(260, 800),
+      builder: (_, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: _title,
+          theme: lightTheme,
+          home: child,
+          color: Theme.of(context).colorScheme.surfaceDim,
+        );
+      },
+      child: const MyStatefulWidget(),
     );
   }
 }
@@ -23,91 +32,7 @@ class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);
 
   @override
-  State<MyStatefulWidget> createState() => MyStatefulWidgetState();
-}
-
-class Destination {
-  const Destination(this.index, this.title, this.icon);
-  final int index;
-  final String title;
-  final IconData icon;
-}
-
-class MyStatefulWidgetState extends State<MyStatefulWidget> {
-  final PageController _pageController = PageController();
-
-  static const List<Destination> allDestinations = <Destination>[
-    Destination(0, 'Home', Icons.home_outlined),
-    Destination(1, 'Calendar', Icons.today),
-    Destination(2, 'Community', Icons.group),
-    Destination(3, 'Settings', Icons.settings),
-  ];
-
-  int _selectedIndex = 0;
-
-  final List<Widget> _widgetOptions = <Widget>[
-    HomeWidget(),
-    CalendarWidget(),
-    CommunityWidget(),
-    SettingWidget(),
-  ];
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void _onDestinationSelected(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Coffhy',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ),
-        body: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          children: _widgetOptions,
-        ),
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: _selectedIndex,
-          onDestinationSelected: _onDestinationSelected,
-          height: 80,
-          backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-          indicatorColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-          destinations: allDestinations.map<NavigationDestination>(
-            (Destination destination) {
-              return NavigationDestination(
-                selectedIcon: Icon(
-                  destination.icon,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-                icon: Icon(
-                  destination.icon,
-                  color: Theme.of(context).colorScheme.onSecondaryContainer,
-                ),
-                label: destination.title,
-              );
-            },
-          ).toList(),
-        ),
-      ),
-    );
-  }
+  State<MyStatefulWidget> createState() => bottomBarWidget();
 }
 
 class SettingWidget extends StatelessWidget {
