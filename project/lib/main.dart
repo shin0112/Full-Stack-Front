@@ -77,69 +77,69 @@ class MainWidget extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Coffhy',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Coffhy',
+          style: Theme.of(context).textTheme.titleLarge,
         ),
-        body: _widgetOptions[_selectedIndex],
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerLowest,
-              boxShadow: const <BoxShadow>[
-               BoxShadow(
-                  color: Color(0x26000000),
-                  blurRadius: 14,
-                  offset: Offset(0, -4),
-                  spreadRadius: 0,
-                )
-              ]),
-          width: 360.sp,
-          padding: EdgeInsets.only(top: 8.sp),
-          child: BottomNavigationBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            currentIndex: _selectedIndex,
-            fixedColor: Theme.of(context).colorScheme.onSurface,
-            items: allDestinations.map<BottomNavigationBarItem>(
-              (Destination destination) {
-                return BottomNavigationBarItem(
-                  activeIcon: Container(
-                    height: 32.sp,
-                    width: 64.sp,
-                    decoration: BoxDecoration(
-                        color:
-                            Theme.of(context).colorScheme.surfaceContainerHigh,
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Icon(
-                      destination.selectedIcon,
-                      size: destination.iconSize.sp,
-                    ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
+      ),
+      backgroundColor: Theme.of(context).colorScheme.surfaceDim,
+      body: _widgetOptions[_selectedIndex],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerLowest,
+            boxShadow: const <BoxShadow>[
+              BoxShadow(
+                color: Color(0x26000000),
+                blurRadius: 14,
+                offset: Offset(0, -4),
+                spreadRadius: 0,
+              )
+            ]),
+        width: 360.sp,
+        padding: EdgeInsets.only(top: 8.sp),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          currentIndex: _selectedIndex,
+          fixedColor: Theme.of(context).colorScheme.onSurface,
+          items: allDestinations.map<BottomNavigationBarItem>(
+            (Destination destination) {
+              return BottomNavigationBarItem(
+                activeIcon: Container(
+                  height: 32.sp,
+                  width: 64.sp,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                      borderRadius: BorderRadius.circular(16)),
+                  child: Icon(
+                    destination.selectedIcon,
+                    size: destination.iconSize.sp,
                   ),
-                  icon: SizedBox(
-                    height: 32.sp,
-                    width: 64.sp,
-                    child: Icon(
-                      destination.icon,
-                      size: destination.iconSize.sp,
-                    ),
+                ),
+                icon: SizedBox(
+                  height: 32.sp,
+                  width: 64.sp,
+                  child: Icon(
+                    destination.icon,
+                    size: destination.iconSize.sp,
                   ),
-                  label: destination.title,
-                );
-              },
-            ).toList(),
-            onTap: _onItemTapped,
-            selectedFontSize: 12.sp,
-            selectedLabelStyle: ThemeData().textTheme.labelMedium,
-            type: BottomNavigationBarType.fixed,
-            unselectedFontSize: 12.sp,
-            unselectedItemColor:
-                Theme.of(context).colorScheme.onSecondaryContainer,
-            unselectedLabelStyle: ThemeData().textTheme.labelMedium,
-          ),
+                ),
+                label: destination.title,
+              );
+            },
+          ).toList(),
+          onTap: _onItemTapped,
+          selectedFontSize: 12.sp,
+          selectedLabelStyle: ThemeData().textTheme.labelMedium,
+          type: BottomNavigationBarType.fixed,
+          unselectedFontSize: 12.sp,
+          unselectedItemColor:
+              Theme.of(context).colorScheme.onSecondaryContainer,
+          unselectedLabelStyle: ThemeData().textTheme.labelMedium,
         ),
       ),
     );
@@ -173,15 +173,13 @@ class SettingWidget extends StatelessWidget {
     Widget titleSection = _buildTitleSection(info['titleSectionHeader'],
         info['titleSectionBody'], info['titleSectionScore']);
 
-    return Scaffold(
-      body: ListView(
-        children: [
-          titleImage,
-          titleSection,
-          buttonSection,
-          textSection,
-        ],
-      ),
+    return ListView(
+      children: [
+        titleImage,
+        titleSection,
+        buttonSection,
+        textSection,
+      ],
     );
   }
 }
@@ -215,15 +213,13 @@ class CommunityWidget extends StatelessWidget {
     Widget titleSection = _buildTitleSection(info['titleSectionHeader'],
         info['titleSectionBody'], info['titleSectionScore']);
 
-    return Scaffold(
-      body: ListView(
-        children: [
-          titleImage,
-          titleSection,
-          buttonSection,
-          textSection,
-        ],
-      ),
+    return ListView(
+      children: [
+        titleImage,
+        titleSection,
+        buttonSection,
+        textSection,
+      ],
     );
   }
 }
@@ -362,20 +358,18 @@ class CounterState extends State<Counter> {
 class CalendarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: TextButton(
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.black,
-            textStyle: const TextStyle(
-              fontSize: 32,
-            ),
+    return Center(
+      child: TextButton(
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.black,
+          textStyle: const TextStyle(
+            fontSize: 32,
           ),
-          onPressed: () {
-            showAlertDialog(context);
-          },
-          child: const Text('Hello, Press Here!'),
         ),
+        onPressed: () {
+          showAlertDialog(context);
+        },
+        child: const Text('Hello, Press Here!'),
       ),
     );
   }
@@ -502,10 +496,11 @@ class HomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
         groupAggregated,
-      ]),
+      ],
     );
   }
 }
