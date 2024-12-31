@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-TextTheme textTheme() {
-  return const TextTheme(
-    titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
-    displaySmall: TextStyle(
-      color: Color(0xFF1D1B20),
-      fontSize: 12,
-      fontFamily: 'Roboto',
-      fontWeight: FontWeight.w600,
-      height: 1.33,
-      letterSpacing: 0.50,
-    ),
+TextTheme createTextTheme(
+    BuildContext context, String bodyFontString, String displayFontString) {
+  TextTheme baseTextTheme = Theme.of(context).textTheme;
+  TextTheme bodyTextTheme = GoogleFonts.getTextTheme(bodyFontString, baseTextTheme);
+  TextTheme displayTextTheme =
+      GoogleFonts.getTextTheme(displayFontString, baseTextTheme);
+  TextTheme textTheme = displayTextTheme.copyWith(
+    bodyLarge: bodyTextTheme.bodyLarge,
+    bodyMedium: bodyTextTheme.bodyMedium,
+    bodySmall: bodyTextTheme.bodySmall,
+    labelLarge: bodyTextTheme.labelLarge,
+    labelMedium: bodyTextTheme.labelMedium,
+    labelSmall: bodyTextTheme.labelSmall,
   );
+  return textTheme;
 }

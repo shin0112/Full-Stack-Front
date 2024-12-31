@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/themes/text.dart';
 import 'package:project/themes/theme.dart';
 
 void main() => runApp(MyApp());
@@ -11,15 +12,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = View.of(context).platformDispatcher.platformBrightness;
+    TextTheme textTheme = createTextTheme(context, "Roboto", "Roboto");
+    MaterialTheme theme = MaterialTheme(textTheme);
+
     return ScreenUtilInit(
       designSize: const Size(360, 800),
       builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: _title,
-          theme: lightTheme,
+          theme: brightness == Brightness.light ? theme.light() : theme.dark(),
           home: child,
-          color: Theme.of(context).colorScheme.surfaceDim,
         );
       },
       child: const MyStatefulWidget(),
