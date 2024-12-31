@@ -19,14 +19,6 @@ extension Material3Palette on Color {
   }
 }
 
-ThemeData lightTheme = ThemeData(
-  useMaterial3: true,
-  fontFamily: 'Roboto',
-  scaffoldBackgroundColor: Colors.white,
-  textTheme: textTheme(),
-  colorScheme: colorScheme(),
-);
-
 ColorScheme colorScheme() {
   return ColorScheme(
     brightness: Brightness.light,
@@ -62,19 +54,5 @@ ColorScheme colorScheme() {
     inversePrimary: KeyColor.primary.tone(90),
     scrim: KeyColor.neutral.tone(0),
     shadow: KeyColor.neutral.tone(0),
-  );
-}
-
-TextTheme textTheme() {
-  return const TextTheme(
-    titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
-    displaySmall: TextStyle(
-      color: Color(0xFF1D1B20),
-      fontSize: 12,
-      fontFamily: 'Roboto',
-      fontWeight: FontWeight.w600,
-      height: 1.33,
-      letterSpacing: 0.50,
-    ),
   );
 }
