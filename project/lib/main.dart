@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:project/widgets/bars/bottomBar.dart';
 import 'package:project/themes/theme.dart';
 
 void main() => runApp(MyApp());
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(260, 800),
+      designSize: const Size(360, 800),
       builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -32,7 +31,119 @@ class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);
 
   @override
-  State<MyStatefulWidget> createState() => bottomBarWidget();
+  State<MyStatefulWidget> createState() => MainWidget();
+}
+
+class Destination {
+  const Destination(
+      this.index, this.title, this.icon, this.selectedIcon, this.iconSize);
+  final int index;
+  final String title;
+  final IconData icon;
+  final IconData selectedIcon;
+  final double iconSize;
+}
+
+class MainWidget extends State<MyStatefulWidget> {
+  int _selectedIndex = 0;
+
+  static const List<Destination> allDestinations = <Destination>[
+    Destination(0, 'Home', Icons.home_outlined, Icons.home, 20),
+    Destination(1, 'Calendar', Icons.today, Icons.today, 18),
+    Destination(2, 'Community', Icons.turned_in_not, Icons.turned_in, 18),
+    Destination(3, 'Settings', Icons.settings_outlined, Icons.settings, 20.1),
+  ];
+
+  final List<Widget> _widgetOptions = <Widget>[
+    HomeWidget(),
+    CalendarWidget(),
+    CommunityWidget(),
+    SettingWidget(),
+  ];
+
+  final PageController _pageController = PageController();
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Coffhy',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+        body: _widgetOptions[_selectedIndex],
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerLowest,
+              boxShadow: const <BoxShadow>[
+               BoxShadow(
+                  color: Color(0x26000000),
+                  blurRadius: 14,
+                  offset: Offset(0, -4),
+                  spreadRadius: 0,
+                )
+              ]),
+          width: 360.sp,
+          padding: EdgeInsets.only(top: 8.sp),
+          child: BottomNavigationBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            currentIndex: _selectedIndex,
+            fixedColor: Theme.of(context).colorScheme.onSurface,
+            items: allDestinations.map<BottomNavigationBarItem>(
+              (Destination destination) {
+                return BottomNavigationBarItem(
+                  activeIcon: Container(
+                    height: 32.sp,
+                    width: 64.sp,
+                    decoration: BoxDecoration(
+                        color:
+                            Theme.of(context).colorScheme.surfaceContainerHigh,
+                        borderRadius: BorderRadius.circular(16)),
+                    child: Icon(
+                      destination.selectedIcon,
+                      size: destination.iconSize.sp,
+                    ),
+                  ),
+                  icon: SizedBox(
+                    height: 32.sp,
+                    width: 64.sp,
+                    child: Icon(
+                      destination.icon,
+                      size: destination.iconSize.sp,
+                    ),
+                  ),
+                  label: destination.title,
+                );
+              },
+            ).toList(),
+            onTap: _onItemTapped,
+            selectedFontSize: 12.sp,
+            selectedLabelStyle: ThemeData().textTheme.labelMedium,
+            type: BottomNavigationBarType.fixed,
+            unselectedFontSize: 12.sp,
+            unselectedItemColor:
+                Theme.of(context).colorScheme.onSecondaryContainer,
+            unselectedLabelStyle: ThemeData().textTheme.labelMedium,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class SettingWidget extends StatelessWidget {
