@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
+import 'package:project/provider/index.dart';
 import 'package:project/ui/home/home_page.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(MultiProvider(
+      providers: [ChangeNotifierProvider(create: (create) => PageIndex())],
+      child: const MyApp(),
+    ));
 
 class MyApp extends StatelessWidget {
   final _title = 'Coffhy';
@@ -51,8 +56,6 @@ class Destination {
 }
 
 class MainWidget extends State<MyStatefulWidget> {
-  int _selectedIndex = 0;
-
   static const List<Destination> allDestinations = <Destination>[
     Destination(0, 'Home', Icons.home_outlined, Icons.home, 20),
     Destination(1, 'Calendar', Icons.today, Icons.today, 18),
@@ -68,12 +71,6 @@ class MainWidget extends State<MyStatefulWidget> {
   ];
 
   final PageController _pageController = PageController();
-
-  void _onDestinationSelected(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   void dispose() {
@@ -103,7 +100,7 @@ class MainWidget extends State<MyStatefulWidget> {
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      body: _widgetOptions[_selectedIndex],
+      body: _widgetOptions[context.read<PageIndex>().index],
       bottomNavigationBar: Container(
         decoration: ShapeDecoration(
           color: Theme.of(context).colorScheme.onPrimary,
@@ -150,8 +147,12 @@ class MainWidget extends State<MyStatefulWidget> {
               );
             },
           ).toList(),
-          onDestinationSelected: _onDestinationSelected,
-          selectedIndex: _selectedIndex,
+          onDestinationSelected: (int index) {
+            setState(() {
+              context.read<PageIndex>().setIndex(index);
+            });
+          },
+          selectedIndex: context.watch<PageIndex>().index,
         ),
       ),
     );
