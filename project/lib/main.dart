@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:project/themes/text.dart';
-import 'package:project/themes/theme.dart';
+import 'package:project/config/themes/text.dart';
+import 'package:project/config/themes/theme.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,6 +13,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final brightness = View.of(context).platformDispatcher.platformBrightness;
+    // final brightness = View.of(context).platformDispatcher.platformBrightness;
+    final brightness = Brightness.light;
     TextTheme textTheme = createTextTheme(context, "Roboto", "Roboto");
     MaterialTheme theme = MaterialTheme(textTheme);
 
