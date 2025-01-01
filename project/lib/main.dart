@@ -89,27 +89,36 @@ class MainWidget extends State<MyStatefulWidget> {
         centerTitle: true,
         title: Container(
           height: 36.sp,
-          margin: EdgeInsets.only(top: 44.sp),
+          margin: EdgeInsets.only(top: 10.sp),
           child: const Text('Coffhy'),
         ),
         titleTextStyle: Theme.of(context).textTheme.headlineMedium,
-        toolbarHeight: 90.sp,
+        toolbarHeight: 56.sp,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            width: 1,
+            strokeAlign: BorderSide.strokeAlignOutside,
+            color: Theme.of(context).colorScheme.outlineVariant,
+          ),
+        ),
       ),
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
       body: _widgetOptions[_selectedIndex],
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: ShapeDecoration(
           color: Theme.of(context).colorScheme.onPrimary,
-          boxShadow: const <BoxShadow>[
-            BoxShadow(
-              color: Color(0x26000000),
-              blurRadius: 14,
-              offset: Offset(0, -4),
-              spreadRadius: 0,
-            )
-          ],
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: 1,
+              color: Theme.of(context).colorScheme.outlineVariant,
+            ),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
         ),
-        padding: EdgeInsets.only(bottom: 10.sp),
+        padding: EdgeInsets.symmetric(vertical: 4.sp),
         child: NavigationBar(
           backgroundColor: Colors.transparent,
           destinations: allDestinations.map<NavigationDestination>(
@@ -141,7 +150,6 @@ class MainWidget extends State<MyStatefulWidget> {
               );
             },
           ).toList(),
-          elevation: 0,
           onDestinationSelected: _onDestinationSelected,
           selectedIndex: _selectedIndex,
         ),
