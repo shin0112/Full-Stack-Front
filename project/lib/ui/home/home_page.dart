@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project/widgets/thin_bar.dart';
 
 class HomeWidget extends StatelessWidget {
   final groupAggregated = Container(
@@ -92,10 +93,20 @@ class HomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return const Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      // crossAxisAlignment: CrossAxisAlignment.baseline,
       children: [
-        groupAggregated,
+        ThinBar(
+          brown: true,
+          icon: Icons.local_cafe_outlined,
+          text: "오늘 마신 음료 추가하기",
+        ),
+        ThinBar(
+          brown: false,
+          icon: Icons.today,
+          text: "지난 기록 보러가기",
+        )
       ],
     );
   }
