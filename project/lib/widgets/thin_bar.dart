@@ -6,12 +6,14 @@ class ThinBar extends StatefulWidget {
   final bool brown;
   final IconData icon;
   final String text;
+  final VoidCallback? onTap;
 
   const ThinBar({
     super.key,
-    this.brown = true, // 기본 아이콘 색
+    this.brown = true,
     this.icon = Icons.local_cafe_outlined,
     this.text = " ",
+    this.onTap,
   });
 
   @override
@@ -79,7 +81,7 @@ class ThinBarState extends State<ThinBar> {
             : Theme.of(context).colorScheme.onPrimary,
         child: InkWell(
           borderRadius: BorderRadius.circular(12.sp),
-          onTap: () {},
+          onTap: widget.onTap,
           child: content,
         ),
       ),
