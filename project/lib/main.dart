@@ -1,19 +1,20 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
+import 'package:project/ui/home/home_page.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   final _title = 'Coffhy';
 
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     // final brightness = View.of(context).platformDispatcher.platformBrightness;
-    final brightness = Brightness.light;
+    const brightness = Brightness.light;
     TextTheme textTheme = createTextTheme(context, "Roboto", "Roboto");
     MaterialTheme theme = MaterialTheme(textTheme);
 
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+  const MyStatefulWidget({super.key});
 
   @override
   State<MyStatefulWidget> createState() => MainWidget();
@@ -89,7 +90,7 @@ class MainWidget extends State<MyStatefulWidget> {
         title: Container(
           height: 36.sp,
           margin: EdgeInsets.only(top: 44.sp),
-          child: Text('Coffhy'),
+          child: const Text('Coffhy'),
         ),
         titleTextStyle: Theme.of(context).textTheme.headlineMedium,
         toolbarHeight: 90.sp,
@@ -168,6 +169,8 @@ class SettingWidget extends StatelessWidget {
         'for the best experience for all users.',
   };
 
+  SettingWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     final titleImage = _buildTitleImage(info['titleImageLink']);
@@ -207,6 +210,8 @@ class CommunityWidget extends StatelessWidget {
         'Release simultaneously on iOS and Android with feature parity '
         'for the best experience for all users.',
   };
+
+  CommunityWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -315,8 +320,8 @@ Container _buildTextSection(String section) {
 
 class Counter extends StatefulWidget {
   const Counter({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<Counter> createState() => CounterState();
@@ -359,6 +364,8 @@ class CounterState extends State<Counter> {
 // hello widget : volume-E-chapter-02.dart
 
 class CalendarWidget extends StatelessWidget {
+  const CalendarWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -408,102 +415,3 @@ void showAlertDialog(BuildContext context) async {
 }
 
 // home widget : volume-E-chapter-03-code-22.dart
-
-class HomeWidget extends StatelessWidget {
-  final groupAggregated = Container(
-    padding: const EdgeInsets.all(20),
-    child: Column(
-      children: [
-        const Text(
-          'Shop Name',
-          textDirection: TextDirection.ltr,
-          style: TextStyle(
-            fontSize: 32,
-            color: Colors.black87,
-          ),
-        ),
-        Center(
-          child: Image.network(
-              'https://storage.googleapis.com/cms-storage-bucket/'
-              '780e0e64d323aad2cdd5.png',
-              width: 300,
-              height: 300),
-        ),
-        Container(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.star, color: Colors.green[500]),
-                  Icon(Icons.star, color: Colors.green[500]),
-                  const Icon(Icons.star, color: Colors.black),
-                ],
-              ),
-              const Text(
-                '170 Reviews',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w800,
-                  fontFamily: 'Roboto',
-                  letterSpacing: 0.5,
-                  fontSize: 20,
-                ),
-              ),
-            ],
-          ),
-        ),
-        DefaultTextStyle.merge(
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w800,
-            fontFamily: 'Roboto',
-            letterSpacing: 0.5,
-            fontSize: 18,
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(Icons.kitchen, color: Colors.green[500]),
-                    const Text('kitchen:'),
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(Icons.timer, color: Colors.green[500]),
-                    const Text('timer:'),
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(Icons.restaurant, color: Colors.green[500]),
-                    const Text('restaurant:'),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        groupAggregated,
-      ],
-    );
-  }
-}
