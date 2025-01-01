@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/provider/index.dart';
-import 'package:project/widgets/thin_bar.dart';
+import 'package:project/widgets/bar/thin_bar.dart';
 import 'package:provider/provider.dart';
 
 class HomeWidget extends StatelessWidget {
