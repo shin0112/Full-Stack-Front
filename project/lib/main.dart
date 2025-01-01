@@ -12,7 +12,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = View.of(context).platformDispatcher.platformBrightness;
     // final brightness = View.of(context).platformDispatcher.platformBrightness;
     final brightness = Brightness.light;
     TextTheme textTheme = createTextTheme(context, "Roboto", "Roboto");
@@ -69,7 +68,7 @@ class MainWidget extends State<MyStatefulWidget> {
 
   final PageController _pageController = PageController();
 
-  void _onItemTapped(int index) {
+  void _onDestinationSelected(int index) {
     setState(() {
       _selectedIndex = index;
     });
@@ -85,45 +84,47 @@ class MainWidget extends State<MyStatefulWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Coffhy',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
+        title: Container(
+          height: 36.sp,
+          margin: EdgeInsets.only(top: 44.sp),
+          child: Text('Coffhy'),
+        ),
+        titleTextStyle: Theme.of(context).textTheme.headlineMedium,
+        toolbarHeight: 90.sp,
       ),
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
       body: _widgetOptions[_selectedIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerLowest,
-            boxShadow: const <BoxShadow>[
-              BoxShadow(
-                color: Color(0x26000000),
-                blurRadius: 14,
-                offset: Offset(0, -4),
-                spreadRadius: 0,
-              )
-            ]),
-        width: 360.sp,
-        padding: EdgeInsets.only(top: 8.sp),
-        child: BottomNavigationBar(
+          color: Theme.of(context).colorScheme.onPrimary,
+          boxShadow: const <BoxShadow>[
+            BoxShadow(
+              color: Color(0x26000000),
+              blurRadius: 14,
+              offset: Offset(0, -4),
+              spreadRadius: 0,
+            )
+          ],
+        ),
+        padding: EdgeInsets.only(bottom: 10.sp),
+        child: NavigationBar(
           backgroundColor: Colors.transparent,
-          elevation: 0,
-          currentIndex: _selectedIndex,
-          fixedColor: Theme.of(context).colorScheme.onSurface,
-          items: allDestinations.map<BottomNavigationBarItem>(
+          destinations: allDestinations.map<NavigationDestination>(
             (Destination destination) {
-              return BottomNavigationBarItem(
-                activeIcon: Container(
+              return NavigationDestination(
+                selectedIcon: Container(
                   height: 32.sp,
                   width: 64.sp,
                   decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                      borderRadius: BorderRadius.circular(16)),
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: Icon(
                     destination.selectedIcon,
-                    size: destination.iconSize.sp,
+                    size: destination.iconSize.sp * 1.2,
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
                   ),
                 ),
                 icon: SizedBox(
@@ -131,21 +132,17 @@ class MainWidget extends State<MyStatefulWidget> {
                   width: 64.sp,
                   child: Icon(
                     destination.icon,
-                    size: destination.iconSize.sp,
+                    size: destination.iconSize.sp * 1.2,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
                 label: destination.title,
               );
             },
           ).toList(),
-          onTap: _onItemTapped,
-          selectedFontSize: 12.sp,
-          selectedLabelStyle: ThemeData().textTheme.labelMedium,
-          type: BottomNavigationBarType.fixed,
-          unselectedFontSize: 12.sp,
-          unselectedItemColor:
-              Theme.of(context).colorScheme.onSecondaryContainer,
-          unselectedLabelStyle: ThemeData().textTheme.labelMedium,
+          elevation: 0,
+          onDestinationSelected: _onDestinationSelected,
+          selectedIndex: _selectedIndex,
         ),
       ),
     );
