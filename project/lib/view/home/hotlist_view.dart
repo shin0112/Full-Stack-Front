@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/widgets/icon_box.dart';
 import 'package:project/widgets/line.dart';
 
 class HotlistView extends StatelessWidget {
@@ -40,19 +41,7 @@ class HotlistTopLabel extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainer,
-                  shape: BoxShape.circle,
-                ),
-                width: 35.sp,
-                height: 35.sp,
-                child: Icon(
-                  Icons.star,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  size: 24.sp,
-                ),
-              ),
+              const IconBox(icon: Icons.star),
               SizedBox(width: 8.sp),
               Text(
                 "즐겨찾기",

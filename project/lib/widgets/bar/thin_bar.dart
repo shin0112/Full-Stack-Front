@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/theme.dart';
+import 'package:project/widgets/icon_box.dart';
 
 class ThinBar extends StatefulWidget {
   final bool brown;
@@ -34,19 +35,7 @@ class ThinBarState extends State<ThinBar> {
           /// 좌측
           Row(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainer,
-                  shape: BoxShape.circle,
-                ),
-                width: 35.sp,
-                height: 35.sp,
-                child: Icon(
-                  widget.icon,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  size: 24.sp,
-                ),
-              ),
+              IconBox(icon: widget.icon),
               SizedBox(width: 8.sp),
               Text(
                 widget.text,
