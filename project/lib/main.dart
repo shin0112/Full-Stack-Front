@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
 import 'package:project/provider/index.dart';
-import 'package:project/ui/home/home_page.dart';
+import 'package:project/view/home/home_page.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MultiProvider(

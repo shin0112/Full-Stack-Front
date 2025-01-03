@@ -96,7 +96,6 @@ class TodayCaffeineViewState extends State<TodayCaffeineView> {
                           bottomLeft: Radius.circular(12)),
                     ),
                   ),
-                  // GIF
                 ],
               )),
 
