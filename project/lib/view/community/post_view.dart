@@ -55,14 +55,14 @@ class PostBoxState extends State<PostBox> {
             color: Theme.of(context).colorScheme.outline,
           )),
           borderRadius: BorderRadius.circular(6),
-          color: Theme.of(context).colorScheme.surfaceBright,
+          color: Theme.of(context).colorScheme.onSecondary,
         ),
         child: Row(
           children: [
             Container(
               width: 64.sp,
               height: 64.sp,
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.secondaryContainer,
               alignment: Alignment.center,
               child: const IconBox(icon: Icons.local_cafe_outlined),
             ),
