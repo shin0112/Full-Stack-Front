@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/provider/index.dart';
+import 'package:project/view/home/hotlist_view.dart';
 import 'package:project/view/home/today_caffeine_view.dart';
+import 'package:project/widgets/box/hotlist_box.dart';
 import 'package:project/widgets/thin_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +34,9 @@ class HomeWidget extends StatelessWidget {
             icon: Icons.today,
             text: "지난 기록 보러가기",
             onTap: () => context.read<PageIndex>().setIndex(1),
-          )
+          ),
+          SizedBox(height: 12.sp),
+          HotlistView(),
         ],
       ),
     );
