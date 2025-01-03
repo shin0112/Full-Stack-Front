@@ -1,39 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/view/home/hotlist_view_model.dart';
 import 'package:project/widgets/icon_box.dart';
 import 'package:project/widgets/line.dart';
+import 'package:provider/provider.dart';
 
 class HotlistView extends StatelessWidget {
   // to do: 즐겨찾기 데이터 가져오기
-  const HotlistView({super.key});
+  late HotlistViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
+    viewModel = Provider.of<HotlistViewModel>(context);
+
     return Container(
       width: 328.sp,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: const Column(
+      child: Column(
         children: [
           // 상단
-          HotlistTopLabel(),
+          _buildHotlistTopLabel(context),
           // 라인
-          HorizontalLine(width: 310)
-
+          const HorizontalLine(width: 310),
           // 하단
+          _buildHotlistBoxList(context),
         ],
       ),
     );
   }
-}
 
-class HotlistTopLabel extends StatelessWidget {
-  const HotlistTopLabel({super.key});
+  Widget _buildHotlistBoxList(BuildContext context) {
+    final items = viewModel.items;
 
-  @override
-  Widget build(BuildContext context) {
+    return Container(
+        width: 328.sp,
+        padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 12.sp),
+        child: GridView.count(
+          crossAxisSpacing: 10.sp,
+          mainAxisSpacing: 10.sp,
+          crossAxisCount: 2,
+          children: items
+              .map((item) => HotlistBox(
+                    caffeine: item.caffeine ?? 0.0,
+                    detail: item.detail ?? "",
+                    id: item.id ?? 0,
+                    title: item.title ?? "",
+                  ))
+              .toList(),
+        ));
+  }
+
+  Widget _buildHotlistTopLabel(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 12.sp),
       child: Row(
