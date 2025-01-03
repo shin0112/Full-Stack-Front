@@ -10,10 +10,10 @@ class HotlistViewModel with ChangeNotifier {
 
   HotlistViewModel() {
     _hotlistRepository = HotlistRepository();
-    _loadItems();
+    _fetchData();
   }
 
-  Future<void> _loadItems() async {
+  Future<void> _fetchData() async {
     _items = await _hotlistRepository.getItems();
     notifyListeners();
   }
