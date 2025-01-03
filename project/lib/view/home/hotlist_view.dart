@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/data/model/hotlist.dart';
 import 'package:project/view/home/hotlist_view_model.dart';
 import 'package:project/widgets/icon_box.dart';
 import 'package:project/widgets/line.dart';
@@ -7,36 +8,36 @@ import 'package:provider/provider.dart';
 
 class HotlistView extends StatelessWidget {
   // to do: 즐겨찾기 데이터 가져오기
-  late HotlistViewModel viewModel;
+  const HotlistView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    viewModel = Provider.of<HotlistViewModel>(context);
-
-    return Container(
-      width: 328.sp,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onPrimary,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          // 상단
-          _buildHotlistTopLabel(context),
-          // 라인
-          const HorizontalLine(width: 310),
-          // 하단
-          _buildHotlistBoxList(context),
-        ],
-      ),
+    return Consumer<HotlistViewModel>(
+      builder: (context, provider, child) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.onPrimary,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            children: [
+              // 상단
+              _buildHotlistTopLabel(context),
+              // 라인
+              const HorizontalLine(width: 310),
+              // 하단
+              _buildHotlistBoxList(provider.items),
+            ],
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildHotlistBoxList(BuildContext context) {
-    final items = viewModel.items;
-
+  Widget _buildHotlistBoxList(List<Hotlist> items) {
     return Container(
         width: 328.sp,
+        height: 166.sp,
         padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 12.sp),
         child: GridView.count(
           crossAxisSpacing: 10.sp,
