@@ -2,15 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gif/gif.dart';
 import 'package:intl/intl.dart';
+import 'package:project/config/themes/theme.dart';
 
 class TodayCaffeineView extends StatefulWidget {
-  final int limitCaffeine;
-
-  const TodayCaffeineView({
-    super.key,
-    this.limitCaffeine = 400,
-  });
+  const TodayCaffeineView({super.key});
 
   @override
   State<StatefulWidget> createState() => TodayCaffeineViewState();
@@ -19,8 +16,12 @@ class TodayCaffeineView extends StatefulWidget {
 // gif, 날짜, text, today 섭취한 카페인mg/ 개인마다 다른 카페인mg
 class TodayCaffeineViewState extends State<TodayCaffeineView> {
   int todayCaffeine = 0;
+  final int limitCaffeine = 400;
+
   String date = DateFormat("yyyy년 MM월 dd일").format(DateTime.now());
   late Timer _midnightTimer;
+
+  // to do: 나이, 키, 몸무게로 적정 카페인 구하기 함수
 
   void _setMidnightResetTimer() {
     final now = DateTime.now();
@@ -50,6 +51,9 @@ class TodayCaffeineViewState extends State<TodayCaffeineView> {
 
   @override
   Widget build(BuildContext context) {
+    double progressRatio = todayCaffeine / limitCaffeine;
+    progressRatio = progressRatio > 1.0 ? 1.0 : progressRatio;
+
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onPrimary,
@@ -60,7 +64,40 @@ class TodayCaffeineViewState extends State<TodayCaffeineView> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // 좌측
-          Container(),
+          Container(
+              width: 22.sp,
+              height: 160.sp,
+              decoration: BoxDecoration(
+                border: Border(
+                  right: BorderSide(
+                    color:
+                        Theme.of(context).colorScheme.surfaceContainerHighest,
+                    width: 1.0,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (progressRatio < 1.0 && todayCaffeine > 0)
+                    Gif(
+                      autostart: Autostart.loop,
+                      image: const AssetImage("assets/images/curve.gif"),
+                    ),
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                    height: 160.sp * progressRatio,
+                    decoration: BoxDecoration(
+                      color: MaterialTheme.coffee.seed,
+                      borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(12)),
+                    ),
+                  ),
+                  // GIF
+                ],
+              )),
 
           // 우측
           Container(
@@ -147,7 +184,7 @@ class TodayCaffeineViewState extends State<TodayCaffeineView> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            'mg/${widget.limitCaffeine}mg',
+                            'mg/${limitCaffeine}mg',
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onSurface,
                               fontSize: 32.sp,
