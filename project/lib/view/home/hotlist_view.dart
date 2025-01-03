@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/widgets/line.dart';
 
 class HotlistView extends StatelessWidget {
   // to do: 즐겨찾기 데이터 가져오기
@@ -78,6 +79,11 @@ class HotlistView extends StatelessWidget {
               ],
             ),
           ),
+
+          // 라인
+          const HorizontalLine(width: 310)
+
+          // 하단
         ],
       ),
     );

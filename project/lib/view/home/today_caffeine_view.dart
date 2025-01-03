@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gif/gif.dart';
 import 'package:intl/intl.dart';
 import 'package:project/config/themes/theme.dart';
+import 'package:project/widgets/line.dart';
 
 class TodayCaffeineView extends StatefulWidget {
   const TodayCaffeineView({super.key});
@@ -136,20 +137,8 @@ class TodayCaffeineViewState extends State<TodayCaffeineView> {
                 ),
                 SizedBox(height: 4.sp),
                 // 구분선
-                Container(
-                  height: 1.sp,
-                  width: 282.sp,
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        strokeAlign: BorderSide.strokeAlignCenter,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surfaceContainerHighest,
-                      ),
-                    ),
-                  ),
-                ),
+                const HorizontalLine(width: 282),
+
                 SizedBox(height: 4.sp),
                 // 카페인 text
                 Row(
