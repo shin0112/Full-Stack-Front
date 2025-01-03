@@ -4,7 +4,7 @@ import 'package:project/provider/index.dart';
 import 'package:project/view/home/hotlist_view.dart';
 import 'package:project/view/home/today_caffeine_view.dart';
 import 'package:project/widgets/box/hotlist_box.dart';
-import 'package:project/widgets/thin_bar.dart';
+import 'package:project/widgets/bar/thin_bar.dart';
 import 'package:provider/provider.dart';
 
 class HomeWidget extends StatelessWidget {
