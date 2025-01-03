@@ -7,7 +7,7 @@ class Post {
   String? context;
   String? img;
   int? like;
-  DateTime? createdAt;
+  String? createdAt;
 
   Post({
     this.id,
