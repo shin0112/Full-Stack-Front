@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/provider/index.dart';
+import 'package:project/view/home/today_caffeine_view.dart';
 import 'package:project/widgets/thin_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +25,7 @@ class HomeWidget extends StatelessWidget {
             text: "오늘 마신 음료 추가하기",
           ),
           SizedBox(height: 12.sp),
+          TodayCaffeineView(),
           SizedBox(height: 12.sp),
           ThinBar(
             brown: false,
