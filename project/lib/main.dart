@@ -46,21 +46,19 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class Destination {
-  const Destination(
-      this.index, this.title, this.icon, this.selectedIcon, this.iconSize);
+  const Destination(this.index, this.title, this.icon, this.selectedIcon);
   final int index;
   final String title;
   final IconData icon;
   final IconData selectedIcon;
-  final double iconSize;
 }
 
 class MainWidget extends State<MyStatefulWidget> {
   static const List<Destination> allDestinations = <Destination>[
-    Destination(0, 'Home', Icons.home_outlined, Icons.home, 20),
-    Destination(1, 'Calendar', Icons.today, Icons.today, 18),
-    Destination(2, 'Community', Icons.turned_in_not, Icons.turned_in, 18),
-    Destination(3, 'Settings', Icons.settings_outlined, Icons.settings, 20.1),
+    Destination(0, 'Home', Icons.home_outlined, Icons.home),
+    Destination(1, 'Calendar', Icons.today, Icons.today),
+    Destination(2, 'Community', Icons.turned_in_not, Icons.turned_in),
+    Destination(3, 'Settings', Icons.settings_outlined, Icons.settings),
   ];
 
   final List<Widget> _widgetOptions = <Widget>[
@@ -115,7 +113,6 @@ class MainWidget extends State<MyStatefulWidget> {
             ),
           ),
         ),
-        padding: EdgeInsets.symmetric(vertical: 4.sp),
         child: NavigationBar(
           backgroundColor: Colors.transparent,
           destinations: allDestinations.map<NavigationDestination>(
@@ -130,7 +127,7 @@ class MainWidget extends State<MyStatefulWidget> {
                   ),
                   child: Icon(
                     destination.selectedIcon,
-                    size: destination.iconSize.sp * 1.2,
+                    size: 24.sp,
                     color: Theme.of(context).colorScheme.onSecondaryContainer,
                   ),
                 ),
@@ -139,7 +136,7 @@ class MainWidget extends State<MyStatefulWidget> {
                   width: 64.sp,
                   child: Icon(
                     destination.icon,
-                    size: destination.iconSize.sp * 1.2,
+                    size: 24.sp,
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
