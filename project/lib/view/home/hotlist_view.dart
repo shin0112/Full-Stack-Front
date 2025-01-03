@@ -40,15 +40,16 @@ class HotlistView extends StatelessWidget {
         height: 166.sp,
         padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 12.sp),
         child: GridView.count(
+          scrollDirection: Axis.vertical,
           crossAxisSpacing: 10.sp,
           mainAxisSpacing: 10.sp,
           crossAxisCount: 2,
           children: items
               .map((item) => HotlistBox(
-                    caffeine: item.caffeine ?? 0.0,
-                    detail: item.detail ?? "",
                     id: item.id ?? 0,
                     title: item.title ?? "",
+                    detail: item.detail ?? "",
+                    caffeine: item.caffeine ?? 0.0,
                   ))
               .toList(),
         ));
@@ -125,17 +126,73 @@ class HotlistBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final titleStyle =
+        Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 14.sp);
+    final contextStyle = Theme.of(context).textTheme.labelMedium?.copyWith(
+          fontSize: 12.sp,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        );
+
     return Container(
       width: 147.sp,
       height: 68.sp,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHigh,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         border: Border.all(
           width: 1,
-          color: Theme.of(context).colorScheme.outline,
+          color: Theme.of(context).colorScheme.surfaceContainerHigh,
         ),
         borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: titleStyle,
+              ),
+              GestureDetector(
+                // todo: tap 시 삭제 모달 로직 작성
+                onTap: () {},
+                child: Icon(
+                  Icons.cancel_outlined,
+                  color: Theme.of(context).colorScheme.outline,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 4.sp,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 74.sp,
+                child: Text(
+                  detail,
+                  style: contextStyle,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Container(
+                height: 24.sp,
+                padding: EdgeInsets.symmetric(vertical: 4.sp, horizontal: 2.sp),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  "${caffeine}mg",
+                  style: contextStyle,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
