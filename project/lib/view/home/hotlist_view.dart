@@ -36,23 +36,24 @@ class HotlistView extends StatelessWidget {
 
   Widget _buildHotlistBoxList(List<Hotlist> items) {
     return Container(
-        width: 328.sp,
-        height: 166.sp,
-        padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 12.sp),
-        child: GridView.count(
-          scrollDirection: Axis.vertical,
-          crossAxisSpacing: 10.sp,
-          mainAxisSpacing: 10.sp,
-          crossAxisCount: 2,
-          children: items
-              .map((item) => HotlistBox(
-                    id: item.id ?? 0,
-                    title: item.title ?? "",
-                    detail: item.detail ?? "",
-                    caffeine: item.caffeine ?? 0.0,
-                  ))
-              .toList(),
-        ));
+      width: 328.sp,
+      height: 166.sp,
+      padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 12.sp),
+      child: GridView.count(
+        scrollDirection: Axis.vertical,
+        crossAxisSpacing: 10.sp,
+        mainAxisSpacing: 10.sp,
+        crossAxisCount: 2,
+        children: items
+            .map((item) => HotlistBox(
+                  id: item.id ?? 0,
+                  title: item.title ?? "",
+                  detail: item.detail ?? "",
+                  caffeine: item.caffeine ?? 0.0,
+                ))
+            .toList(),
+      ),
+    );
   }
 
   Widget _buildHotlistTopLabel(BuildContext context) {
@@ -133,6 +134,7 @@ class HotlistBox extends StatelessWidget {
           color: Theme.of(context).colorScheme.onSurfaceVariant,
         );
 
+    // todo: height 변경 방법 찾기
     return Container(
       width: 147.sp,
       height: 68.sp,
@@ -168,6 +170,7 @@ class HotlistBox extends StatelessWidget {
             height: 4.sp,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
@@ -179,7 +182,6 @@ class HotlistBox extends StatelessWidget {
                 ),
               ),
               Container(
-                height: 24.sp,
                 padding: EdgeInsets.symmetric(vertical: 4.sp, horizontal: 2.sp),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceContainerHighest,
