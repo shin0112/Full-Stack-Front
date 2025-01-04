@@ -15,6 +15,7 @@ class PostView extends StatelessWidget {
     return Consumer<PostViewModel>(
       builder: (context, provider, child) => SizedBox(
         height: 620.sp,
+        // todo: 글쓰기 버튼 추가
         child: Column(
           children: [
             const PostButtonSection(),
@@ -117,7 +118,7 @@ class PostBoxState extends State<PostBox> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // todo: 터치 시 로직 작성
+      // todo: 터치 시 로직 작성, 좋아요 추가
       onTap: () {},
       child: Container(
         width: 328.sp,
