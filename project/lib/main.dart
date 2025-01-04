@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
 import 'package:project/provider/index.dart';
+import 'package:project/view/community/community_page.dart';
 import 'package:project/view/community/post_view_model.dart';
 import 'package:project/view/home/home_page.dart';
 import 'package:project/view/home/hotlist_view_model.dart';
@@ -70,7 +71,7 @@ class MainWidget extends State<MyStatefulWidget> {
   final List<Widget> _widgetOptions = <Widget>[
     HomeWidget(),
     CalendarWidget(),
-    CommunityWidget(),
+    CommunityPage(),
     SettingWidget(),
   ];
 
@@ -182,48 +183,6 @@ class SettingWidget extends StatelessWidget {
   };
 
   SettingWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final titleImage = _buildTitleImage(info['titleImageLink']);
-    Widget textSection = _buildTextSection(info['textSection']);
-    Widget buttonSection = _buildButtonSection(Theme.of(context).primaryColor);
-    Widget titleSection = _buildTitleSection(info['titleSectionHeader'],
-        info['titleSectionBody'], info['titleSectionScore']);
-
-    return ListView(
-      children: [
-        titleImage,
-        titleSection,
-        buttonSection,
-        textSection,
-      ],
-    );
-  }
-}
-
-// star widget : volume-E-chapter-07.dart
-
-class CommunityWidget extends StatelessWidget {
-  final Map info = {
-    'titleImageLink': 'https://storage.googleapis.com/cms-storage-bucket/'
-        '2f118a9971e4ca6ad737.png',
-    'titleSectionHeader': 'Flutter on Mobile',
-    'titleSectionBody': 'https://flutter.dev/multi-platform/mobile',
-    'titleSectionScore': 100,
-    'textSection': 'Bring your app idea to more users from day one by'
-        ' building with Flutter '
-        'on iOS and Android simultaneously, without sacrificing features, '
-        'quality, or performance. All mobile on day one: '
-        'Reach your full addressable market from day one by targeting users'
-        ' in both ecosystems from a single codebase. Do more with less: '
-        'Unite your mobile development team resources towards building '
-        'one seamless customer experience. One experience: '
-        'Release simultaneously on iOS and Android with feature parity '
-        'for the best experience for all users.',
-  };
-
-  CommunityWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
