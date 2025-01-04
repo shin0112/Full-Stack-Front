@@ -67,7 +67,7 @@ class ThinBarState extends State<ThinBar> {
         borderRadius: BorderRadius.circular(12.sp),
         color: widget.brown
             ? MaterialTheme.coffee.seed
-            : Theme.of(context).colorScheme.onPrimary,
+            : Theme.of(context).colorScheme.onSecondary,
         child: InkWell(
           borderRadius: BorderRadius.circular(12.sp),
           onTap: widget.onTap,

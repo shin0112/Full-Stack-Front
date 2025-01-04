@@ -57,7 +57,7 @@ class TodayCaffeineViewState extends State<TodayCaffeineView> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onPrimary,
+        color: Theme.of(context).colorScheme.onSecondary,
         borderRadius: BorderRadius.circular(12.sp),
       ),
       height: 160.sp,
