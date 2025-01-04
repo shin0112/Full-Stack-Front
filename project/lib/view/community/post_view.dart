@@ -147,7 +147,7 @@ class PostBoxState extends State<PostBox> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.post?.title ?? "",
+                    widget.post.title,
                     maxLines: 1,
                     style: Theme.of(context)
                         .textTheme
@@ -155,7 +155,7 @@ class PostBoxState extends State<PostBox> {
                         ?.copyWith(fontSize: 16.sp),
                   ),
                   Text(
-                    widget.post?.context ?? "",
+                    widget.post.context,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
