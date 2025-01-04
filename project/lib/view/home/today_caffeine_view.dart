@@ -102,8 +102,8 @@ class TodayCaffeineViewState extends State<TodayCaffeineView> {
           // 우측
           Container(
             padding: EdgeInsets.only(
-              left: 12.sp,
-              right: 12.sp,
+              left: 18.sp,
+              right: 18.sp,
               top: 23.sp,
               bottom: 2.sp,
             ),

@@ -7,7 +7,6 @@ import 'package:project/widgets/line.dart';
 import 'package:provider/provider.dart';
 
 class HotlistView extends StatelessWidget {
-  // to do: 즐겨찾기 데이터 가져오기
   const HotlistView({super.key});
 
   @override
@@ -15,6 +14,7 @@ class HotlistView extends StatelessWidget {
     return Consumer<HotlistViewModel>(
       builder: (context, provider, child) {
         return Container(
+          height: 226.sp,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.onSecondary,
             borderRadius: BorderRadius.circular(12),
@@ -36,7 +36,6 @@ class HotlistView extends StatelessWidget {
 
   Widget _buildHotlistBoxList(List<Hotlist> items) {
     return Container(
-      width: 328.sp,
       height: 166.sp,
       padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 12.sp),
       child: GridView.count(
@@ -44,6 +43,7 @@ class HotlistView extends StatelessWidget {
         crossAxisSpacing: 10.sp,
         mainAxisSpacing: 10.sp,
         crossAxisCount: 2,
+        childAspectRatio: 153 / 68,
         children: items
             .map((item) => HotlistBox(
                   id: item.id ?? 0,
@@ -134,9 +134,8 @@ class HotlistBox extends StatelessWidget {
           color: Theme.of(context).colorScheme.onSurfaceVariant,
         );
 
-    // todo: height 변경 방법 찾기
     return Container(
-      width: 147.sp,
+      width: 153.sp,
       height: 68.sp,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
