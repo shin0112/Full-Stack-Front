@@ -13,7 +13,7 @@ class HomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: 16.sp,
+        horizontal: 10.sp,
         vertical: 20.sp,
       ),
       child: Column(
