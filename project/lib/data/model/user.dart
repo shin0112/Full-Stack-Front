@@ -3,6 +3,7 @@ import 'dart:convert';
 class User {
   int id;
   int age;
+  String name;
   String username;
   String password;
   double height;
@@ -11,6 +12,7 @@ class User {
   User({
     required this.id,
     required this.age,
+    required this.name,
     required this.username,
     required this.password,
     required this.height,
@@ -21,6 +23,7 @@ class User {
     return User(
       id: json['id'] as int,
       age: json['age'] ?? 20,
+      name: json['name'] ?? "",
       username: json['username'] ?? "",
       password: json['password'] ?? "",
       height: (json['height'] as int).toDouble() / 10,
@@ -32,6 +35,7 @@ class User {
     return {
       'id': id,
       'age': age,
+      'name': name,
       'username': username,
       'password': password,
       'height': height * 10,
