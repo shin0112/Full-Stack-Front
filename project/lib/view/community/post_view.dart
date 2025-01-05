@@ -104,9 +104,9 @@ class PostButtonSectionState extends State<PostButtonSection> {
 }
 
 class PostBox extends StatefulWidget {
-  Post? post;
+  final Post post;
 
-  PostBox({super.key, this.post});
+  const PostBox({super.key, required this.post});
 
   @override
   State<StatefulWidget> createState() => PostBoxState();
