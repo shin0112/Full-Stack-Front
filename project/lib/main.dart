@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           title: _title,
           theme: theme.light(),
           darkTheme: theme.dark(),
-          themeMode: context.read<ThemeViewModel>().themeMode,
+          themeMode: context.watch<ThemeViewModel>().themeMode,
           home: child,
         );
       },

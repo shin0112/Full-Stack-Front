@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/view/setting/theme_view.dart';
 import 'package:project/view/setting/user_view.dart';
 
 class SettingPage extends StatelessWidget {
@@ -7,6 +8,9 @@ class SettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextStyle settingText =
+        Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 16.sp);
+
     return Container(
       height: 620.sp,
       width: 360.sp,
@@ -16,13 +20,7 @@ class SettingPage extends StatelessWidget {
         children: [
           const UserView(),
           SizedBox(height: 10.sp),
-          Text(
-            "설정",
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium
-                ?.copyWith(fontSize: 16.sp),
-          ),
+          Text("설정", style: settingText),
           SizedBox(height: 10.sp),
           _buildSettingContainer(context),
         ],
@@ -40,7 +38,10 @@ class SettingPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: const Column(
-        children: [UsernameView()],
+        children: [
+          UsernameView(),
+          ThemeView(),
+        ],
       ),
     );
   }
