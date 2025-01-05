@@ -44,7 +44,7 @@ class User {
   }
 }
 
-Future<List<User>> parseHotlistFromJson(String jsonString) async {
-  final List<dynamic> jsonData = json.decode(jsonString);
-  return jsonData.map((item) => User.fromJson(item)).toList();
+Future<User> parseUserFromJson(String jsonString) async {
+  final dynamic jsonData = json.decode(jsonString);
+  return User.fromJson(jsonData);
 }
