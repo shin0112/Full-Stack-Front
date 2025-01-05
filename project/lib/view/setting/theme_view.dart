@@ -28,7 +28,7 @@ class ThemeView extends StatelessWidget {
                 ),
                 SizedBox(width: 10.sp),
                 Switch(
-                  value: provider.themeMode == ThemeMode.light,
+                  value: provider.themeMode != ThemeMode.light,
                   onChanged: (bool value) {
                     provider.changeThemeMode();
                   },
