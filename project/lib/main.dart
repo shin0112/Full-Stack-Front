@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
+import 'package:project/view/setting/theme_view_model.dart';
 import 'package:project/provider/index.dart';
 import 'package:project/view/community/community_page.dart';
 import 'package:project/view/community/post_view_model.dart';
@@ -14,6 +15,7 @@ import 'package:provider/provider.dart';
 void main() => runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (create) => PageIndex()),
+        ChangeNotifierProvider(create: (context) => ThemeViewModel()),
         ChangeNotifierProvider(create: (context) => HotlistViewModel()),
         ChangeNotifierProvider(create: (context) => PostViewModel()),
         ChangeNotifierProvider(create: (context) => UserViewModel()),
@@ -28,8 +30,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final brightness = View.of(context).platformDispatcher.platformBrightness;
-    const brightness = Brightness.light;
     TextTheme textTheme = createTextTheme(context, "Roboto", "Roboto");
     MaterialTheme theme = MaterialTheme(textTheme);
 
@@ -39,7 +39,9 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: _title,
-          theme: brightness == Brightness.light ? theme.light() : theme.dark(),
+          theme: theme.light(),
+          darkTheme: theme.dark(),
+          themeMode: context.read<ThemeViewModel>().themeMode,
           home: child,
         );
       },
