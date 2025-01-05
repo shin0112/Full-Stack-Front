@@ -15,6 +15,7 @@ class PostView extends StatelessWidget {
     return Consumer<PostViewModel>(
       builder: (context, provider, child) => SizedBox(
         height: 620.sp,
+        // todo: 글쓰기 버튼 추가
         child: Column(
           children: [
             const PostButtonSection(),
@@ -103,9 +104,9 @@ class PostButtonSectionState extends State<PostButtonSection> {
 }
 
 class PostBox extends StatefulWidget {
-  Post? post;
+  final Post post;
 
-  PostBox({super.key, this.post});
+  const PostBox({super.key, required this.post});
 
   @override
   State<StatefulWidget> createState() => PostBoxState();
@@ -117,7 +118,7 @@ class PostBoxState extends State<PostBox> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // todo: 터치 시 로직 작성
+      // todo: 터치 시 로직 작성, 좋아요 추가
       onTap: () {},
       child: Container(
         width: 328.sp,
@@ -147,7 +148,7 @@ class PostBoxState extends State<PostBox> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.post?.title ?? "",
+                    widget.post.title,
                     maxLines: 1,
                     style: Theme.of(context)
                         .textTheme
@@ -155,7 +156,7 @@ class PostBoxState extends State<PostBox> {
                         ?.copyWith(fontSize: 16.sp),
                   ),
                   Text(
-                    widget.post?.context ?? "",
+                    widget.post.context,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(

@@ -46,10 +46,10 @@ class HotlistView extends StatelessWidget {
         childAspectRatio: 153 / 68,
         children: items
             .map((item) => HotlistBox(
-                  id: item.id ?? 0,
-                  title: item.title ?? "",
-                  detail: item.detail ?? "",
-                  caffeine: item.caffeine ?? 0.0,
+                  id: item.id,
+                  title: item.title,
+                  detail: item.detail,
+                  caffeine: item.caffeine,
                 ))
             .toList(),
       ),

@@ -1,27 +1,27 @@
 import 'dart:convert';
 
 class Hotlist {
-  int? id;
-  int? userId;
-  String? title;
-  String? detail;
-  double? caffeine;
+  int id;
+  int userId;
+  String title;
+  String detail;
+  double caffeine;
 
   Hotlist({
-    this.id,
-    this.userId,
-    this.title,
-    this.detail,
-    this.caffeine,
+    required this.id,
+    required this.userId,
+    required this.title,
+    required this.detail,
+    required this.caffeine,
   });
 
   factory Hotlist.fromJson(Map<String, dynamic> json) {
     return Hotlist(
-      id: json['id'] as int?,
-      userId: json['userId'] as int?,
-      title: json['title'] as String?,
-      detail: json['detail'] as String?,
-      caffeine: (json['caffeine'] as num?)!.toDouble() / 10,
+      id: json['id'] as int,
+      userId: json['userId'] as int,
+      title: json['title'] as String,
+      detail: json['detail'] as String,
+      caffeine: (json['caffeine'] as int).toDouble() / 10,
     );
   }
 
@@ -31,7 +31,7 @@ class Hotlist {
       'userId': userId,
       'title': title,
       'detail': detail,
-      'caffeine': caffeine,
+      'caffeine': caffeine * 10,
     };
   }
 }

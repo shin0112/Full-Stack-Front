@@ -16,7 +16,7 @@ class TodayCaffeineView extends StatefulWidget {
 
 // gif, 날짜, text, today 섭취한 카페인mg/ 개인마다 다른 카페인mg
 class TodayCaffeineViewState extends State<TodayCaffeineView> {
-  int todayCaffeine = 0;
+  int todayCaffeine = 400;
   final int limitCaffeine = 400;
 
   String date = DateFormat("yyyy년 MM월 dd일").format(DateTime.now());
@@ -93,6 +93,7 @@ class TodayCaffeineViewState extends State<TodayCaffeineView> {
                     decoration: BoxDecoration(
                       color: MaterialTheme.coffee.seed,
                       borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(12),
                           bottomLeft: Radius.circular(12)),
                     ),
                   ),
