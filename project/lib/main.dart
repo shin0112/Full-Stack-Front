@@ -8,6 +8,7 @@ import 'package:project/view/community/post_view_model.dart';
 import 'package:project/view/home/home_page.dart';
 import 'package:project/view/home/hotlist_view_model.dart';
 import 'package:project/view/setting/setting_page.dart';
+import 'package:project/view/setting/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MultiProvider(
@@ -15,6 +16,7 @@ void main() => runApp(MultiProvider(
         ChangeNotifierProvider(create: (create) => PageIndex()),
         ChangeNotifierProvider(create: (context) => HotlistViewModel()),
         ChangeNotifierProvider(create: (context) => PostViewModel()),
+        ChangeNotifierProvider(create: (context) => UserViewModel()),
       ],
       child: const MyApp(),
     ));
