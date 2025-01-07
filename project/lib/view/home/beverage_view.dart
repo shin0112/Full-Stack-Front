@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:project/config/themes/theme.dart';
 import 'package:project/data/model/brand.dart';
 import 'package:project/view/home/beverage_view_model.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +51,7 @@ class BeverageView extends StatelessWidget {
                 alignment: Alignment.center,
                 padding: EdgeInsets.symmetric(vertical: 8.sp),
                 decoration: BoxDecoration(
-                  color: MaterialTheme.coffee.seed,
+                  color: Theme.of(context).colorScheme.primary,
                   border: Border.symmetric(
                     horizontal: BorderSide(
                       width: 1,
@@ -62,8 +61,10 @@ class BeverageView extends StatelessWidget {
                 ),
                 child: Text(
                   category,
-                  style: defaultTextStyle.copyWith(
-                      color: Theme.of(context).colorScheme.onSecondary),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontSize: 14.sp,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                 ),
               ),
               ...items.map(
@@ -109,12 +110,70 @@ class BeverageView extends StatelessWidget {
   ) {
     return SizedBox(
       width: size.width * 0.78,
+      height: 670.sp,
       child: Column(
         children: [
           Container(
+            height: 36.sp,
+            width: size.width * 0.78,
+            alignment: Alignment.center,
             padding: EdgeInsets.symmetric(horizontal: 10.sp),
+            decoration:
+                BoxDecoration(color: Theme.of(context).colorScheme.primary),
+            child: Text(
+              "음료 리스트",
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    fontSize: 14.sp,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+            ),
           ),
-          ListView()
+          Expanded(
+            child: ListView(
+              children: provider.beverageList.map((item) {
+                if (provider.selectedId == item.brandId) {
+                  return Container(
+                    height: 44.sp,
+                    width: size.width * 0.78,
+                    padding: EdgeInsets.all(10.sp),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          item.name,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(fontSize: 14.sp),
+                        ),
+                        Container(
+                          height: 24.sp,
+                          width: 55.sp,
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 2.sp, vertical: 4.sp),
+                          decoration: ShapeDecoration(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
+                          ),
+                          child: Text("${item.caffeine}mg",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium
+                                  ?.copyWith(fontSize: 12.sp)),
+                        )
+                      ],
+                    ),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              }).toList(),
+            ),
+          ),
         ],
       ),
     );
