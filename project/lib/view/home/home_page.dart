@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/provider/index.dart';
 import 'package:project/view/home/beverage_view.dart';
 import 'package:project/view/home/hotlist_view.dart';
-import 'package:project/view/home/today_caffeine_view.dart';
+import 'package:project/view/home/caffeine_view.dart';
 import 'package:project/widgets/bar/thin_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +29,7 @@ class HomeWidget extends StatelessWidget {
             onTap: () {
               showModalBottomSheet<void>(
                 showDragHandle: true,
+                scrollControlDisabledMaxHeightRatio: 670 / 800,
                 backgroundColor: Theme.of(context).colorScheme.onPrimary,
                 context: context,
                 builder: (BuildContext context) {
