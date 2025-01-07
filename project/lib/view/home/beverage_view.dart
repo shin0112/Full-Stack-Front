@@ -38,48 +38,46 @@ class BeverageView extends StatelessWidget {
       decoration: BoxDecoration(
           border: Border(
               right: BorderSide(color: Theme.of(context).colorScheme.outline))),
-      child: Expanded(
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          children: provider.brandList.entries.map((entry) {
-            final String category = entry.key;
-            final List<Brand> items = entry.value;
+      child: ListView(
+        scrollDirection: Axis.vertical,
+        children: provider.brandList.entries.map((entry) {
+          final String category = entry.key;
+          final List<Brand> items = entry.value;
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  height: 36.sp,
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(vertical: 8.sp),
-                  decoration: BoxDecoration(
-                    color: MaterialTheme.coffee.seed,
-                    border: Border.symmetric(
-                      horizontal: BorderSide(
-                        width: 1,
-                        color: Theme.of(context).colorScheme.outline,
-                      ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 36.sp,
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(vertical: 8.sp),
+                decoration: BoxDecoration(
+                  color: MaterialTheme.coffee.seed,
+                  border: Border.symmetric(
+                    horizontal: BorderSide(
+                      width: 1,
+                      color: Theme.of(context).colorScheme.outline,
                     ),
                   ),
-                  child: Text(
-                    category,
-                    style: defaultTextStyle.copyWith(
-                        color: Theme.of(context).colorScheme.onSecondary),
-                  ),
                 ),
-                ...items.map(
-                  (item) => provider.selectedId == item.id
-                      ? _buildSelectedTextBox(
-                          context, defaultTextStyle, item.name)
-                      : GestureDetector(
-                          onTap: () => provider.selectId(item.id),
-                          child: _buildUnselectedTextBox(
-                              context, defaultTextStyle, item.name)),
+                child: Text(
+                  category,
+                  style: defaultTextStyle.copyWith(
+                      color: Theme.of(context).colorScheme.onSecondary),
                 ),
-              ],
-            );
-          }).toList(),
-        ),
+              ),
+              ...items.map(
+                (item) => provider.selectedId == item.id
+                    ? _buildSelectedTextBox(
+                        context, defaultTextStyle, item.name)
+                    : GestureDetector(
+                        onTap: () => provider.selectId(item.id),
+                        child: _buildUnselectedTextBox(
+                            context, defaultTextStyle, item.name)),
+              ),
+            ],
+          );
+        }).toList(),
       ),
     );
   }
