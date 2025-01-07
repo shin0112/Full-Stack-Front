@@ -6,7 +6,7 @@ import 'package:project/data/repository/record_repository.dart';
 import 'package:project/utils/get_hash_code.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalendarViewModal with ChangeNotifier {
+class CalendarViewModel with ChangeNotifier {
   final RecordRepository _recordRepository = RecordRepository();
 
   DateTime get focusedDay => _focusedDay;
@@ -21,23 +21,37 @@ class CalendarViewModal with ChangeNotifier {
   List<Record> get selectedRecordList => _selectedRecordList;
   List<Record> _selectedRecordList = [];
 
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
+  RangeSelectionMode get rangeSelectionMode => _rangeSelectionMode;
+
+  DateTime? _rangeStart;
+  DateTime? _rangeEnd;
+
   final recordList = LinkedHashMap<DateTime, List<Record>>(
     equals: isSameDay,
     hashCode: getHashCode,
   );
 
-  List<Record> getEventsForDay(DateTime day) {
+  // int getHashCode(DateTime key) {
+  //   return key.day * 1000000 + key.month * 10000 + key.year;
+  // }
+
+  List<Record> getRecordForDay(DateTime day) {
     // Implementation example
     return recordList[day] ?? [];
   }
 
-  void onDaySelected(DateTime focusedDay, DateTime selectedDay) {
-    // _focusedDay = focusedDay;
-    _selectedDay = selectedDay;
+  void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      _selectedDay = selectedDay;
+      _focusedDay = focusedDay;
+    }
+
+    _selectedRecordList = getRecordForDay(selectedDay);
     notifyListeners();
   }
 
-  void onFocusedDayChanged(DateTime focusedDay) {
+  void onPageChanged(DateTime focusedDay) {
     _focusedDay = focusedDay;
     notifyListeners();
   }
@@ -47,12 +61,13 @@ class CalendarViewModal with ChangeNotifier {
     notifyListeners();
   }
 
-  CalendarViewModal() {
+  CalendarViewModel() {
     _fetchData();
   }
 
   void _fetchData() async {
     _selectedRecordList = await _recordRepository.getRecordList();
+    print(_selectedRecordList);
     notifyListeners();
   }
 }
