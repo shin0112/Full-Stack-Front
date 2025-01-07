@@ -2,10 +2,13 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:project/data/model/record.dart';
+import 'package:project/data/repository/record_repository.dart';
 import 'package:project/utils/get_hash_code.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarViewModal with ChangeNotifier {
+  final RecordRepository _recordRepository = RecordRepository();
+
   DateTime get focusedDay => _focusedDay;
   DateTime _focusedDay = DateTime.now();
 
@@ -14,6 +17,19 @@ class CalendarViewModal with ChangeNotifier {
 
   CalendarFormat get calendarFormat => _calendarFormat;
   CalendarFormat _calendarFormat = CalendarFormat.month;
+
+  List<Record> get selectedRecordList => _selectedRecordList;
+  List<Record> _selectedRecordList = [];
+
+  final recordList = LinkedHashMap<DateTime, List<Record>>(
+    equals: isSameDay,
+    hashCode: getHashCode,
+  );
+
+  List<Record> getEventsForDay(DateTime day) {
+    // Implementation example
+    return recordList[day] ?? [];
+  }
 
   void onDaySelected(DateTime focusedDay, DateTime selectedDay) {
     // _focusedDay = focusedDay;
@@ -31,5 +47,12 @@ class CalendarViewModal with ChangeNotifier {
     notifyListeners();
   }
 
-  CalendarViewModal();
+  CalendarViewModal() {
+    _fetchData();
+  }
+
+  void _fetchData() async {
+    _selectedRecordList = await _recordRepository.getRecordList();
+    notifyListeners();
+  }
 }
