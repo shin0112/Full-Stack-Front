@@ -71,10 +71,14 @@ class BeverageView extends StatelessWidget {
                 (item) => provider.selectedId == item.id
                     ? _buildSelectedTextBox(
                         context, defaultTextStyle, item.name)
-                    : GestureDetector(
-                        onTap: () => provider.selectId(item.id),
-                        child: _buildUnselectedTextBox(
-                            context, defaultTextStyle, item.name)),
+                    : Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => provider.selectId(item.id),
+                          child: _buildUnselectedTextBox(
+                              context, defaultTextStyle, item.name),
+                        ),
+                      ),
               ),
             ],
           );
