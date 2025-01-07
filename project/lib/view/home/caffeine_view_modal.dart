@@ -5,7 +5,7 @@ class CaffeineViewModal with ChangeNotifier {
   double _todayCaffeine = 0;
 
   double get limitCaffeine => _limitCaffeine;
-  double _limitCaffeine = 400;
+  final double _limitCaffeine = 400;
 
   num getLimitCaffeine(double weight) {
     const double maxCaffeinePerKg = 6.0;

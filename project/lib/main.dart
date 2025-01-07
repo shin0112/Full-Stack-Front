@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
 import 'package:project/view/home/beverage_view_model.dart';
+import 'package:project/view/home/caffeine_view_modal.dart';
 import 'package:project/view/setting/theme_view_model.dart';
 import 'package:project/provider/index.dart';
 import 'package:project/view/community/community_page.dart';
@@ -17,6 +18,7 @@ void main() => runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (create) => PageIndex()),
         ChangeNotifierProvider(create: (context) => ThemeViewModel()),
+        ChangeNotifierProvider(create: (context) => CaffeineViewModal()),
         ChangeNotifierProvider(create: (context) => HotlistViewModel()),
         ChangeNotifierProvider(create: (context) => PostViewModel()),
         ChangeNotifierProvider(create: (context) => UserViewModel()),
