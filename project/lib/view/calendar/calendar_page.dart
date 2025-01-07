@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/view/calendar/calendar_view.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});
@@ -25,6 +26,7 @@ class CalendarPage extends StatelessWidget {
             topRight: Radius.circular(12),
           ),
         ),
+        child: const CalendarView(),
       ),
     );
   }
