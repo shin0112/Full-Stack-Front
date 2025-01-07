@@ -31,7 +31,6 @@ class SettingPage extends StatelessWidget {
   Widget _buildSettingContainer(BuildContext context) {
     return Container(
       width: 340.sp,
-      height: 412.sp,
       padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 12.sp),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSecondary,
