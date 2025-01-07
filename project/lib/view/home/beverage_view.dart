@@ -27,26 +27,25 @@ class BeverageViewState extends State<BeverageView> {
       builder: (context, provider, child) => SizedBox(
         height: 670.sp,
         child: Row(
-          children: [_buildLeftList(context, provider.brandList)],
+          children: [
+            _buildLeftSection(context, provider.brandList),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildLeftList(
+  Widget _buildLeftSection(
       BuildContext context, Map<String, List<Brand>> brandList) {
-    return SizedBox(
+    return Container(
       width: 80.sp,
       height: 670.sp,
+      decoration: BoxDecoration(
+          border: Border(
+              right: BorderSide(color: Theme.of(context).colorScheme.outline))),
       child: Column(
         children: [
-          Text(
-            "전체",
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium!
-                .copyWith(fontSize: 14.sp),
-          ),
+          _buildTextBox("전체", 0),
           Expanded(
             child: ListView(
               scrollDirection: Axis.vertical,
@@ -85,7 +84,7 @@ class BeverageViewState extends State<BeverageView> {
         return GestureDetector(
           onTap: () => selectId(id),
           child: Container(
-            height: 20.sp,
+            height: 36.sp,
             alignment: Alignment.center,
             padding: EdgeInsets.symmetric(vertical: 8.sp),
             child: Text(text, style: defaultTextStyle),
@@ -94,7 +93,7 @@ class BeverageViewState extends State<BeverageView> {
       // selected
       case 1:
         return Container(
-          height: 20.sp,
+          height: 36.sp,
           alignment: Alignment.center,
           color: Theme.of(context).colorScheme.secondaryContainer,
           padding: EdgeInsets.symmetric(vertical: 8.sp),
@@ -103,7 +102,7 @@ class BeverageViewState extends State<BeverageView> {
       // category
       case 2:
         return Container(
-          height: 20.sp,
+          height: 36.sp,
           alignment: Alignment.center,
           padding: EdgeInsets.symmetric(vertical: 8.sp),
           decoration: BoxDecoration(
