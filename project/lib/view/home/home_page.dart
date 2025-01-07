@@ -12,6 +12,7 @@ class HomeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 620.sp,
       padding: EdgeInsets.symmetric(
         horizontal: 10.sp,
         vertical: 20.sp,

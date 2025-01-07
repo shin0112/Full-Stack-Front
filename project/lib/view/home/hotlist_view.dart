@@ -14,7 +14,6 @@ class HotlistView extends StatelessWidget {
     return Consumer<HotlistViewModel>(
       builder: (context, provider, child) {
         return Container(
-          height: 226.sp,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.onSecondary,
             borderRadius: BorderRadius.circular(12),

@@ -21,7 +21,7 @@ class PostView extends StatelessWidget {
             const PostButtonSection(),
             const HorizontalLine(width: 360),
             SizedBox(
-              height: 563.sp,
+              height: 56.sp * provider.items.length,
               child: provider.items.isEmpty
                   ? const Center(child: Text("준비 중입니다."))
                   : ListView(
