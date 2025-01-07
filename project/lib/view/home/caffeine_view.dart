@@ -86,9 +86,13 @@ class TodayCaffeineViewState extends State<TodayCaffeineView> {
                         height: 160.sp * progressRatio,
                         decoration: BoxDecoration(
                           color: MaterialTheme.coffee.seed,
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              bottomLeft: Radius.circular(12)),
+                          borderRadius: provider.todayCaffeine >= 400
+                              ? const BorderRadius.only(
+                                  topLeft: Radius.circular(12),
+                                  bottomLeft: Radius.circular(12),
+                                )
+                              : const BorderRadius.only(
+                                  bottomLeft: Radius.circular(12)),
                         ),
                       ),
                     ],
