@@ -132,40 +132,46 @@ class BeverageView extends StatelessWidget {
             child: ListView(
               children: provider.beverageList.map((item) {
                 if (provider.selectedId == item.brandId) {
-                  return Container(
-                    height: 44.sp,
-                    width: size.width * 0.78,
-                    padding: EdgeInsets.all(10.sp),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          item.name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(fontSize: 14.sp),
-                        ),
-                        Container(
-                          height: 24.sp,
-                          width: 55.sp,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 2.sp, vertical: 4.sp),
-                          decoration: ShapeDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .surfaceContainerHighest,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                          ),
-                          child: Text("${item.caffeine}mg",
+                  return Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                        height: 44.sp,
+                        width: size.width * 0.78,
+                        padding: EdgeInsets.all(10.sp),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              item.name,
                               style: Theme.of(context)
                                   .textTheme
-                                  .labelMedium
-                                  ?.copyWith(fontSize: 12.sp)),
-                        )
-                      ],
+                                  .bodyMedium
+                                  ?.copyWith(fontSize: 14.sp),
+                            ),
+                            Container(
+                              height: 24.sp,
+                              width: 55.sp,
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2.sp, vertical: 4.sp),
+                              decoration: ShapeDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainerHighest,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
+                              child: Text("${item.caffeine}mg",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium
+                                      ?.copyWith(fontSize: 12.sp)),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   );
                 } else {
