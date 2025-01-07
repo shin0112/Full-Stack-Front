@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Beverage {
   int id;
   int brandId;
@@ -19,4 +21,9 @@ class Beverage {
       caffeine: json['caffeine'] as double,
     );
   }
+}
+
+Future<List<Beverage>> parseBeverageFromJson(String jsonString) async {
+  final List<dynamic> jsonData = json.decode(jsonString);
+  return jsonData.map((item) => Beverage.fromJson(item)).toList();
 }
