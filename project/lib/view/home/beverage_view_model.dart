@@ -22,7 +22,7 @@ class BeverageViewModel with ChangeNotifier {
 
   void selectBrand(int id, String brand) {
     _selectedId = id;
-    _selectedBrand = "";
+    _selectedBrand = brand;
     notifyListeners();
   }
 
