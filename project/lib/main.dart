@@ -25,7 +25,7 @@ void main() => runApp(MultiProvider(
         ChangeNotifierProvider(create: (context) => PostViewModel()),
         ChangeNotifierProvider(create: (context) => UserViewModel()),
         ChangeNotifierProvider(create: (context) => BeverageViewModel()),
-        ChangeNotifierProvider(create: (context) => CalendarViewModal()),
+        ChangeNotifierProvider(create: (context) => CalendarViewModel()),
       ],
       child: const MyApp(),
     ));
