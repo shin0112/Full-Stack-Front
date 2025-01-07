@@ -4,6 +4,7 @@ import 'package:project/config/themes/theme.dart';
 import 'package:project/data/model/brand.dart';
 import 'package:project/utils/add_object_postposition.dart';
 import 'package:project/view/home/beverage_view_model.dart';
+import 'package:project/view/home/caffeine_view_modal.dart';
 import 'package:provider/provider.dart';
 
 class BeverageView extends StatelessWidget {
@@ -145,7 +146,11 @@ class BeverageView extends StatelessWidget {
                         builder: (BuildContext context) => Dialog(
                           insetPadding: EdgeInsets.symmetric(vertical: 300.sp),
                           child: _buildSelectedItemModal(
-                              context, provider.selectedBrand, item.name),
+                            context,
+                            provider.selectedBrand,
+                            item.name,
+                            item.caffeine,
+                          ),
                         ),
                       ),
                       child: Container(
@@ -203,7 +208,11 @@ class BeverageView extends StatelessWidget {
   }
 
   Widget _buildSelectedItemModal(
-      BuildContext context, String selectedBrand, String name) {
+    BuildContext context,
+    String selectedBrand,
+    String name,
+    double caffeine,
+  ) {
     return Container(
       height: 120.sp,
       width: 340.sp,
@@ -226,24 +235,35 @@ class BeverageView extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                // 확인 버튼
                 FilledButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      "확인",
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    context
+                        .read<CaffeineViewModal>()
+                        .setTodayCaffeine(caffeine);
+                  },
+                  child: Text(
+                    "확인",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           fontSize: 14.sp,
-                          color: Theme.of(context).colorScheme.onPrimary),
-                    )),
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
+                ),
                 SizedBox(width: 6.sp),
+                // 취소 버튼
                 OutlinedButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text("취소",
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            fontSize: 14.sp,
-                            color: Theme.of(context).colorScheme.primary)))
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    "취소",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontSize: 14.sp,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                ),
               ],
             ),
           )
