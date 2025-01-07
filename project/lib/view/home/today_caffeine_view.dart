@@ -112,86 +112,83 @@ class TodayCaffeineViewState extends State<TodayCaffeineView> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 // 상단 text container
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      date,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 14.sp,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w400,
-                        height: 1.2,
-                        letterSpacing: 0.25,
-                      ),
-                    ),
-                    Text(
-                      "오늘 섭취한 카페인 양은?",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall!
-                          .copyWith(fontSize: 24.sp),
-                    ),
-                  ],
-                ),
+                _buildTopTextSection(context),
                 SizedBox(height: 4.sp),
-                // 구분선
                 const HorizontalLine(width: 282),
-
                 SizedBox(height: 4.sp),
                 // 카페인 text
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 75.sp,
-                      child: Text(
-                        todayCaffeine.toString(),
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontSize: 64.sp,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w900,
-                          height: 1.2,
-                          letterSpacing: 0.50,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 2.sp,
-                    ),
-                    Container(
-                      height: 59.sp,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: const BoxDecoration(),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            'mg/${limitCaffeine}mg',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSurface,
-                              fontSize: 32.sp,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w400,
-                              height: 1.2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                )
+                _buildCaffeineSection(context),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTopTextSection(BuildContext context) {
+    TextStyle dateTextStyle = TextStyle(
+      color: Theme.of(context).colorScheme.secondary,
+      fontSize: 14.sp,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w400,
+      height: 1.2,
+      letterSpacing: 0.25,
+    );
+    TextStyle questionTextStyle =
+        Theme.of(context).textTheme.headlineSmall!.copyWith(fontSize: 24.sp);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(date, style: dateTextStyle),
+        Text("오늘 섭취한 카페인 양은?", style: questionTextStyle),
+      ],
+    );
+  }
+
+  Widget _buildCaffeineSection(BuildContext context) {
+    TextStyle todayCaffeineTextStyle = TextStyle(
+      color: Theme.of(context).colorScheme.onSurface,
+      fontSize: 64.sp,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w900,
+      height: 1.2,
+      letterSpacing: 0.50,
+    );
+    TextStyle limitCaffeineTextStyle = TextStyle(
+      color: Theme.of(context).colorScheme.onSurface,
+      fontSize: 32.sp,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w400,
+      height: 1.2,
+    );
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          height: 75.sp,
+          alignment: Alignment.bottomRight,
+          child: Text(todayCaffeine.toString(), style: todayCaffeineTextStyle),
+        ),
+        SizedBox(width: 2.sp),
+        Container(
+          height: 59.sp,
+          clipBehavior: Clip.antiAlias,
+          decoration: const BoxDecoration(),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text('mg/${limitCaffeine}mg', style: limitCaffeineTextStyle),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
