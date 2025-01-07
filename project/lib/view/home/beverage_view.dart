@@ -16,7 +16,9 @@ class BeverageViewState extends State<BeverageView> {
   int _selectedId = 0;
 
   void selectId(int id) {
-    _selectedId = id;
+    setState(() {
+      _selectedId = id;
+    });
   }
 
   @override
@@ -31,7 +33,8 @@ class BeverageViewState extends State<BeverageView> {
     );
   }
 
-  Widget _buildLeftList(BuildContext context, List<List<Brand>> brandList) {
+  Widget _buildLeftList(
+      BuildContext context, Map<String, List<Brand>> brandList) {
     return SizedBox(
       width: 80.sp,
       height: 670.sp,
@@ -44,17 +47,29 @@ class BeverageViewState extends State<BeverageView> {
                 .bodyMedium!
                 .copyWith(fontSize: 14.sp),
           ),
-          ListView(
-              children: brandList.map((brand) {
-            return Column(
-                children: brand
-                    .map((item) => _buildTextBox(
-                          item.name,
-                          item.id,
-                          item.id == _selectedId ? 1 : 0,
-                        ))
-                    .toList());
-          }).toList()),
+          Expanded(
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              children: brandList.entries.map((entry) {
+                final String category = entry.key;
+                final List<Brand> items = entry.value;
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildTextBox(category, 0, 2),
+                    ...items.map(
+                      (item) => _buildTextBox(
+                        item.name,
+                        item.id,
+                        item.id == _selectedId ? 1 : 0,
+                      ),
+                    ),
+                  ],
+                );
+              }).toList(),
+            ),
+          ),
         ],
       ),
     );
@@ -70,6 +85,7 @@ class BeverageViewState extends State<BeverageView> {
         return GestureDetector(
           onTap: () => selectId(id),
           child: Container(
+            height: 20.sp,
             alignment: Alignment.center,
             padding: EdgeInsets.symmetric(vertical: 8.sp),
             child: Text(text, style: defaultTextStyle),
@@ -78,6 +94,7 @@ class BeverageViewState extends State<BeverageView> {
       // selected
       case 1:
         return Container(
+          height: 20.sp,
           alignment: Alignment.center,
           color: Theme.of(context).colorScheme.secondaryContainer,
           padding: EdgeInsets.symmetric(vertical: 8.sp),
@@ -86,6 +103,7 @@ class BeverageViewState extends State<BeverageView> {
       // category
       case 2:
         return Container(
+          height: 20.sp,
           alignment: Alignment.center,
           padding: EdgeInsets.symmetric(vertical: 8.sp),
           decoration: BoxDecoration(

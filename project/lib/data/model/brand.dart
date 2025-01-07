@@ -21,8 +21,8 @@ class Brand {
 }
 
 Future<List<List<Brand>>> parseBrandFromJson(String jsonString) async {
-  final List<List<dynamic>> jsonData = json.decode(jsonString);
-  return jsonData
-      .map((items) => items.map((item) => Brand.fromJson(item)).toList())
-      .toList();
+  final List<dynamic> jsonData = json.decode(jsonString);
+  return jsonData.map((items) {
+    return (items as List).map((item) => Brand.fromJson(item)).toList();
+  }).toList();
 }

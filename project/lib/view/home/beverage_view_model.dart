@@ -5,8 +5,8 @@ import 'package:project/data/repository/brand_repository.dart';
 class BeverageViewModel with ChangeNotifier {
   final BrandRepository _brandRepository = BrandRepository();
 
-  List<List<Brand>> get brandList => _brandList;
-  List<List<Brand>> _brandList = [];
+  Map<String, List<Brand>> get brandList => _brandList;
+  Map<String, List<Brand>> _brandList = {};
 
   BeverageViewModel() {
     _fetchData();
@@ -14,6 +14,8 @@ class BeverageViewModel with ChangeNotifier {
 
   Future<void> _fetchData() async {
     _brandList = await _brandRepository.getBrandList();
+    print(brandList);
+
     notifyListeners();
   }
 }
