@@ -7,8 +7,8 @@ import 'package:project/view/home/caffeine_view.dart';
 import 'package:project/widgets/bar/thin_bar.dart';
 import 'package:provider/provider.dart';
 
-class HomeWidget extends StatelessWidget {
-  const HomeWidget({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
