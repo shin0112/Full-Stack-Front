@@ -5,38 +5,20 @@ import 'package:project/data/model/brand.dart';
 import 'package:project/view/home/beverage_view_model.dart';
 import 'package:provider/provider.dart';
 
-class BeverageView extends StatefulWidget {
+class BeverageView extends StatelessWidget {
   const BeverageView({super.key});
 
   @override
-  State<StatefulWidget> createState() => BeverageViewState();
-}
-
-class BeverageViewState extends State<BeverageView> {
-  int _selectedId = 0;
-  bool _isIceButton = true;
-
-  void selectId(int id) {
-    setState(() {
-      _selectedId = id;
-    });
-  }
-
-  void selectTemp(bool isIceButton) {
-    setState(() {
-      _isIceButton = isIceButton;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Consumer<BeverageViewModel>(
       builder: (context, provider, child) => SizedBox(
         height: 670.sp,
         child: Row(
           children: [
-            _buildLeftSection(context, provider.brandList),
-            _buildRightSection(context),
+            _buildLeftSection(context, provider, size),
+            _buildRightSection(context, provider, size),
           ],
         ),
       ),
@@ -44,7 +26,10 @@ class BeverageViewState extends State<BeverageView> {
   }
 
   Widget _buildLeftSection(
-      BuildContext context, Map<String, List<Brand>> brandList) {
+    BuildContext context,
+    BeverageViewModel provider,
+    Size size,
+  ) {
     return Container(
       width: 80.sp,
       height: 670.sp,
@@ -53,23 +38,25 @@ class BeverageViewState extends State<BeverageView> {
               right: BorderSide(color: Theme.of(context).colorScheme.outline))),
       child: Column(
         children: [
-          _buildTextBox("전체", 0),
+          _buildTextBox(context, provider, "전체", 0),
           Expanded(
             child: ListView(
               scrollDirection: Axis.vertical,
-              children: brandList.entries.map((entry) {
+              children: provider.brandList.entries.map((entry) {
                 final String category = entry.key;
                 final List<Brand> items = entry.value;
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _buildTextBox(category, 0, 2),
+                    _buildTextBox(context, provider, category, 0, 2),
                     ...items.map(
                       (item) => _buildTextBox(
+                        context,
+                        provider,
                         item.name,
                         item.id,
-                        item.id == _selectedId ? 1 : 0,
+                        item.id == provider.selectedId ? 1 : 0,
                       ),
                     ),
                   ],
@@ -82,7 +69,9 @@ class BeverageViewState extends State<BeverageView> {
     );
   }
 
-  Widget _buildTextBox(String text, int id, [int type = 0]) {
+  Widget _buildTextBox(
+      BuildContext context, BeverageViewModel provider, String text, int id,
+      [int type = 0]) {
     TextStyle defaultTextStyle =
         Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14.sp);
 
@@ -90,7 +79,7 @@ class BeverageViewState extends State<BeverageView> {
       // default
       case 0:
         return GestureDetector(
-          onTap: () => selectId(id),
+          onTap: () => provider.selectId(id),
           child: Container(
             height: 36.sp,
             alignment: Alignment.center,
@@ -133,18 +122,8 @@ class BeverageViewState extends State<BeverageView> {
     }
   }
 
-  Widget _buildRightSection(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.sp),
-          child: _buildButtonSection(context),
-        )
-      ],
-    );
-  }
-
-  Widget _buildButtonSection(BuildContext context) {
+  Widget _buildRightSection(
+      BuildContext context, BeverageViewModel provider, Size size) {
     TextStyle selectedTextStyle =
         Theme.of(context).textTheme.labelLarge!.copyWith(
               fontSize: 14.sp,
@@ -172,19 +151,27 @@ class BeverageViewState extends State<BeverageView> {
       child: Row(
         children: [
           OutlinedButton(
-            style: _isIceButton ? selectedButtonStyle : unselectedButtonStyle,
-            onPressed: () => selectTemp(true),
+            style: provider.isIceButton
+                ? selectedButtonStyle
+                : unselectedButtonStyle,
+            onPressed: () => provider.selectTemp(true),
             child: Text(
               "ICE",
-              style: _isIceButton ? selectedTextStyle : unselectedTextStyle,
+              style: provider.isIceButton
+                  ? selectedTextStyle
+                  : unselectedTextStyle,
             ),
           ),
           OutlinedButton(
-            style: _isIceButton ? unselectedButtonStyle : selectedButtonStyle,
-            onPressed: () => selectTemp(false),
+            style: provider.isIceButton
+                ? unselectedButtonStyle
+                : selectedButtonStyle,
+            onPressed: () => provider.selectTemp(false),
             child: Text(
               "HOT",
-              style: _isIceButton ? unselectedTextStyle : selectedTextStyle,
+              style: provider.isIceButton
+                  ? unselectedTextStyle
+                  : selectedTextStyle,
             ),
           )
         ],
