@@ -74,7 +74,7 @@ class BeverageView extends StatelessWidget {
                     : Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: () => provider.selectId(item.id),
+                          onTap: () => provider.selectBrand(item.id, item.name),
                           child: _buildUnselectedTextBox(
                               context, defaultTextStyle, item.name),
                         ),
@@ -139,7 +139,15 @@ class BeverageView extends StatelessWidget {
                   return Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) => Dialog(
+                          insetPadding: EdgeInsets.all(20.sp),
+                          child: Column(
+                            children: [Text(provider.selectedBrand)],
+                          ),
+                        ),
+                      ),
                       child: Container(
                         height: 44.sp,
                         width: size.width * 0.78,
