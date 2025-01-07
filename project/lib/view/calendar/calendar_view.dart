@@ -5,6 +5,7 @@ import 'package:project/view/calendar/calendar_view_model.dart';
 import 'package:project/widgets/line.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:project/data/model/record.dart';
 
 class CalendarView extends StatelessWidget {
   const CalendarView({super.key});
@@ -19,13 +20,46 @@ class CalendarView extends StatelessWidget {
           HorizontalLine(width: 320.sp),
           SizedBox(height: 10.sp),
           _buildDateSection(context, provider.selectedDay),
+          SizedBox(height: 10.sp),
+          HorizontalLine(width: 320.sp),
+          SizedBox(height: 10.sp),
+          Expanded(
+            child: provider.selectedRecordList.isEmpty
+                ? Center(
+                    child: Text(
+                      "기록이 없습니다.",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: provider.selectedRecordList.length,
+                    itemBuilder: (context, index) {
+                      final record = provider.selectedRecordList[index];
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 12.0,
+                          vertical: 4.0,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: ListTile(
+                          onTap: () => print(record), // 기록 출력
+                          title: Text(record.title), // Record 클래스의 필드
+                          subtitle: Text(record.detail ?? ""), // 선택적 필드
+                        ),
+                      );
+                    },
+                  ),
+          ),
         ],
       );
     });
   }
 
   Widget _buildCalendar(BuildContext context, CalendarViewModel provider) {
-    return TableCalendar(
+    return TableCalendar<Record>(
       focusedDay: provider.focusedDay,
       firstDay: DateTime.utc(2024, 1, 1),
       lastDay: DateTime.utc(2025, 12, 31),
