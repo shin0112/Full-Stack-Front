@@ -30,96 +30,78 @@ class BeverageView extends StatelessWidget {
     BeverageViewModel provider,
     Size size,
   ) {
+    TextStyle defaultTextStyle =
+        Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14.sp);
     return Container(
-      width: 80.sp,
+      width: size.width * 0.22,
       height: 670.sp,
       decoration: BoxDecoration(
           border: Border(
               right: BorderSide(color: Theme.of(context).colorScheme.outline))),
-      child: Column(
-        children: [
-          _buildTextBox(context, provider, "전체", 0),
-          Expanded(
-            child: ListView(
-              scrollDirection: Axis.vertical,
-              children: provider.brandList.entries.map((entry) {
-                final String category = entry.key;
-                final List<Brand> items = entry.value;
+      child: Expanded(
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: provider.brandList.entries.map((entry) {
+            final String category = entry.key;
+            final List<Brand> items = entry.value;
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildTextBox(context, provider, category, 0, 2),
-                    ...items.map(
-                      (item) => _buildTextBox(
-                        context,
-                        provider,
-                        item.name,
-                        item.id,
-                        item.id == provider.selectedId ? 1 : 0,
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  height: 36.sp,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(vertical: 8.sp),
+                  decoration: BoxDecoration(
+                    color: MaterialTheme.coffee.seed,
+                    border: Border.symmetric(
+                      horizontal: BorderSide(
+                        width: 1,
+                        color: Theme.of(context).colorScheme.outline,
                       ),
                     ),
-                  ],
-                );
-              }).toList(),
-            ),
-          ),
-        ],
+                  ),
+                  child: Text(
+                    category,
+                    style: defaultTextStyle.copyWith(
+                        color: Theme.of(context).colorScheme.onSecondary),
+                  ),
+                ),
+                ...items.map(
+                  (item) => provider.selectedId == item.id
+                      ? _buildSelectedTextBox(
+                          context, defaultTextStyle, item.name)
+                      : GestureDetector(
+                          onTap: () => provider.selectId(item.id),
+                          child: _buildUnselectedTextBox(
+                              context, defaultTextStyle, item.name)),
+                ),
+              ],
+            );
+          }).toList(),
+        ),
       ),
     );
   }
 
-  Widget _buildTextBox(
-      BuildContext context, BeverageViewModel provider, String text, int id,
-      [int type = 0]) {
-    TextStyle defaultTextStyle =
-        Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14.sp);
+  Widget _buildSelectedTextBox(
+      BuildContext context, TextStyle textStyle, String name) {
+    return Container(
+      height: 36.sp,
+      alignment: Alignment.center,
+      color: Theme.of(context).colorScheme.secondaryContainer,
+      padding: EdgeInsets.symmetric(vertical: 8.sp),
+      child: Text(name, style: textStyle),
+    );
+  }
 
-    switch (type) {
-      // default
-      case 0:
-        return GestureDetector(
-          onTap: () => provider.selectId(id),
-          child: Container(
-            height: 36.sp,
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(vertical: 8.sp),
-            child: Text(text, style: defaultTextStyle),
-          ),
-        );
-      // selected
-      case 1:
-        return Container(
-          height: 36.sp,
-          alignment: Alignment.center,
-          color: Theme.of(context).colorScheme.secondaryContainer,
-          padding: EdgeInsets.symmetric(vertical: 8.sp),
-          child: Text(text, style: defaultTextStyle),
-        );
-      // category
-      case 2:
-        return Container(
-          height: 36.sp,
-          alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(vertical: 8.sp),
-          decoration: BoxDecoration(
-            color: MaterialTheme.coffee.seed,
-            border: Border.symmetric(
-              horizontal: BorderSide(
-                width: 1,
-                color: Theme.of(context).colorScheme.outline,
-              ),
-            ),
-          ),
-          child: Text(
-            text,
-            style: defaultTextStyle.copyWith(
-                color: Theme.of(context).colorScheme.onSecondary),
-          ),
-        );
-      default:
-        return const SizedBox.shrink();
-    }
+  Widget _buildUnselectedTextBox(
+      BuildContext context, TextStyle textStyle, String name) {
+    return Container(
+        height: 36.sp,
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(vertical: 8.sp),
+        child: Text(name, style: textStyle));
   }
 
   Widget _buildRightSection(
@@ -147,7 +129,7 @@ class BeverageView extends StatelessWidget {
     ButtonStyle unselectedButtonStyle = const ButtonStyle();
 
     return SizedBox(
-      width: 280.sp,
+      width: size.width * 0.78,
       child: Row(
         children: [
           OutlinedButton(
