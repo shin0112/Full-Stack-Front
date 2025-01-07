@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
+import 'package:project/view/home/beverage_view_model.dart';
 import 'package:project/view/setting/theme_view_model.dart';
 import 'package:project/provider/index.dart';
 import 'package:project/view/community/community_page.dart';
@@ -19,6 +20,7 @@ void main() => runApp(MultiProvider(
         ChangeNotifierProvider(create: (context) => HotlistViewModel()),
         ChangeNotifierProvider(create: (context) => PostViewModel()),
         ChangeNotifierProvider(create: (context) => UserViewModel()),
+        ChangeNotifierProvider(create: (context) => BeverageViewModel()),
       ],
       child: const MyApp(),
     ));
