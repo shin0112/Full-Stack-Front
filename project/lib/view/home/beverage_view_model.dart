@@ -10,16 +10,9 @@ class BeverageViewModel with ChangeNotifier {
 
   int _selectedId = 0;
   int get selectedId => _selectedId;
-  bool _isIceButton = true;
-  bool get isIceButton => _isIceButton;
 
   void selectId(int id) {
     _selectedId = id;
-    notifyListeners();
-  }
-
-  void selectTemp(bool isIceButton) {
-    _isIceButton = isIceButton;
     notifyListeners();
   }
 

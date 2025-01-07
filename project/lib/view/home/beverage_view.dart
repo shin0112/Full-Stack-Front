@@ -105,57 +105,18 @@ class BeverageView extends StatelessWidget {
   }
 
   Widget _buildRightSection(
-      BuildContext context, BeverageViewModel provider, Size size) {
-    TextStyle selectedTextStyle =
-        Theme.of(context).textTheme.labelLarge!.copyWith(
-              fontSize: 14.sp,
-              color: Theme.of(context).colorScheme.onPrimary,
-            );
-    TextStyle unselectedTextStyle =
-        Theme.of(context).textTheme.labelLarge!.copyWith(
-              fontSize: 14.sp,
-              color: MaterialTheme.coffee.seed,
-            );
-    ButtonStyle selectedButtonStyle = ButtonStyle(
-      backgroundColor: WidgetStateProperty.resolveWith<Color?>(
-        (Set<WidgetState> states) {
-          if (states.contains(WidgetState.pressed)) {
-            return MaterialTheme.coffee.seed.withOpacity(0.8);
-          }
-          return MaterialTheme.coffee.seed; // Use the component's default.
-        },
-      ),
-    );
-    ButtonStyle unselectedButtonStyle = const ButtonStyle();
-
+    BuildContext context,
+    BeverageViewModel provider,
+    Size size,
+  ) {
     return SizedBox(
       width: size.width * 0.78,
-      child: Row(
+      child: Column(
         children: [
-          OutlinedButton(
-            style: provider.isIceButton
-                ? selectedButtonStyle
-                : unselectedButtonStyle,
-            onPressed: () => provider.selectTemp(true),
-            child: Text(
-              "ICE",
-              style: provider.isIceButton
-                  ? selectedTextStyle
-                  : unselectedTextStyle,
-            ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.sp),
           ),
-          OutlinedButton(
-            style: provider.isIceButton
-                ? unselectedButtonStyle
-                : selectedButtonStyle,
-            onPressed: () => provider.selectTemp(false),
-            child: Text(
-              "HOT",
-              style: provider.isIceButton
-                  ? unselectedTextStyle
-                  : selectedTextStyle,
-            ),
-          )
+          ListView()
         ],
       ),
     );
