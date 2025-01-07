@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/theme.dart';
 import 'package:project/data/model/brand.dart';
+import 'package:project/utils/add_object_postposition.dart';
 import 'package:project/view/home/beverage_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -142,10 +143,9 @@ class BeverageView extends StatelessWidget {
                       onTap: () => showDialog(
                         context: context,
                         builder: (BuildContext context) => Dialog(
-                          insetPadding: EdgeInsets.all(20.sp),
-                          child: Column(
-                            children: [Text(provider.selectedBrand)],
-                          ),
+                          insetPadding: EdgeInsets.symmetric(vertical: 300.sp),
+                          child: _buildSelectedItemModal(
+                              context, provider.selectedBrand, item.name),
                         ),
                       ),
                       child: Container(
@@ -197,6 +197,56 @@ class BeverageView extends StatelessWidget {
               }).toList(),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSelectedItemModal(
+      BuildContext context, String selectedBrand, String name) {
+    return Container(
+      height: 120.sp,
+      width: 340.sp,
+      padding: EdgeInsets.all(20.sp),
+      child: Column(
+        children: [
+          SizedBox(
+            width: 300.sp,
+            child: Text(
+              "$selectedBrand ${addObjectPostposition(name)} 추가하시겠습니까?",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(fontSize: 14.sp),
+            ),
+          ),
+          SizedBox(height: 20.sp),
+          SizedBox(
+            width: 300.sp,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FilledButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "확인",
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontSize: 14.sp,
+                          color: Theme.of(context).colorScheme.onPrimary),
+                    )),
+                SizedBox(width: 6.sp),
+                OutlinedButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text("취소",
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontSize: 14.sp,
+                            color: Theme.of(context).colorScheme.primary)))
+              ],
+            ),
+          )
         ],
       ),
     );
