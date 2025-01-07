@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/view/calendar/calendar_view_modal.dart';
+import 'package:project/view/calendar/calendar_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 

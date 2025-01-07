@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
 import 'package:project/view/calendar/calendar_page.dart';
-import 'package:project/view/calendar/calendar_view_modal.dart';
+import 'package:project/view/calendar/calendar_view_model.dart';
 import 'package:project/view/home/beverage_view_model.dart';
 import 'package:project/view/home/caffeine_view_modal.dart';
 import 'package:project/view/setting/theme_view_model.dart';
