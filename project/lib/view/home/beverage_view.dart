@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/config/themes/theme.dart';
 import 'package:project/data/model/brand.dart';
 import 'package:project/view/home/beverage_view_model.dart';
 import 'package:provider/provider.dart';
@@ -51,7 +52,7 @@ class BeverageView extends StatelessWidget {
                 alignment: Alignment.center,
                 padding: EdgeInsets.symmetric(vertical: 8.sp),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: MaterialTheme.coffee.seed,
                   border: Border.symmetric(
                     horizontal: BorderSide(
                       width: 1,
@@ -122,8 +123,7 @@ class BeverageView extends StatelessWidget {
             width: size.width * 0.78,
             alignment: Alignment.center,
             padding: EdgeInsets.symmetric(horizontal: 10.sp),
-            decoration:
-                BoxDecoration(color: Theme.of(context).colorScheme.primary),
+            decoration: BoxDecoration(color: MaterialTheme.coffee.seed),
             child: Text(
               "음료 리스트",
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
