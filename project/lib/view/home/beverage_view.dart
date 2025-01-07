@@ -159,19 +159,24 @@ class BeverageView extends StatelessWidget {
                               width: 55.sp,
                               alignment: Alignment.center,
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 2.sp, vertical: 4.sp),
+                                horizontal: 2.sp,
+                                vertical: 4.sp,
+                              ),
                               decoration: ShapeDecoration(
                                 color: Theme.of(context)
                                     .colorScheme
                                     .surfaceContainerHighest,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5)),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
                               ),
-                              child: Text("${item.caffeine}mg",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium
-                                      ?.copyWith(fontSize: 12.sp)),
+                              child: Text(
+                                "${item.caffeine}mg",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(fontSize: 12.sp),
+                              ),
                             ),
                           ],
                         ),
