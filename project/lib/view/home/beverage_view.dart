@@ -14,10 +14,17 @@ class BeverageView extends StatefulWidget {
 
 class BeverageViewState extends State<BeverageView> {
   int _selectedId = 0;
+  bool _isIceButton = true;
 
   void selectId(int id) {
     setState(() {
       _selectedId = id;
+    });
+  }
+
+  void selectTemp(bool isIceButton) {
+    setState(() {
+      _isIceButton = isIceButton;
     });
   }
 
@@ -29,6 +36,7 @@ class BeverageViewState extends State<BeverageView> {
         child: Row(
           children: [
             _buildLeftSection(context, provider.brandList),
+            _buildRightSection(context),
           ],
         ),
       ),
@@ -123,5 +131,64 @@ class BeverageViewState extends State<BeverageView> {
       default:
         return const SizedBox.shrink();
     }
+  }
+
+  Widget _buildRightSection(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.sp),
+          child: _buildButtonSection(context),
+        )
+      ],
+    );
+  }
+
+  Widget _buildButtonSection(BuildContext context) {
+    TextStyle selectedTextStyle =
+        Theme.of(context).textTheme.labelLarge!.copyWith(
+              fontSize: 14.sp,
+              color: Theme.of(context).colorScheme.onPrimary,
+            );
+    TextStyle unselectedTextStyle =
+        Theme.of(context).textTheme.labelLarge!.copyWith(
+              fontSize: 14.sp,
+              color: MaterialTheme.coffee.seed,
+            );
+    ButtonStyle selectedButtonStyle = ButtonStyle(
+      backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+        (Set<WidgetState> states) {
+          if (states.contains(WidgetState.pressed)) {
+            return MaterialTheme.coffee.seed.withOpacity(0.8);
+          }
+          return MaterialTheme.coffee.seed; // Use the component's default.
+        },
+      ),
+    );
+    ButtonStyle unselectedButtonStyle = const ButtonStyle();
+
+    return SizedBox(
+      width: 280.sp,
+      child: Row(
+        children: [
+          OutlinedButton(
+            style: _isIceButton ? selectedButtonStyle : unselectedButtonStyle,
+            onPressed: () => selectTemp(true),
+            child: Text(
+              "ICE",
+              style: _isIceButton ? selectedTextStyle : unselectedTextStyle,
+            ),
+          ),
+          OutlinedButton(
+            style: _isIceButton ? unselectedButtonStyle : selectedButtonStyle,
+            onPressed: () => selectTemp(false),
+            child: Text(
+              "HOT",
+              style: _isIceButton ? unselectedTextStyle : selectedTextStyle,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
