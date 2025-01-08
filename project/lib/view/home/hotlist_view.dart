@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/data/model/hotlist.dart';
 import 'package:project/utils/add_object_postposition.dart';
+import 'package:project/view/home/caffeine_view_modal.dart';
 import 'package:project/view/home/hotlist_view_model.dart';
 import 'package:project/view/setting/user_view_model.dart';
 import 'package:project/widgets/icon_box.dart';
@@ -133,7 +134,14 @@ class HotlistView extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () {},
+        onTap: () => showDialog(
+          context: context,
+          builder: (context) => _buildSelectHotlistDialog(
+            context,
+            hotlist.title,
+            hotlist.caffeine,
+          ),
+        ),
         child: Container(
           width: 153.sp,
           height: 68.sp,
@@ -201,6 +209,48 @@ class HotlistView extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSelectHotlistDialog(
+    BuildContext context,
+    String title,
+    double caffeine,
+  ) {
+    return Dialog(
+      child: Container(
+        height: 120.sp,
+        width: 340.sp,
+        padding: EdgeInsets.all(20.sp),
+        child: Column(
+          children: [
+            SizedBox(
+              width: 300.sp,
+              child: Text(
+                "${addObjectPostposition(title)} 추가하시겠습니까?",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(fontSize: 14.sp),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            SizedBox(
+              width: 300.sp,
+              child: DialogButtonSection(
+                onPressConfirm: () {
+                  Navigator.pop(context);
+                  context.read<CaffeineViewModal>().setTodayCaffeine(caffeine);
+                  // todo: record 추가
+                },
+                onPressCancel: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
