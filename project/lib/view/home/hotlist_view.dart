@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/data/model/hotlist.dart';
+import 'package:project/utils/add_object_postposition.dart';
 import 'package:project/view/home/hotlist_view_model.dart';
 import 'package:project/widgets/icon_box.dart';
 import 'package:project/widgets/line.dart';
@@ -46,9 +47,7 @@ class HotlistView extends StatelessWidget {
         children: items
             .map((item) => HotlistBox(
                   id: item.id,
-                  title: item.title,
-                  detail: item.detail,
-                  caffeine: item.caffeine,
+                  hotlist: item,
                 ))
             .toList(),
       ),
@@ -112,16 +111,12 @@ class HotlistView extends StatelessWidget {
 
 class HotlistBox extends StatelessWidget {
   final int id;
-  final String title;
-  final String detail;
-  final double caffeine;
+  final Hotlist hotlist;
 
   const HotlistBox({
     super.key,
-    this.id = 0,
-    this.title = "",
-    this.detail = "",
-    this.caffeine = 0.0,
+    required this.id,
+    required this.hotlist,
   });
 
   @override
@@ -151,12 +146,18 @@ class HotlistBox extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                title,
+                hotlist.title,
                 style: titleStyle,
               ),
               GestureDetector(
                 // todo: tap 시 삭제 모달 로직 작성
-                onTap: () {},
+                onTap: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) => Dialog(
+                    insetPadding: EdgeInsets.symmetric(vertical: 300.sp),
+                    child: _buildDeleteItemModal(context, hotlist),
+                  ),
+                ),
                 child: Icon(
                   Icons.cancel_outlined,
                   color: Theme.of(context).colorScheme.outline,
@@ -174,7 +175,7 @@ class HotlistBox extends StatelessWidget {
               SizedBox(
                 width: 74.sp,
                 child: Text(
-                  detail,
+                  hotlist.detail,
                   style: contextStyle,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -186,12 +187,73 @@ class HotlistBox extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Text(
-                  "${caffeine}mg",
+                  "${hotlist.caffeine}mg",
                   style: contextStyle,
                 ),
               ),
             ],
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDeleteItemModal(
+    BuildContext context,
+    Hotlist hotlist,
+  ) {
+    return Container(
+      height: 120.sp,
+      width: 340.sp,
+      padding: EdgeInsets.all(20.sp),
+      child: Column(
+        children: [
+          SizedBox(
+            width: 300.sp,
+            child: Text(
+              "${addObjectPostposition(hotlist.title)} 삭제하시겠습니까?",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(fontSize: 14.sp),
+            ),
+          ),
+          SizedBox(height: 20.sp),
+          SizedBox(
+            width: 300.sp,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // 확인 버튼
+                FilledButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    context.watch<HotlistViewModel>().deleteHotList(hotlist);
+                  },
+                  child: Text(
+                    "확인",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontSize: 14.sp,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
+                ),
+                SizedBox(width: 6.sp),
+                // 취소 버튼
+                OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    "취소",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontSize: 14.sp,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
