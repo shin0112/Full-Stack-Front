@@ -26,7 +26,7 @@ class HotlistView extends StatelessWidget {
               // 라인
               const HorizontalLine(width: 310),
               // 하단
-              _buildHotlistBoxList(provider.items),
+              _buildHotlistBoxList(context, provider),
             ],
           ),
         );
@@ -34,7 +34,10 @@ class HotlistView extends StatelessWidget {
     );
   }
 
-  Widget _buildHotlistBoxList(List<Hotlist> items) {
+  Widget _buildHotlistBoxList(
+    BuildContext context,
+    HotlistViewModel provider,
+  ) {
     return Container(
       height: 166.sp,
       padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 12.sp),
@@ -44,10 +47,11 @@ class HotlistView extends StatelessWidget {
         mainAxisSpacing: 10.sp,
         crossAxisCount: 2,
         childAspectRatio: 153 / 68,
-        children: items
-            .map((item) => HotlistBox(
-                  id: item.id,
-                  hotlist: item,
+        children: provider.items
+            .map((item) => _buildHotlistBox(
+                  context,
+                  provider,
+                  item,
                 ))
             .toList(),
       ),
@@ -107,20 +111,12 @@ class HotlistView extends StatelessWidget {
       ),
     );
   }
-}
 
-class HotlistBox extends StatelessWidget {
-  final int id;
-  final Hotlist hotlist;
-
-  const HotlistBox({
-    super.key,
-    required this.id,
-    required this.hotlist,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildHotlistBox(
+    BuildContext context,
+    HotlistViewModel provider,
+    Hotlist hotlist,
+  ) {
     final titleStyle =
         Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 14.sp);
     final contextStyle = Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -155,7 +151,7 @@ class HotlistBox extends StatelessWidget {
                   context: context,
                   builder: (BuildContext context) => Dialog(
                     insetPadding: EdgeInsets.symmetric(vertical: 300.sp),
-                    child: _buildDeleteItemModal(context, hotlist),
+                    child: _buildDeleteItemModal(context, provider, hotlist),
                   ),
                 ),
                 child: Icon(
@@ -200,6 +196,7 @@ class HotlistBox extends StatelessWidget {
 
   Widget _buildDeleteItemModal(
     BuildContext context,
+    HotlistViewModel provider,
     Hotlist hotlist,
   ) {
     return Container(
@@ -228,8 +225,7 @@ class HotlistBox extends StatelessWidget {
                 FilledButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    Navigator.pop(context);
-                    context.watch<HotlistViewModel>().deleteHotList(hotlist);
+                    provider.deleteHotList(hotlist);
                   },
                   child: Text(
                     "확인",
