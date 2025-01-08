@@ -6,6 +6,7 @@ import 'package:project/utils/add_object_postposition.dart';
 import 'package:project/view/home/beverage_view_model.dart';
 import 'package:project/view/home/caffeine_view_modal.dart';
 import 'package:project/widgets/caffeine_box.dart';
+import 'package:project/widgets/section/dialog_button_section.dart';
 import 'package:provider/provider.dart';
 
 class BeverageView extends StatelessWidget {
@@ -210,41 +211,17 @@ class BeverageView extends StatelessWidget {
           SizedBox(height: 20.sp),
           SizedBox(
             width: 300.sp,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                // 확인 버튼
-                FilledButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    context
-                        .read<CaffeineViewModal>()
-                        .setTodayCaffeine(caffeine);
-                  },
-                  child: Text(
-                    "확인",
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          fontSize: 14.sp,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                  ),
-                ),
-                SizedBox(width: 6.sp),
-                // 취소 버튼
-                OutlinedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    "취소",
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          fontSize: 14.sp,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                  ),
-                ),
-              ],
+            child: DialogButtonSection(
+              onPressConfirm: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+                context.read<CaffeineViewModal>().setTodayCaffeine(caffeine);
+              },
+              onPressCancel: () {
+                Navigator.pop(context);
+              },
             ),
-          )
+          ),
         ],
       ),
     );
