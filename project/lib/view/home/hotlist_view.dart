@@ -5,6 +5,7 @@ import 'package:project/utils/add_object_postposition.dart';
 import 'package:project/view/home/hotlist_view_model.dart';
 import 'package:project/widgets/icon_box.dart';
 import 'package:project/widgets/line.dart';
+import 'package:project/widgets/section/dialog_button_section.dart';
 import 'package:provider/provider.dart';
 
 class HotlistView extends StatelessWidget {
@@ -87,9 +88,53 @@ class HotlistView extends StatelessWidget {
                 ),
               ),
             ),
-            onPressed: () {
-              // todo: 즐겨찾기 추가 로직 작성
-            },
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) => Dialog(
+                child: Container(
+                  width: 340.sp,
+                  height: 316.sp,
+                  padding: EdgeInsets.all(20.sp),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                    borderRadius: BorderRadius.circular(28),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 20.sp,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "즐겨찾기 추가",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(fontSize: 14.sp),
+                        ),
+                      ),
+                      SizedBox(height: 20.sp),
+                      _buildDialogTextField("이름"),
+                      SizedBox(height: 20.sp),
+                      _buildDialogTextField("카페인 함유량"),
+                      SizedBox(height: 20.sp),
+                      _buildDialogTextField("설명"),
+                      SizedBox(height: 20.sp),
+                      Container(
+                        width: 300.sp,
+                        height: 40.sp,
+                        alignment: Alignment.centerRight,
+                        child: DialogButtonSection(
+                          onPressConfirm: () {},
+                          onPressCancel: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             icon: Icon(
               Icons.add,
               size: 18.sp,
@@ -109,6 +154,19 @@ class HotlistView extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDialogTextField(String labelText) {
+    return TextField(
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: labelText,
+        suffixIcon: GestureDetector(
+          onTap: () {},
+          child: const Icon(Icons.cancel_outlined),
+        ),
       ),
     );
   }
