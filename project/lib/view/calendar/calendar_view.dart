@@ -36,18 +36,61 @@ class CalendarView extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final record = provider.selectedRecordList[index];
                       return Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: 4.0,
-                        ),
+                        height: 44.sp,
+                        width: 320.sp,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 10.sp, horizontal: 10.sp),
+                        margin: EdgeInsets.only(bottom: 10.sp),
                         decoration: BoxDecoration(
-                          border: Border.all(),
+                          border: Border.all(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant),
                           borderRadius: BorderRadius.circular(12.0),
                         ),
-                        child: ListTile(
-                          onTap: () => print(record), // 기록 출력
-                          title: Text(record.title), // Record 클래스의 필드
-                          subtitle: Text(record.detail ?? ""), // 선택적 필드
+                        child: Row(
+                          children: [
+                            Container(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    record.title,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(fontSize: 14.sp),
+                                  ),
+                                  SizedBox(width: 10.sp),
+                                  Container(
+                                    width: 43.sp,
+                                    height: 24.sp,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Text(
+                                      provider.brandNameMap[record.brandId] ??
+                                          "",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            fontSize: 12.sp,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     },
