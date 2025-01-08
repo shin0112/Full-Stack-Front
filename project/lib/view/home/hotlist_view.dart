@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/data/model/hotlist.dart';
 import 'package:project/utils/add_object_postposition.dart';
 import 'package:project/view/home/hotlist_view_model.dart';
+import 'package:project/view/setting/user_view_model.dart';
 import 'package:project/widgets/icon_box.dart';
 import 'package:project/widgets/line.dart';
 import 'package:project/widgets/section/dialog_button_section.dart';
@@ -281,6 +282,10 @@ class HotlistAddDialogState extends State<HotlistAddDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final int userId = context.read<UserViewModel>().item.length == 1
+        ? context.read<UserViewModel>().item[0].id
+        : 0;
+
     return Dialog(
       child: Container(
         width: 340.sp,
@@ -346,7 +351,12 @@ class HotlistAddDialogState extends State<HotlistAddDialog> {
               height: 40.sp,
               alignment: Alignment.centerRight,
               child: DialogButtonSection(
-                onPressConfirm: () {},
+                onPressConfirm: () {
+                  context
+                      .read<HotlistViewModel>()
+                      .createHotList(userId, title, detail, caffeine);
+                  Navigator.pop(context);
+                },
                 onPressCancel: () {
                   Navigator.pop(context);
                 },
