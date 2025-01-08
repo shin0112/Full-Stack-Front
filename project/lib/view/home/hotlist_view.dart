@@ -90,50 +90,7 @@ class HotlistView extends StatelessWidget {
             ),
             onPressed: () => showDialog(
               context: context,
-              builder: (BuildContext context) => Dialog(
-                child: Container(
-                  width: 340.sp,
-                  height: 316.sp,
-                  padding: EdgeInsets.all(20.sp),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                    borderRadius: BorderRadius.circular(28),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 20.sp,
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "즐겨찾기 추가",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(fontSize: 14.sp),
-                        ),
-                      ),
-                      SizedBox(height: 20.sp),
-                      _buildDialogTextField("이름"),
-                      SizedBox(height: 20.sp),
-                      _buildDialogTextField("카페인 함유량"),
-                      SizedBox(height: 20.sp),
-                      _buildDialogTextField("설명"),
-                      SizedBox(height: 20.sp),
-                      Container(
-                        width: 300.sp,
-                        height: 40.sp,
-                        alignment: Alignment.centerRight,
-                        child: DialogButtonSection(
-                          onPressConfirm: () {},
-                          onPressCancel: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              builder: (BuildContext context) => const HotlistAddDialog(),
             ),
             icon: Icon(
               Icons.add,
@@ -154,19 +111,6 @@ class HotlistView extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildDialogTextField(String labelText) {
-    return TextField(
-      decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        labelText: labelText,
-        suffixIcon: GestureDetector(
-          onTap: () {},
-          child: const Icon(Icons.cancel_outlined),
-        ),
       ),
     );
   }
@@ -318,6 +262,98 @@ class HotlistView extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class HotlistAddDialog extends StatefulWidget {
+  const HotlistAddDialog({super.key});
+
+  @override
+  State<StatefulWidget> createState() => HotlistAddDialogState();
+}
+
+class HotlistAddDialogState extends State<HotlistAddDialog> {
+  String title = "";
+  double caffeine = 0.0;
+  String detail = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Container(
+        width: 340.sp,
+        height: 316.sp,
+        padding: EdgeInsets.all(20.sp),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHigh,
+          borderRadius: BorderRadius.circular(28),
+        ),
+        child: Column(
+          children: [
+            Container(
+              height: 20.sp,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "즐겨찾기 추가",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(fontSize: 14.sp),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            TextField(
+              onChanged: (value) => {title = value},
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: "이름",
+                suffixIcon: GestureDetector(
+                  onTap: () {},
+                  child: const Icon(Icons.cancel_outlined),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            TextField(
+              keyboardType: TextInputType.number,
+              onChanged: (value) => {caffeine = double.parse(value)},
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: "카페인 함유량",
+                suffixIcon: GestureDetector(
+                  onTap: () {},
+                  child: const Icon(Icons.cancel_outlined),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            TextField(
+              onChanged: (value) => {detail = value},
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: "설명",
+                suffixIcon: GestureDetector(
+                  onTap: () {},
+                  child: const Icon(Icons.cancel_outlined),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            Container(
+              width: 300.sp,
+              height: 40.sp,
+              alignment: Alignment.centerRight,
+              child: DialogButtonSection(
+                onPressConfirm: () {},
+                onPressCancel: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
