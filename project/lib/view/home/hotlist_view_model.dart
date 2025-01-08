@@ -16,4 +16,9 @@ class HotlistViewModel with ChangeNotifier {
     _items = await _hotlistRepository.getItems();
     notifyListeners();
   }
+
+  void deleteHotList(Hotlist hotlist) {
+    _items.remove(hotlist);
+    notifyListeners();
+  }
 }
