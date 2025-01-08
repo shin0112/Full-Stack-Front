@@ -96,6 +96,13 @@ class CalendarView extends StatelessWidget {
     List<Record> selectedRecordList,
     Map<int, String> brandNameMap,
   ) {
+    TextStyle titleTextStyle =
+        Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14.sp);
+    TextStyle brandTextStyle = Theme.of(context).textTheme.bodySmall!.copyWith(
+          fontSize: 12.sp,
+          color: Theme.of(context).colorScheme.primary,
+        );
+
     return ListView.builder(
       itemCount: selectedRecordList.length,
       itemBuilder: (context, index) {
@@ -107,8 +114,7 @@ class CalendarView extends StatelessWidget {
           margin: EdgeInsets.only(bottom: 10.sp),
           decoration: BoxDecoration(
             border: Border.all(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant),
             borderRadius: BorderRadius.circular(12.0),
           ),
           child: Row(
@@ -116,32 +122,25 @@ class CalendarView extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                    record.title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontSize: 14.sp),
-                  ),
+                  Text(record.title, style: titleTextStyle),
                   SizedBox(width: 10.sp),
-                  Container(
-                    width: 43.sp,
-                    height: 24.sp,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text(
-                      brandNameMap[record.brandId] ?? "",
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontSize: 12.sp,
-                            color: Theme.of(context).colorScheme.primary,
+                  record.brandId == null
+                      ? const SizedBox.shrink()
+                      : Container(
+                          width: 43.sp,
+                          height: 24.sp,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            borderRadius: BorderRadius.circular(6),
                           ),
-                    ),
-                  ),
+                          child: Text(
+                            brandNameMap[record.brandId] ?? "",
+                            style: brandTextStyle,
+                          ),
+                        ),
                 ],
               ),
               CaffeineBox(caffeine: record.caffeine)
