@@ -1,13 +1,16 @@
 import 'dart:collection';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:project/data/model/record.dart';
+import 'package:project/data/repository/brand_repository.dart';
 import 'package:project/data/repository/record_repository.dart';
 import 'package:project/utils/get_hash_code.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarViewModel with ChangeNotifier {
   final RecordRepository _recordRepository = RecordRepository();
+  final BrandRepository _brandRepository = BrandRepository();
 
   DateTime get focusedDay => _focusedDay;
   DateTime _focusedDay = DateTime.now();
@@ -26,6 +29,9 @@ class CalendarViewModel with ChangeNotifier {
 
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+
+  Map<int, String> get brandNameMap => _brandNameMap;
+  Map<int, String> _brandNameMap = {};
 
   final recordList = LinkedHashMap<DateTime, List<Record>>(
     equals: isSameDay,
@@ -67,7 +73,8 @@ class CalendarViewModel with ChangeNotifier {
 
   void _fetchData() async {
     _selectedRecordList = await _recordRepository.getRecordList();
-    print(_selectedRecordList);
+    _brandNameMap = await _brandRepository.getBrandIdNameMap();
+    log(_brandNameMap.toString());
     notifyListeners();
   }
 }

@@ -13,21 +13,19 @@ class BrandRepository {
     return {for (int i = 0; i < category.length; i++) category[i]: data[i]};
   }
 
-  Future<String> getBrandNameById(int id) async {
+  Future<Map<int, String>> getBrandIdNameMap() async {
     Map<String, List<Brand>> categoryList = await getBrandList();
 
-    late String name;
+    Map<int, String> brandIdNameMap = {};
 
-    categoryList.entries.map((entry) {
+    for (var entry in categoryList.entries) {
       final List<Brand> brandList = entry.value;
 
-      for (int i = 0; i < brandList.length; i++) {
-        if (brandList[i].id == id) {
-          name = brandList[i].name;
-        }
+      for (var brand in brandList) {
+        brandIdNameMap[brand.id] = brand.name;
       }
-    });
+    }
 
-    return Future<String>.value(name);
+    return brandIdNameMap;
   }
 }
