@@ -125,72 +125,80 @@ class HotlistView extends StatelessWidget {
           color: Theme.of(context).colorScheme.onSurfaceVariant,
         );
 
-    return Container(
-      width: 153.sp,
-      height: 68.sp,
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerLow,
-        border: Border.all(
-          width: 1,
-          color: Theme.of(context).colorScheme.surfaceContainerHigh,
-        ),
+    return Material(
+      color: Theme.of(context).colorScheme.surfaceContainerLow,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
         borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        onTap: () {},
+        child: Container(
+          width: 153.sp,
+          height: 68.sp,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 1,
+              color: Theme.of(context).colorScheme.surfaceContainerHigh,
+            ),
+          ),
+          child: Column(
             children: [
-              Text(
-                hotlist.title,
-                style: titleStyle,
-              ),
-              GestureDetector(
-                // todo: tap 시 삭제 모달 로직 작성
-                onTap: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => Dialog(
-                    insetPadding: EdgeInsets.symmetric(vertical: 300.sp),
-                    child: _buildDeleteItemModal(context, provider, hotlist),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    hotlist.title,
+                    style: titleStyle,
                   ),
-                ),
-                child: Icon(
-                  Icons.cancel_outlined,
-                  color: Theme.of(context).colorScheme.outline,
-                ),
+                  GestureDetector(
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) => Dialog(
+                        insetPadding: EdgeInsets.symmetric(vertical: 300.sp),
+                        child:
+                            _buildDeleteItemModal(context, provider, hotlist),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.cancel_outlined,
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-          SizedBox(
-            height: 4.sp,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
               SizedBox(
-                width: 74.sp,
-                child: Text(
-                  hotlist.detail,
-                  style: contextStyle,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                height: 4.sp,
               ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 4.sp, horizontal: 2.sp),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Text(
-                  "${hotlist.caffeine}mg",
-                  style: contextStyle,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 74.sp,
+                    child: Text(
+                      hotlist.detail,
+                      style: contextStyle,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 4.sp, horizontal: 2.sp),
+                    decoration: BoxDecoration(
+                      color:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text(
+                      "${hotlist.caffeine}mg",
+                      style: contextStyle,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
