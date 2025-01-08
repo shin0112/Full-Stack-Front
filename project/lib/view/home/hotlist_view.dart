@@ -159,7 +159,7 @@ class HotlistView extends StatelessWidget {
                       builder: (BuildContext context) => Dialog(
                         insetPadding: EdgeInsets.symmetric(vertical: 300.sp),
                         child:
-                            _buildDeleteItemModal(context, provider, hotlist),
+                            _buildDeleteItemDialog(context, provider, hotlist),
                       ),
                     ),
                     child: Icon(
@@ -206,7 +206,7 @@ class HotlistView extends StatelessWidget {
     );
   }
 
-  Widget _buildDeleteItemModal(
+  Widget _buildDeleteItemDialog(
     BuildContext context,
     HotlistViewModel provider,
     Hotlist hotlist,
