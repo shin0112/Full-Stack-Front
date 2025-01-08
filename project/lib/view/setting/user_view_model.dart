@@ -16,4 +16,17 @@ class UserViewModel with ChangeNotifier {
     _item = await _userRepository.fetchData();
     notifyListeners();
   }
+
+  void updateData(
+    String name,
+    int age,
+    double height,
+    double weight,
+  ) {
+    _item[0].name = name;
+    _item[0].age = age;
+    _item[0].height = height;
+    _item[0].weight = weight;
+    notifyListeners();
+  }
 }

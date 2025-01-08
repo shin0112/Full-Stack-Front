@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/data/model/user.dart';
 import 'package:project/view/setting/user_view_model.dart';
 import 'package:project/widgets/line.dart';
+import 'package:project/widgets/section/dialog_button_section.dart';
 import 'package:provider/provider.dart';
 
 class UserView extends StatelessWidget {
@@ -52,7 +53,10 @@ class UserView extends StatelessWidget {
             width: 40.sp,
             height: 40.sp,
             child: FloatingActionButton.small(
-              onPressed: () {},
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => const UserUpdateDialog(),
+              ),
               backgroundColor:
                   Theme.of(context).colorScheme.surfaceContainerHigh,
               child: Icon(
@@ -149,6 +153,119 @@ class UsernameView extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class UserUpdateDialog extends StatefulWidget {
+  const UserUpdateDialog({super.key});
+
+  @override
+  State<StatefulWidget> createState() => UserUpdateDialogState();
+}
+
+class UserUpdateDialogState extends State<UserUpdateDialog> {
+  @override
+  Widget build(BuildContext context) {
+    final User user = context.read<UserViewModel>().item[0];
+    String name = user.name ?? "";
+    int age = user.age ?? 20;
+    double weight = user.weight ?? 168.0;
+    double height = user.height ?? 62.7;
+
+    return Dialog(
+      child: Container(
+        width: 340.sp,
+        height: 388.sp,
+        padding: EdgeInsets.all(20.sp),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHigh,
+          borderRadius: BorderRadius.circular(28),
+        ),
+        child: Column(
+          children: [
+            Container(
+              height: 20.sp,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "개인정보 수정",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(fontSize: 14.sp),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            TextField(
+              onChanged: (value) => {name = value},
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: "이름",
+                suffixIcon: GestureDetector(
+                  onTap: () {},
+                  child: const Icon(Icons.cancel_outlined),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            TextField(
+              keyboardType: TextInputType.number,
+              onChanged: (value) => {age = int.parse(value)},
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: "나이",
+                suffixIcon: GestureDetector(
+                  onTap: () {},
+                  child: const Icon(Icons.cancel_outlined),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            TextField(
+              keyboardType: TextInputType.number,
+              onChanged: (value) => {height = double.parse(value)},
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: "키 (cm)",
+                suffixIcon: GestureDetector(
+                  onTap: () {},
+                  child: const Icon(Icons.cancel_outlined),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            TextField(
+              keyboardType: TextInputType.number,
+              onChanged: (value) => {weight = double.parse(value)},
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: "몸무게 (kg)",
+                suffixIcon: GestureDetector(
+                  onTap: () {},
+                  child: const Icon(Icons.cancel_outlined),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            Container(
+              width: 300.sp,
+              height: 40.sp,
+              alignment: Alignment.centerRight,
+              child: DialogButtonSection(
+                onPressConfirm: () {
+                  context
+                      .read<UserViewModel>()
+                      .updateData(name, age, height, weight);
+                  Navigator.pop(context);
+                },
+                onPressCancel: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
