@@ -95,9 +95,10 @@ class HotlistView extends StatelessWidget {
               size: 18.sp,
               color: Theme.of(context).colorScheme.primary,
             ),
-            label: SizedBox(
+            label: Container(
               height: 22.sp,
               width: 28.sp,
+              alignment: Alignment.center,
               child: Text(
                 "추가",
                 style: Theme.of(context).textTheme.labelLarge!.copyWith(
