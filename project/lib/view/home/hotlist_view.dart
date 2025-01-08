@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/data/model/hotlist.dart';
+import 'package:project/utils/add_object_postposition.dart';
+import 'package:project/view/home/caffeine_view_modal.dart';
 import 'package:project/view/home/hotlist_view_model.dart';
+import 'package:project/view/setting/user_view_model.dart';
 import 'package:project/widgets/icon_box.dart';
 import 'package:project/widgets/line.dart';
+import 'package:project/widgets/section/dialog_button_section.dart';
 import 'package:provider/provider.dart';
 
 class HotlistView extends StatelessWidget {
@@ -25,7 +29,7 @@ class HotlistView extends StatelessWidget {
               // 라인
               const HorizontalLine(width: 310),
               // 하단
-              _buildHotlistBoxList(provider.items),
+              _buildHotlistBoxList(context, provider),
             ],
           ),
         );
@@ -33,7 +37,10 @@ class HotlistView extends StatelessWidget {
     );
   }
 
-  Widget _buildHotlistBoxList(List<Hotlist> items) {
+  Widget _buildHotlistBoxList(
+    BuildContext context,
+    HotlistViewModel provider,
+  ) {
     return Container(
       height: 166.sp,
       padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 12.sp),
@@ -43,12 +50,11 @@ class HotlistView extends StatelessWidget {
         mainAxisSpacing: 10.sp,
         crossAxisCount: 2,
         childAspectRatio: 153 / 68,
-        children: items
-            .map((item) => HotlistBox(
-                  id: item.id,
-                  title: item.title,
-                  detail: item.detail,
-                  caffeine: item.caffeine,
+        children: provider.items
+            .map((item) => _buildHotlistBox(
+                  context,
+                  provider,
+                  item,
                 ))
             .toList(),
       ),
@@ -84,17 +90,19 @@ class HotlistView extends StatelessWidget {
                 ),
               ),
             ),
-            onPressed: () {
-              // todo: 즐겨찾기 추가 로직 작성
-            },
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) => const HotlistAddDialog(),
+            ),
             icon: Icon(
               Icons.add,
               size: 18.sp,
               color: Theme.of(context).colorScheme.primary,
             ),
-            label: SizedBox(
+            label: Container(
               height: 22.sp,
               width: 28.sp,
+              alignment: Alignment.center,
               child: Text(
                 "추가",
                 style: Theme.of(context).textTheme.labelLarge!.copyWith(
@@ -108,24 +116,12 @@ class HotlistView extends StatelessWidget {
       ),
     );
   }
-}
 
-class HotlistBox extends StatelessWidget {
-  final int id;
-  final String title;
-  final String detail;
-  final double caffeine;
-
-  const HotlistBox({
-    super.key,
-    this.id = 0,
-    this.title = "",
-    this.detail = "",
-    this.caffeine = 0.0,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildHotlistBox(
+    BuildContext context,
+    HotlistViewModel provider,
+    Hotlist hotlist,
+  ) {
     final titleStyle =
         Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 14.sp);
     final contextStyle = Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -133,66 +129,291 @@ class HotlistBox extends StatelessWidget {
           color: Theme.of(context).colorScheme.onSurfaceVariant,
         );
 
-    return Container(
-      width: 153.sp,
-      height: 68.sp,
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerLow,
-        border: Border.all(
-          width: 1,
-          color: Theme.of(context).colorScheme.surfaceContainerHigh,
-        ),
+    return Material(
+      color: Theme.of(context).colorScheme.surfaceContainerLow,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
         borderRadius: BorderRadius.circular(12),
+        onTap: () => showDialog(
+          context: context,
+          builder: (context) => _buildSelectHotlistDialog(
+            context,
+            hotlist.title,
+            hotlist.caffeine,
+          ),
+        ),
+        child: Container(
+          width: 153.sp,
+          height: 68.sp,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 1,
+              color: Theme.of(context).colorScheme.surfaceContainerHigh,
+            ),
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    hotlist.title,
+                    style: titleStyle,
+                  ),
+                  GestureDetector(
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) => Dialog(
+                        insetPadding: EdgeInsets.symmetric(vertical: 300.sp),
+                        child:
+                            _buildDeleteItemDialog(context, provider, hotlist),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.cancel_outlined,
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 4.sp,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 74.sp,
+                    child: Text(
+                      hotlist.detail,
+                      style: contextStyle,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 4.sp, horizontal: 2.sp),
+                    decoration: BoxDecoration(
+                      color:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text(
+                      "${hotlist.caffeine}mg",
+                      style: contextStyle,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
+    );
+  }
+
+  Widget _buildSelectHotlistDialog(
+    BuildContext context,
+    String title,
+    double caffeine,
+  ) {
+    return Dialog(
+      child: Container(
+        height: 120.sp,
+        width: 340.sp,
+        padding: EdgeInsets.all(20.sp),
+        child: Column(
+          children: [
+            SizedBox(
+              width: 300.sp,
+              child: Text(
+                "${addObjectPostposition(title)} 추가하시겠습니까?",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(fontSize: 14.sp),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            SizedBox(
+              width: 300.sp,
+              child: DialogButtonSection(
+                onPressConfirm: () {
+                  Navigator.pop(context);
+                  context.read<CaffeineViewModal>().setTodayCaffeine(caffeine);
+                  // todo: record 추가
+                },
+                onPressCancel: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDeleteItemDialog(
+    BuildContext context,
+    HotlistViewModel provider,
+    Hotlist hotlist,
+  ) {
+    return Container(
+      height: 120.sp,
+      width: 340.sp,
+      padding: EdgeInsets.all(20.sp),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                title,
-                style: titleStyle,
-              ),
-              GestureDetector(
-                // todo: tap 시 삭제 모달 로직 작성
-                onTap: () {},
-                child: Icon(
-                  Icons.cancel_outlined,
-                  color: Theme.of(context).colorScheme.outline,
-                ),
-              ),
-            ],
-          ),
           SizedBox(
-            height: 4.sp,
+            width: 300.sp,
+            child: Text(
+              "${addObjectPostposition(hotlist.title)} 삭제하시겠습니까?",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(fontSize: 14.sp),
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 74.sp,
-                child: Text(
-                  detail,
-                  style: contextStyle,
-                  overflow: TextOverflow.ellipsis,
+          SizedBox(height: 20.sp),
+          SizedBox(
+            width: 300.sp,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // 확인 버튼
+                FilledButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    provider.deleteHotList(hotlist);
+                  },
+                  child: Text(
+                    "확인",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontSize: 14.sp,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 4.sp, horizontal: 2.sp),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(5),
+                SizedBox(width: 6.sp),
+                // 취소 버튼
+                OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    "취소",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontSize: 14.sp,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
                 ),
-                child: Text(
-                  "${caffeine}mg",
-                  style: contextStyle,
-                ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          )
         ],
+      ),
+    );
+  }
+}
+
+class HotlistAddDialog extends StatefulWidget {
+  const HotlistAddDialog({super.key});
+
+  @override
+  State<StatefulWidget> createState() => HotlistAddDialogState();
+}
+
+class HotlistAddDialogState extends State<HotlistAddDialog> {
+  String title = "";
+  double caffeine = 0.0;
+  String detail = "";
+
+  @override
+  Widget build(BuildContext context) {
+    final int userId = context.read<UserViewModel>().item.length == 1
+        ? context.read<UserViewModel>().item[0].id
+        : 0;
+
+    return Dialog(
+      child: Container(
+        width: 340.sp,
+        height: 316.sp,
+        padding: EdgeInsets.all(20.sp),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHigh,
+          borderRadius: BorderRadius.circular(28),
+        ),
+        child: Column(
+          children: [
+            Container(
+              height: 20.sp,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "즐겨찾기 추가",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(fontSize: 14.sp),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            TextField(
+              onChanged: (value) => {title = value},
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: "이름",
+                suffixIcon: GestureDetector(
+                  onTap: () {},
+                  child: const Icon(Icons.cancel_outlined),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            TextField(
+              keyboardType: TextInputType.number,
+              onChanged: (value) => {caffeine = double.parse(value)},
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: "카페인 함유량",
+                suffixIcon: GestureDetector(
+                  onTap: () {},
+                  child: const Icon(Icons.cancel_outlined),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            TextField(
+              onChanged: (value) => {detail = value},
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: "설명",
+                suffixIcon: GestureDetector(
+                  onTap: () {},
+                  child: const Icon(Icons.cancel_outlined),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.sp),
+            Container(
+              width: 300.sp,
+              height: 40.sp,
+              alignment: Alignment.centerRight,
+              child: DialogButtonSection(
+                onPressConfirm: () {
+                  context
+                      .read<HotlistViewModel>()
+                      .createHotList(userId, title, detail, caffeine);
+                  Navigator.pop(context);
+                },
+                onPressCancel: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
