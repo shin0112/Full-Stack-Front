@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
+import 'package:project/view/calendar/calendar_page.dart';
+import 'package:project/view/calendar/calendar_view_model.dart';
 import 'package:project/view/home/beverage_view_model.dart';
 import 'package:project/view/home/caffeine_view_modal.dart';
 import 'package:project/view/setting/theme_view_model.dart';
@@ -23,6 +25,7 @@ void main() => runApp(MultiProvider(
         ChangeNotifierProvider(create: (context) => PostViewModel()),
         ChangeNotifierProvider(create: (context) => UserViewModel()),
         ChangeNotifierProvider(create: (context) => BeverageViewModel()),
+        ChangeNotifierProvider(create: (context) => CalendarViewModel()),
       ],
       child: const MyApp(),
     ));
@@ -78,8 +81,8 @@ class MainWidget extends State<MyStatefulWidget> {
   ];
 
   final List<Widget> _widgetOptions = const <Widget>[
-    HomeWidget(),
-    CalendarWidget(),
+    HomePage(),
+    CalendarPage(),
     CommunityPage(),
     SettingPage(),
   ];
@@ -171,101 +174,3 @@ class MainWidget extends State<MyStatefulWidget> {
     );
   }
 }
-
-class Counter extends StatefulWidget {
-  const Counter({
-    super.key,
-  });
-
-  @override
-  State<Counter> createState() => CounterState();
-}
-
-class CounterState extends State<Counter> {
-  int _counter = 0;
-  bool _boolStatus = false;
-  Color _statusColor = Colors.black;
-
-  void _buttnPressed() {
-    setState(() {
-      if (_boolStatus == true) {
-        _boolStatus = false;
-        _counter--;
-        _statusColor = Colors.black;
-      } else {
-        _boolStatus = true;
-        _counter++;
-        _statusColor = Colors.red;
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          icon: const Icon(Icons.star),
-          color: _statusColor,
-          onPressed: _buttnPressed,
-        ),
-        Text('$_counter'),
-      ],
-    );
-  }
-}
-
-// hello widget : volume-E-chapter-02.dart
-
-class CalendarWidget extends StatelessWidget {
-  const CalendarWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: TextButton(
-        style: TextButton.styleFrom(
-          foregroundColor: Colors.black,
-          textStyle: const TextStyle(
-            fontSize: 32,
-          ),
-        ),
-        onPressed: () {
-          showAlertDialog(context);
-        },
-        child: const Text('Hello, Press Here!'),
-      ),
-    );
-  }
-}
-
-void showAlertDialog(BuildContext context) async {
-  String result = await showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('AlertDialog Sample'),
-        content: const Text("Select button you want"),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () {
-              Navigator.pop(context, "OK");
-            },
-          ),
-          TextButton(
-            child: const Text('Cancel'),
-            onPressed: () {
-              Navigator.pop(context, "Cancel");
-            },
-          ),
-        ],
-      );
-    },
-  );
-
-  print("showAlertDialog(): $result");
-}
-
-// home widget : volume-E-chapter-03-code-22.dart

@@ -12,4 +12,20 @@ class BrandRepository {
 
     return {for (int i = 0; i < category.length; i++) category[i]: data[i]};
   }
+
+  Future<Map<int, String>> getBrandIdNameMap() async {
+    Map<String, List<Brand>> categoryList = await getBrandList();
+
+    Map<int, String> brandIdNameMap = {};
+
+    for (var entry in categoryList.entries) {
+      final List<Brand> brandList = entry.value;
+
+      for (var brand in brandList) {
+        brandIdNameMap[brand.id] = brand.name;
+      }
+    }
+
+    return brandIdNameMap;
+  }
 }
