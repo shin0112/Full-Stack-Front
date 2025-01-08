@@ -5,6 +5,7 @@ import 'package:project/data/model/brand.dart';
 import 'package:project/utils/add_object_postposition.dart';
 import 'package:project/view/home/beverage_view_model.dart';
 import 'package:project/view/home/caffeine_view_modal.dart';
+import 'package:project/widgets/caffeine_box.dart';
 import 'package:provider/provider.dart';
 
 class BeverageView extends StatelessWidget {
@@ -167,30 +168,7 @@ class BeverageView extends StatelessWidget {
                                   .bodyMedium
                                   ?.copyWith(fontSize: 14.sp),
                             ),
-                            Container(
-                              height: 24.sp,
-                              width: 55.sp,
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 2.sp,
-                                vertical: 4.sp,
-                              ),
-                              decoration: ShapeDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .surfaceContainerHighest,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
-                              child: Text(
-                                "${item.caffeine}mg",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelMedium
-                                    ?.copyWith(fontSize: 12.sp),
-                              ),
-                            ),
+                            CaffeineBox(caffeine: item.caffeine),
                           ],
                         ),
                       ),

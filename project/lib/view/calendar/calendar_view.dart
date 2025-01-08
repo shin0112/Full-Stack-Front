@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/theme.dart';
 import 'package:project/view/calendar/calendar_view_model.dart';
+import 'package:project/widgets/caffeine_box.dart';
 import 'package:project/widgets/line.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -43,53 +44,51 @@ class CalendarView extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: 10.sp),
                         decoration: BoxDecoration(
                           border: Border.all(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant),
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
                           borderRadius: BorderRadius.circular(12.0),
                         ),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    record.title,
+                            Row(
+                              children: [
+                                Text(
+                                  record.title,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(fontSize: 14.sp),
+                                ),
+                                SizedBox(width: 10.sp),
+                                Container(
+                                  width: 43.sp,
+                                  height: 24.sp,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Text(
+                                    provider.brandNameMap[record.brandId] ?? "",
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(fontSize: 14.sp),
+                                        .bodySmall
+                                        ?.copyWith(
+                                          fontSize: 12.sp,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                        ),
                                   ),
-                                  SizedBox(width: 10.sp),
-                                  Container(
-                                    width: 43.sp,
-                                    height: 24.sp,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                      ),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Text(
-                                      provider.brandNameMap[record.brandId] ??
-                                          "",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                            fontSize: 12.sp,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                          ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
+                            CaffeineBox(caffeine: record.caffeine)
                           ],
                         ),
                       );
