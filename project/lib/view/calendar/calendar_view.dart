@@ -25,76 +25,18 @@ class CalendarView extends StatelessWidget {
           HorizontalLine(width: 320.sp),
           SizedBox(height: 10.sp),
           Expanded(
-            child: provider.selectedRecordList.isEmpty
-                ? Center(
-                    child: Text(
-                      "기록이 없습니다.",
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  )
-                : ListView.builder(
-                    itemCount: provider.selectedRecordList.length,
-                    itemBuilder: (context, index) {
-                      final record = provider.selectedRecordList[index];
-                      return Container(
-                        height: 44.sp,
-                        width: 320.sp,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 10.sp, horizontal: 10.sp),
-                        margin: EdgeInsets.only(bottom: 10.sp),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  record.title,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(fontSize: 14.sp),
-                                ),
-                                SizedBox(width: 10.sp),
-                                Container(
-                                  width: 43.sp,
-                                  height: 24.sp,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: Text(
-                                    provider.brandNameMap[record.brandId] ?? "",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                          fontSize: 12.sp,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                        ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            CaffeineBox(caffeine: record.caffeine)
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-          ),
+              child: provider.selectedRecordList.isEmpty
+                  ? Center(
+                      child: Text(
+                        "기록이 없습니다.",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    )
+                  : _buildRecordList(
+                      context,
+                      provider.selectedRecordList,
+                      provider.brandNameMap,
+                    )),
         ],
       );
     });
@@ -146,6 +88,67 @@ class CalendarView extends StatelessWidget {
               ?.copyWith(fontSize: 16.sp),
         ),
       ],
+    );
+  }
+
+  Widget _buildRecordList(
+    BuildContext context,
+    List<Record> selectedRecordList,
+    Map<int, String> brandNameMap,
+  ) {
+    return ListView.builder(
+      itemCount: selectedRecordList.length,
+      itemBuilder: (context, index) {
+        final record = selectedRecordList[index];
+        return Container(
+          height: 44.sp,
+          width: 320.sp,
+          padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 10.sp),
+          margin: EdgeInsets.only(bottom: 10.sp),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    record.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontSize: 14.sp),
+                  ),
+                  SizedBox(width: 10.sp),
+                  Container(
+                    width: 43.sp,
+                    height: 24.sp,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      brandNameMap[record.brandId] ?? "",
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontSize: 12.sp,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+              CaffeineBox(caffeine: record.caffeine)
+            ],
+          ),
+        );
+      },
     );
   }
 }
