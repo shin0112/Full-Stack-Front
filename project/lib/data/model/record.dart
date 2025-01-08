@@ -3,6 +3,7 @@ import 'dart:convert';
 class Record {
   int id;
   int userId;
+  int brandId;
   double caffeine;
   String title;
   String detail;
@@ -13,6 +14,7 @@ class Record {
     required this.userId,
     required this.caffeine,
     required this.title,
+    required this.brandId,
     required this.detail,
     required this.createdAt,
   });
@@ -21,6 +23,7 @@ class Record {
     return Record(
       id: json["id"] as int,
       userId: json["userId"] as int,
+      brandId: json["brandId"] as int,
       caffeine: json["caffeine"] as double,
       title: json["title"] as String,
       detail: json["detail"] as String,
@@ -32,6 +35,7 @@ class Record {
     return {
       'id': id,
       'userId': userId,
+      'brandId': brandId,
       'caffeine': caffeine,
       'title': title,
       'detail': detail,
