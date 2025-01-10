@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -31,7 +32,10 @@ class CaffeineViewModal with ChangeNotifier {
     final midnight = DateTime(now.year, now.month, now.day + 1);
     final durationUntilMidnight = midnight.difference(now);
 
+    log("자정까지 시간: ${durationUntilMidnight.toString()}");
+
     _midnightTimer = Timer(durationUntilMidnight, () {
+      log("타이머 리셋");
       final newDate = DateFormat("yyyy년 MM월 dd일").format(DateTime.now());
 
       if (newDate != _date) {
