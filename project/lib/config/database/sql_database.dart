@@ -1,14 +1,13 @@
+import 'dart:developer';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SqlDatabase {
   static final SqlDatabase instance = SqlDatabase._instance();
-
   Database? _database;
 
-  SqlDatabase._instance() {
-    _initDatabase();
-  }
+  SqlDatabase._instance();
 
   factory SqlDatabase() {
     return instance;
@@ -31,26 +30,29 @@ class SqlDatabase {
   }
 
   void _databaseCreate(Database db, int version) async {
-    // Create Hotlist table
-    await db.execute('''
-    CREATE TABLE hotlist (
-      id INTEGER AUTOINCREMENT NOT NULL PRIMARY KEY,
-      name TEXT NOT NULL,
-      detail TEXT NOT NULL,
-      caffeine REAL NOT NULL
-    );
-  ''');
+    try {
+      await db.execute('''
+      CREATE TABLE hotlist (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        detail TEXT NOT NULL,
+        caffeine REAL NOT NULL
+      )
+    ''');
 
-    // Create Record table
-    db.execute('''
-    CREATE TABLE record (
-      id INTEGER AUTOINCREMENT NOT NULL PRIMARY KEY,
-      brandId INTEGER,
-      caffeine REAL NOT NULL,
-      title TEXT NOT NULL,
-      detail TEXT NOT NULL,
-      createdAt TEXT NOT NULL
-    );
-  ''');
+      await db.execute('''
+      CREATE TABLE record (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        brandId INTEGER,
+        caffeine REAL NOT NULL,
+        title TEXT NOT NULL,
+        detail TEXT NOT NULL,
+        createdAt TEXT NOT NULL
+      )
+    ''');
+    } catch (e) {
+      log("Database creation error: $e");
+      rethrow;
+    }
   }
 }
