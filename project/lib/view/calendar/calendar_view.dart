@@ -20,7 +20,7 @@ class CalendarView extends StatelessWidget {
           SizedBox(height: 10.sp),
           HorizontalLine(width: 320.sp),
           SizedBox(height: 10.sp),
-          _buildDateSection(context, provider.selectedDay),
+          _buildDateSection(context, provider.selectedDay!),
           SizedBox(height: 10.sp),
           HorizontalLine(width: 320.sp),
           SizedBox(height: 10.sp),

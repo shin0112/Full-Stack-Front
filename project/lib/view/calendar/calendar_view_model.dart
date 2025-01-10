@@ -15,8 +15,8 @@ class CalendarViewModel with ChangeNotifier {
   DateTime get focusedDay => _focusedDay;
   DateTime _focusedDay = DateTime.now();
 
-  DateTime get selectedDay => _selectedDay;
-  DateTime _selectedDay = DateTime.now();
+  DateTime? get selectedDay => _selectedDay;
+  DateTime? _selectedDay = DateTime.now();
 
   CalendarFormat get calendarFormat => _calendarFormat;
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -38,22 +38,45 @@ class CalendarViewModel with ChangeNotifier {
     hashCode: getHashCode,
   );
 
-  // int getHashCode(DateTime key) {
-  //   return key.day * 1000000 + key.month * 10000 + key.year;
-  // }
-
   List<Record> getRecordForDay(DateTime day) {
-    // Implementation example
-    return recordList[day] ?? [];
+    _selectedRecordList = recordList[day] ?? [];
+    return _selectedRecordList;
+  }
+
+  List<Record> getRecordListForRange(DateTime start, DateTime end) {
+    final days = _daysInRange(start, end);
+    return [
+      for (final day in days) ...getRecordForDay(day),
+    ];
   }
 
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(_selectedDay, selectedDay)) {
       _selectedDay = selectedDay;
       _focusedDay = focusedDay;
+      _rangeStart = null;
+      _rangeEnd = null;
+      _rangeSelectionMode = RangeSelectionMode.toggledOff;
     }
 
-    _selectedRecordList = getRecordForDay(selectedDay);
+    getRecordForDay(selectedDay);
+    notifyListeners();
+  }
+
+  void onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
+    _selectedDay = null;
+    _focusedDay = focusedDay;
+    _rangeStart = start;
+    _rangeEnd = end;
+    _rangeSelectionMode = RangeSelectionMode.toggledOn;
+
+    if (start != null && end != null) {
+      _selectedRecordList = getRecordListForRange(start, end);
+    } else if (start != null) {
+      _selectedRecordList = getRecordForDay(start);
+    } else if (end != null) {
+      _selectedRecordList = getRecordForDay(end);
+    }
     notifyListeners();
   }
 
@@ -69,12 +92,31 @@ class CalendarViewModel with ChangeNotifier {
 
   CalendarViewModel() {
     _fetchData();
+    getRecordForDay(_selectedDay!);
   }
 
   void _fetchData() async {
-    _selectedRecordList = await _recordRepository.getRecordList();
+    final list = await _recordRepository.getRecordList();
     _brandNameMap = await _brandRepository.getBrandIdNameMap();
     log(_brandNameMap.toString());
+
+    for (final record in list) {
+      final key = record.createdAt;
+      if (recordList.containsKey(key)) {
+        recordList[key]!.add(record);
+      } else {
+        recordList[key] = [record];
+      }
+    }
+
     notifyListeners();
+  }
+
+  List<DateTime> _daysInRange(DateTime first, DateTime last) {
+    final dayCount = last.difference(first).inDays + 1;
+    return List.generate(
+      dayCount,
+      (index) => DateTime.utc(first.year, first.month, first.day + index),
+    );
   }
 }
