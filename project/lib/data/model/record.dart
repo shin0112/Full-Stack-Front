@@ -21,7 +21,7 @@ class Record {
       'caffeine': caffeine,
       'title': title,
       'detail': detail,
-      'createdAt': createdAt,
+      'createdAt': createdAt.toString(),
     };
 
     if (id != null) {
