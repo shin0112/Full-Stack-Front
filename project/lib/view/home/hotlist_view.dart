@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/data/model/hotlist.dart';
 import 'package:project/utils/add_object_postposition.dart';
+import 'package:project/view/calendar/calendar_view_model.dart';
 import 'package:project/view/home/caffeine_view_modal.dart';
 import 'package:project/view/home/hotlist_view_model.dart';
 import 'package:project/view/setting/user_view_model.dart';
@@ -138,8 +139,7 @@ class HotlistView extends StatelessWidget {
           context: context,
           builder: (context) => _buildSelectHotlistDialog(
             context,
-            hotlist.name,
-            hotlist.caffeine,
+            hotlist,
           ),
         ),
         child: Container(
@@ -216,8 +216,7 @@ class HotlistView extends StatelessWidget {
 
   Widget _buildSelectHotlistDialog(
     BuildContext context,
-    String name,
-    double caffeine,
+    Hotlist hotlist,
   ) {
     return Dialog(
       child: Container(
@@ -229,7 +228,7 @@ class HotlistView extends StatelessWidget {
             SizedBox(
               width: 300.sp,
               child: Text(
-                "${addObjectPostposition(name)} 추가하시겠습니까?",
+                "${addObjectPostposition(hotlist.name)} 추가하시겠습니까?",
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium
@@ -242,8 +241,13 @@ class HotlistView extends StatelessWidget {
               child: DialogButtonSection(
                 onPressConfirm: () {
                   Navigator.pop(context);
-                  context.read<CaffeineViewModal>().setTodayCaffeine(caffeine);
-                  // todo: record 추가
+                  context
+                      .read<CaffeineViewModal>()
+                      .setTodayCaffeine(hotlist.caffeine);
+                  context.read<CalendarViewModel>().saveRecordFromHotlist(
+                        hotlist,
+                        context.read<UserViewModel>().userId,
+                      );
                 },
                 onPressCancel: () {
                   Navigator.pop(context);
