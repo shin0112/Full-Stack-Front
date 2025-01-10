@@ -2,9 +2,7 @@ import 'dart:io';
 
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:project/config/database/hive_registrar.g.dart';
-import 'package:project/data/model/user.dart';
 
-@GenerateAdapters([AdapterSpec<User>()])
 class HiveDatabase {
   static final HiveDatabase instance = HiveDatabase._instance();
 
