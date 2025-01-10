@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/theme.dart';
+import 'package:project/data/model/beverage.dart';
 import 'package:project/data/model/brand.dart';
 import 'package:project/utils/add_object_postposition.dart';
+import 'package:project/view/calendar/calendar_view_model.dart';
 import 'package:project/view/home/beverage_view_model.dart';
 import 'package:project/view/home/caffeine_view_modal.dart';
+import 'package:project/view/setting/user_view_model.dart';
 import 'package:project/widgets/caffeine_box.dart';
 import 'package:project/widgets/section/dialog_button_section.dart';
 import 'package:provider/provider.dart';
@@ -150,8 +153,7 @@ class BeverageView extends StatelessWidget {
                           child: _buildSelectedItemModal(
                             context,
                             provider.selectedBrand,
-                            item.name,
-                            item.caffeine,
+                            item,
                           ),
                         ),
                       ),
@@ -189,8 +191,7 @@ class BeverageView extends StatelessWidget {
   Widget _buildSelectedItemModal(
     BuildContext context,
     String selectedBrand,
-    String name,
-    double caffeine,
+    Beverage item,
   ) {
     return Container(
       height: 120.sp,
@@ -201,7 +202,7 @@ class BeverageView extends StatelessWidget {
           SizedBox(
             width: 300.sp,
             child: Text(
-              "$selectedBrand ${addObjectPostposition(name)} 추가하시겠습니까?",
+              "$selectedBrand ${addObjectPostposition(item.name)} 추가하시겠습니까?",
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
@@ -215,7 +216,13 @@ class BeverageView extends StatelessWidget {
               onPressConfirm: () {
                 Navigator.pop(context);
                 Navigator.pop(context);
-                context.read<CaffeineViewModal>().setTodayCaffeine(caffeine);
+                context
+                    .read<CaffeineViewModal>()
+                    .setTodayCaffeine(item.caffeine);
+                context.read<CalendarViewModel>().saveRecordFromBeverage(
+                      item,
+                      context.read<UserViewModel>().getUserId(),
+                    );
               },
               onPressCancel: () {
                 Navigator.pop(context);
