@@ -1,5 +1,7 @@
-import 'package:hive_ce_flutter/adapters.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:project/data/model/user.dart';
+
+part 'hive_adapters.g.dart';
 
 @GenerateAdapters([AdapterSpec<User>()])
 void _() {}
