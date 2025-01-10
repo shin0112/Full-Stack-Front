@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/data/model/hotlist.dart';
 import 'package:project/utils/add_object_postposition.dart';
+import 'package:project/view/calendar/calendar_view_model.dart';
 import 'package:project/view/home/caffeine_view_modal.dart';
 import 'package:project/view/home/hotlist_view_model.dart';
 import 'package:project/view/setting/user_view_model.dart';
@@ -122,7 +123,7 @@ class HotlistView extends StatelessWidget {
     HotlistViewModel provider,
     Hotlist hotlist,
   ) {
-    final titleStyle =
+    final nameStyle =
         Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 14.sp);
     final contextStyle = Theme.of(context).textTheme.labelMedium?.copyWith(
           fontSize: 12.sp,
@@ -138,8 +139,7 @@ class HotlistView extends StatelessWidget {
           context: context,
           builder: (context) => _buildSelectHotlistDialog(
             context,
-            hotlist.title,
-            hotlist.caffeine,
+            hotlist,
           ),
         ),
         child: Container(
@@ -158,8 +158,8 @@ class HotlistView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    hotlist.title,
-                    style: titleStyle,
+                    hotlist.name,
+                    style: nameStyle,
                   ),
                   GestureDetector(
                     onTap: () => showDialog(
@@ -216,8 +216,7 @@ class HotlistView extends StatelessWidget {
 
   Widget _buildSelectHotlistDialog(
     BuildContext context,
-    String title,
-    double caffeine,
+    Hotlist hotlist,
   ) {
     return Dialog(
       child: Container(
@@ -229,7 +228,7 @@ class HotlistView extends StatelessWidget {
             SizedBox(
               width: 300.sp,
               child: Text(
-                "${addObjectPostposition(title)} 추가하시겠습니까?",
+                "${addObjectPostposition(hotlist.name)} 추가하시겠습니까?",
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium
@@ -242,8 +241,13 @@ class HotlistView extends StatelessWidget {
               child: DialogButtonSection(
                 onPressConfirm: () {
                   Navigator.pop(context);
-                  context.read<CaffeineViewModal>().setTodayCaffeine(caffeine);
-                  // todo: record 추가
+                  context
+                      .read<CaffeineViewModal>()
+                      .setTodayCaffeine(hotlist.caffeine);
+                  context.read<CalendarViewModel>().saveRecordFromHotlist(
+                        hotlist,
+                        context.read<UserViewModel>().userId,
+                      );
                 },
                 onPressCancel: () {
                   Navigator.pop(context);
@@ -270,7 +274,7 @@ class HotlistView extends StatelessWidget {
           SizedBox(
             width: 300.sp,
             child: Text(
-              "${addObjectPostposition(hotlist.title)} 삭제하시겠습니까?",
+              "${addObjectPostposition(hotlist.name)} 삭제하시겠습니까?",
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
@@ -326,16 +330,12 @@ class HotlistAddDialog extends StatefulWidget {
 }
 
 class HotlistAddDialogState extends State<HotlistAddDialog> {
-  String title = "";
+  String name = "";
   double caffeine = 0.0;
   String detail = "";
 
   @override
   Widget build(BuildContext context) {
-    final int userId = context.read<UserViewModel>().item.length == 1
-        ? context.read<UserViewModel>().item[0].id
-        : 0;
-
     return Dialog(
       child: Container(
         width: 340.sp,
@@ -360,7 +360,7 @@ class HotlistAddDialogState extends State<HotlistAddDialog> {
             ),
             SizedBox(height: 20.sp),
             TextField(
-              onChanged: (value) => {title = value},
+              onChanged: (value) => {name = value},
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
                 labelText: "이름",
@@ -402,9 +402,12 @@ class HotlistAddDialogState extends State<HotlistAddDialog> {
               alignment: Alignment.centerRight,
               child: DialogButtonSection(
                 onPressConfirm: () {
-                  context
-                      .read<HotlistViewModel>()
-                      .createHotList(userId, title, detail, caffeine);
+                  context.read<HotlistViewModel>().createHotList(
+                        context.read<UserViewModel>().user.id,
+                        name,
+                        detail,
+                        caffeine,
+                      );
                   Navigator.pop(context);
                 },
                 onPressCancel: () {

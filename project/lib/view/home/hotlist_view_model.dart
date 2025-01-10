@@ -23,15 +23,15 @@ class HotlistViewModel with ChangeNotifier {
   }
 
   void createHotList(
-    int userId,
-    String title,
+    int? userId,
+    String name,
     String detail,
     double caffeine,
   ) {
     items.add(Hotlist(
       id: _items.last.id + 1,
       userId: userId,
-      title: title,
+      name: name,
       detail: detail,
       caffeine: caffeine,
     ));

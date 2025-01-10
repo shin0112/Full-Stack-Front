@@ -65,6 +65,10 @@ class CalendarView extends StatelessWidget {
           color: MaterialTheme.coffee.seed.withOpacity(0.7),
           shape: BoxShape.circle,
         ),
+        markerDecoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.onSecondaryContainer,
+          shape: BoxShape.circle,
+        ),
       ),
     );
   }

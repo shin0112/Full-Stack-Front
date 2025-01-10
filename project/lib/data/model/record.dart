@@ -2,19 +2,19 @@ import 'dart:convert';
 
 class Record {
   int id;
-  int userId;
+  int? userId;
   int? brandId;
   double caffeine;
   String title;
   String detail;
-  String createdAt;
+  DateTime createdAt;
 
   Record({
     required this.id,
-    required this.userId,
+    this.userId,
+    this.brandId,
     required this.caffeine,
     required this.title,
-    this.brandId,
     required this.detail,
     required this.createdAt,
   });
@@ -22,12 +22,12 @@ class Record {
   factory Record.fromJson(Map<String, dynamic> json) {
     return Record(
       id: json["id"] as int,
-      userId: json["userId"] as int,
+      userId: json["userId"] as int?,
       brandId: json["brandId"] as int?,
       caffeine: json["caffeine"] as double,
       title: json["title"] as String,
       detail: json["detail"] as String,
-      createdAt: json["createdAt"] as String,
+      createdAt: DateTime.parse(json["createdAt"] as String),
     );
   }
 

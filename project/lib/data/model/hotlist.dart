@@ -2,15 +2,15 @@ import 'dart:convert';
 
 class Hotlist {
   int id;
-  int userId;
-  String title;
+  int? userId;
+  String name;
   String detail;
   double caffeine;
 
   Hotlist({
     required this.id,
     required this.userId,
-    required this.title,
+    required this.name,
     required this.detail,
     required this.caffeine,
   });
@@ -19,7 +19,7 @@ class Hotlist {
     return Hotlist(
       id: json['id'] as int,
       userId: json['userId'] as int,
-      title: json['title'] as String,
+      name: json['name'] as String,
       detail: json['detail'] as String,
       caffeine: (json['caffeine'] as int).toDouble() / 10,
     );
@@ -29,7 +29,7 @@ class Hotlist {
     return {
       'id': id,
       'userId': userId,
-      'title': title,
+      'name': name,
       'detail': detail,
       'caffeine': caffeine * 10,
     };
