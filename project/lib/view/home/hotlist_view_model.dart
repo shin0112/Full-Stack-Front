@@ -26,13 +26,16 @@ class HotlistViewModel with ChangeNotifier {
     String name,
     String detail,
     double caffeine,
-  ) {
-    items.add(Hotlist(
-      id: _items.last.id + 1,
+  ) async {
+    final Hotlist hotlist = Hotlist(
       name: name,
       detail: detail,
       caffeine: caffeine,
-    ));
+    );
+
+    Hotlist saved = await _hotlistRepository.insertHotlist(hotlist);
+
+    _items.add(saved);
     notifyListeners();
   }
 }

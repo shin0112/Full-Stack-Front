@@ -9,4 +9,8 @@ class HotlistRepository {
   Future<List<Hotlist>> findAll() async {
     return await _hotlistDatasource.findAll();
   }
+
+  Future<Hotlist> insertHotlist(Hotlist hotlist) async {
+    return await _hotlistDatasource.insert(hotlist);
+  }
 }
