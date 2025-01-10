@@ -8,4 +8,8 @@ class RecordRepository {
   Future<List<Record>> findAll() async {
     return await _recordDatasource.findAll();
   }
+
+  Future<Record> insertRecord(Record record) async {
+    return await _recordDatasource.insert(record);
+  }
 }

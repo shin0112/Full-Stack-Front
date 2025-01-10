@@ -92,41 +92,45 @@ class CalendarViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void saveRecordFromBeverage(Beverage beverage) {
-    final Record newRecord = Record(
-      title: beverage.name,
-      brandId: beverage.brandId,
-      caffeine: beverage.caffeine,
-      detail: "",
-      createdAt: DateTime.now(),
+  void saveRecordFromBeverage(Beverage beverage) async {
+    final Record saved = await _recordRepository.insertRecord(
+      Record(
+        title: beverage.name,
+        brandId: beverage.brandId,
+        caffeine: beverage.caffeine,
+        detail: "",
+        createdAt: DateTime.now(),
+      ),
     );
 
-    final key = newRecord.createdAt;
+    final key = saved.createdAt;
 
     if (recordList.containsKey(key)) {
-      recordList[key]!.add(newRecord);
+      recordList[key]!.add(saved);
     } else {
-      recordList[key] = [newRecord];
+      recordList[key] = [saved];
     }
 
     getRecordForDay(key);
     notifyListeners();
   }
 
-  void saveRecordFromHotlist(Hotlist hotlist) {
-    final Record newRecord = Record(
-      caffeine: hotlist.caffeine,
-      title: hotlist.name,
-      detail: hotlist.detail,
-      createdAt: DateTime.now(),
+  void saveRecordFromHotlist(Hotlist hotlist) async {
+    final Record saved = await _recordRepository.insertRecord(
+      Record(
+        caffeine: hotlist.caffeine,
+        title: hotlist.name,
+        detail: hotlist.detail,
+        createdAt: DateTime.now(),
+      ),
     );
 
-    final key = newRecord.createdAt;
+    final key = saved.createdAt;
 
     if (recordList.containsKey(key)) {
-      recordList[key]!.add(newRecord);
+      recordList[key]!.add(saved);
     } else {
-      recordList[key] = [newRecord];
+      recordList[key] = [saved];
     }
 
     getRecordForDay(key);
