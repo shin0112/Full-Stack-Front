@@ -122,7 +122,7 @@ class HotlistView extends StatelessWidget {
     HotlistViewModel provider,
     Hotlist hotlist,
   ) {
-    final titleStyle =
+    final nameStyle =
         Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 14.sp);
     final contextStyle = Theme.of(context).textTheme.labelMedium?.copyWith(
           fontSize: 12.sp,
@@ -138,7 +138,7 @@ class HotlistView extends StatelessWidget {
           context: context,
           builder: (context) => _buildSelectHotlistDialog(
             context,
-            hotlist.title,
+            hotlist.name,
             hotlist.caffeine,
           ),
         ),
@@ -158,8 +158,8 @@ class HotlistView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    hotlist.title,
-                    style: titleStyle,
+                    hotlist.name,
+                    style: nameStyle,
                   ),
                   GestureDetector(
                     onTap: () => showDialog(
@@ -216,7 +216,7 @@ class HotlistView extends StatelessWidget {
 
   Widget _buildSelectHotlistDialog(
     BuildContext context,
-    String title,
+    String name,
     double caffeine,
   ) {
     return Dialog(
@@ -229,7 +229,7 @@ class HotlistView extends StatelessWidget {
             SizedBox(
               width: 300.sp,
               child: Text(
-                "${addObjectPostposition(title)} 추가하시겠습니까?",
+                "${addObjectPostposition(name)} 추가하시겠습니까?",
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium
@@ -270,7 +270,7 @@ class HotlistView extends StatelessWidget {
           SizedBox(
             width: 300.sp,
             child: Text(
-              "${addObjectPostposition(hotlist.title)} 삭제하시겠습니까?",
+              "${addObjectPostposition(hotlist.name)} 삭제하시겠습니까?",
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
@@ -326,7 +326,7 @@ class HotlistAddDialog extends StatefulWidget {
 }
 
 class HotlistAddDialogState extends State<HotlistAddDialog> {
-  String title = "";
+  String name = "";
   double caffeine = 0.0;
   String detail = "";
 
@@ -360,7 +360,7 @@ class HotlistAddDialogState extends State<HotlistAddDialog> {
             ),
             SizedBox(height: 20.sp),
             TextField(
-              onChanged: (value) => {title = value},
+              onChanged: (value) => {name = value},
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
                 labelText: "이름",
@@ -404,7 +404,7 @@ class HotlistAddDialogState extends State<HotlistAddDialog> {
                 onPressConfirm: () {
                   context
                       .read<HotlistViewModel>()
-                      .createHotList(userId, title, detail, caffeine);
+                      .createHotList(userId, name, detail, caffeine);
                   Navigator.pop(context);
                 },
                 onPressCancel: () {
