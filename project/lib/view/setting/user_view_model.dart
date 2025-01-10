@@ -5,15 +5,20 @@ import 'package:project/data/repository/user_repository.dart';
 class UserViewModel with ChangeNotifier {
   final UserRepository _userRepository = UserRepository();
 
-  List<User> get item => _item;
-  List<User> _item = [];
+  User get user => _user;
+  User _user = User();
+
+  int? get userId => _userId;
+  int? _userId;
 
   UserViewModel() {
     _fetchData();
   }
 
   Future<void> _fetchData() async {
-    _item = await _userRepository.fetchData();
+    _user = await _userRepository.fetchData();
+    _userId = _user.id;
+
     notifyListeners();
   }
 
@@ -23,14 +28,10 @@ class UserViewModel with ChangeNotifier {
     double height,
     double weight,
   ) {
-    _item[0].name = name;
-    _item[0].age = age;
-    _item[0].height = height;
-    _item[0].weight = weight;
+    _user.name = name;
+    _user.age = age;
+    _user.height = height;
+    _user.weight = weight;
     notifyListeners();
-  }
-
-  int getUserId() {
-    return item[0].id;
   }
 }

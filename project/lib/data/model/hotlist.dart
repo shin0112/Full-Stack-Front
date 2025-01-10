@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class Hotlist {
   int id;
-  int userId;
+  int? userId;
   String name;
   String detail;
   double caffeine;

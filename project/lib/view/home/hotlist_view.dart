@@ -332,10 +332,6 @@ class HotlistAddDialogState extends State<HotlistAddDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final int userId = context.read<UserViewModel>().item.length == 1
-        ? context.read<UserViewModel>().item[0].id
-        : 0;
-
     return Dialog(
       child: Container(
         width: 340.sp,
@@ -402,9 +398,12 @@ class HotlistAddDialogState extends State<HotlistAddDialog> {
               alignment: Alignment.centerRight,
               child: DialogButtonSection(
                 onPressConfirm: () {
-                  context
-                      .read<HotlistViewModel>()
-                      .createHotList(userId, name, detail, caffeine);
+                  context.read<HotlistViewModel>().createHotList(
+                        context.read<UserViewModel>().user.id,
+                        name,
+                        detail,
+                        caffeine,
+                      );
                   Navigator.pop(context);
                 },
                 onPressCancel: () {

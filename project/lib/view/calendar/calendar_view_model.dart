@@ -95,7 +95,7 @@ class CalendarViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void saveRecordFromBeverage(Beverage beverage, int userId) {
+  void saveRecordFromBeverage(Beverage beverage, int? userId) {
     final Record newRecord = Record(
       id: ++_recordId,
       userId: userId,
@@ -117,7 +117,7 @@ class CalendarViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void saveRecordFromHotlist(Hotlist hotlist, int userId) {
+  void saveRecordFromHotlist(Hotlist hotlist, int? userId) {
     final Record newRecord = Record(
       id: ++_recordId,
       userId: userId,

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class User {
-  int id;
+  int? id;
   int? age;
   String? name;
   String? username;
@@ -10,7 +10,7 @@ class User {
   double? weight;
 
   User({
-    required this.id,
+    this.id,
     this.age,
     this.name,
     this.username,
@@ -19,21 +19,9 @@ class User {
     this.weight,
   });
 
-  factory User.testUser() {
-    return User(
-      id: 0,
-      age: 20,
-      height: 173.9,
-      name: "아무개",
-      password: "",
-      username: "",
-      weight: 63.2,
-    );
-  }
-
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'] as int,
+      id: json['id'] as int?,
       age: json['age'] as int?,
       name: json['name'] as String?,
       username: json['username'] as String?,
@@ -56,7 +44,7 @@ class User {
   }
 }
 
-Future<List<User>> parseUserFromJson(String jsonString) async {
+Future<User> parseUserFromJson(String jsonString) async {
   final List<dynamic> jsonData = json.decode(jsonString);
-  return jsonData.map((item) => User.fromJson(item)).toList();
+  return User.fromJson(jsonData[0]);
 }

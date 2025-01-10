@@ -221,7 +221,7 @@ class BeverageView extends StatelessWidget {
                     .setTodayCaffeine(item.caffeine);
                 context.read<CalendarViewModel>().saveRecordFromBeverage(
                       item,
-                      context.read<UserViewModel>().getUserId(),
+                      context.read<UserViewModel>().userId,
                     );
               },
               onPressCancel: () {

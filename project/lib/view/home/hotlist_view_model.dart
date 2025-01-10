@@ -23,7 +23,7 @@ class HotlistViewModel with ChangeNotifier {
   }
 
   void createHotList(
-    int userId,
+    int? userId,
     String name,
     String detail,
     double caffeine,

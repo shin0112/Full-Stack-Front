@@ -13,7 +13,7 @@ class UserView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserViewModel>(
       builder: (context, provider, child) {
-        User user = provider.item.isEmpty ? User.testUser() : provider.item[0];
+        User user = provider.user;
 
         return Container(
           width: 340.sp,
@@ -119,7 +119,7 @@ class UsernameView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserViewModel>(
       builder: (context, provider, child) {
-        User user = provider.item.isEmpty ? User.testUser() : provider.item[0];
+        User user = provider.user;
 
         return Container(
           width: 316.sp,
@@ -167,7 +167,7 @@ class UserUpdateDialog extends StatefulWidget {
 class UserUpdateDialogState extends State<UserUpdateDialog> {
   @override
   Widget build(BuildContext context) {
-    final User user = context.read<UserViewModel>().item[0];
+    final User user = context.read<UserViewModel>().user;
     String name = user.name ?? "";
     int age = user.age ?? 20;
     double weight = user.weight ?? 168.0;
