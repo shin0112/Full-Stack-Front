@@ -13,4 +13,8 @@ class HotlistRepository {
   Future<Hotlist> insertHotlist(Hotlist hotlist) async {
     return await _hotlistDatasource.insert(hotlist);
   }
+
+  Future<void> deleteHotlist(int id) async {
+    await _hotlistDatasource.delete(id);
+  }
 }

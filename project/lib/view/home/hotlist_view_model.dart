@@ -17,7 +17,9 @@ class HotlistViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteHotList(Hotlist hotlist) {
+  void deleteHotList(Hotlist hotlist) async {
+    await _hotlistRepository.deleteHotlist(hotlist.id!);
+
     _items.remove(hotlist);
     notifyListeners();
   }
