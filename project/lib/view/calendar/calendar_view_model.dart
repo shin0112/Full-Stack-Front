@@ -20,6 +20,9 @@ class CalendarViewModel with ChangeNotifier {
   DateTime get selectedDay => _selectedDay;
   DateTime _selectedDay = DateTime.now();
 
+  double get dailyTotalCaffeine => _dailyTotalCaffeine;
+  double _dailyTotalCaffeine = 0.0;
+
   CalendarFormat get calendarFormat => _calendarFormat;
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
@@ -39,43 +42,11 @@ class CalendarViewModel with ChangeNotifier {
 
   CalendarViewModel() {
     _fetchData();
-    getRecordForDay(_selectedDay);
-  }
-
-  List<Record> getRecordForDay(DateTime day) {
-    _selectedRecordList = recordList[day] ?? [];
-    return _selectedRecordList;
-  }
-
-  List<Record> getRecordListForRange(DateTime start, DateTime end) {
-    final days = _daysInRange(start, end);
-    return [
-      for (final day in days) ...getRecordForDay(day),
-    ];
-  }
-
-  void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      _selectedDay = selectedDay;
-      _focusedDay = focusedDay;
-      _rangeSelectionMode = RangeSelectionMode.toggledOff;
-    }
-
-    getRecordForDay(selectedDay);
-    notifyListeners();
-  }
-
-  void onPageChanged(DateTime focusedDay) {
-    _focusedDay = focusedDay;
-    notifyListeners();
-  }
-
-  void onFormatChanged(CalendarFormat format) {
-    _calendarFormat = format;
     notifyListeners();
   }
 
   void _fetchData() async {
+    log("fetch data start");
     final list = await _recordRepository.findAll();
     _brandNameMap = await _brandRepository.getBrandIdNameMap();
     log(_brandNameMap.toString());
@@ -89,7 +60,76 @@ class CalendarViewModel with ChangeNotifier {
       }
     }
 
+    onDaySelected(_selectedDay, _focusedDay);
+    _saveSelectedDayData();
+
     notifyListeners();
+    log("fetch data end");
+  }
+
+  void _saveSelectedDayData() {
+    _selectLogging();
+    _selectedRecordList = getRecordForDay(_selectedDay);
+
+    double sum = 0.0;
+    for (Record record in _selectedRecordList) {
+      sum += record.caffeine;
+    }
+    _dailyTotalCaffeine = sum;
+  }
+
+  void _selectLogging() {
+    for (Record record in _selectedRecordList) {
+      log(record.toString());
+    }
+    log("selected day: $_selectedDay");
+  }
+
+  List<Record> getRecordForDay(DateTime day) {
+    return recordList[day] ?? [];
+  }
+
+  List<Record> getRecordListForRange(DateTime start, DateTime end) {
+    final days = _daysInRange(start, end);
+    return [
+      for (final day in days) ...getRecordForDay(day),
+    ];
+  }
+
+  void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    log("on day selected start");
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      _selectedDay = selectedDay;
+      _focusedDay = focusedDay;
+      _rangeSelectionMode = RangeSelectionMode.toggledOff;
+
+      _saveSelectedDayData();
+    }
+
+    notifyListeners();
+    log("on day selected end");
+  }
+
+  void onPageChanged(DateTime focusedDay) {
+    log("on page changed start");
+    _focusedDay = focusedDay;
+
+    _selectLogging();
+
+    notifyListeners();
+    log("on page changed end");
+  }
+
+  void onFormatChanged(CalendarFormat format) {
+    log("on format changed start");
+    if (_calendarFormat != format) {
+      _calendarFormat = format;
+    }
+
+    _selectLogging();
+
+    notifyListeners();
+    log("on format changed end");
   }
 
   void saveRecordFromBeverage(Beverage beverage) async {
@@ -111,7 +151,6 @@ class CalendarViewModel with ChangeNotifier {
       recordList[key] = [saved];
     }
 
-    getRecordForDay(key);
     notifyListeners();
   }
 
@@ -133,7 +172,6 @@ class CalendarViewModel with ChangeNotifier {
       recordList[key] = [saved];
     }
 
-    getRecordForDay(key);
     notifyListeners();
   }
 

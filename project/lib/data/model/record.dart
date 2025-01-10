@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Record {
   int? id;
   int? brandId;
@@ -39,5 +41,11 @@ class Record {
       detail: map["detail"] as String,
       createdAt: DateTime.parse(map["createdAt"] as String),
     );
+  }
+
+  @override
+  String toString() {
+    final dateFormatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    return 'Record(title: $title, brandId: $brandId, caffeine: ${caffeine.toStringAsFixed(2)}mg, detail: $detail, createdAt: ${dateFormatter.format(createdAt)})';
   }
 }

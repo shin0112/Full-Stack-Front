@@ -20,7 +20,11 @@ class CalendarView extends StatelessWidget {
           SizedBox(height: 10.sp),
           HorizontalLine(width: 320.sp),
           SizedBox(height: 10.sp),
-          _buildDateSection(context, provider.selectedDay),
+          _buildDateSection(
+            context,
+            provider.selectedDay,
+            provider.dailyTotalCaffeine,
+          ),
           SizedBox(height: 10.sp),
           HorizontalLine(width: 320.sp),
           SizedBox(height: 10.sp),
@@ -73,8 +77,11 @@ class CalendarView extends StatelessWidget {
     );
   }
 
-  Widget _buildDateSection(BuildContext context, DateTime selectedDay,
-      [double caffeineSum = 0.0]) {
+  Widget _buildDateSection(
+    BuildContext context,
+    DateTime selectedDay,
+    double dailyTotalCaffeine,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -85,7 +92,7 @@ class CalendarView extends StatelessWidget {
               ),
         ),
         Text(
-          "${caffeineSum}mg",
+          "${dailyTotalCaffeine}mg",
           style: Theme.of(context)
               .textTheme
               .titleMedium
