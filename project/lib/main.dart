@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/config/database/sql_database.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
 import 'package:project/view/calendar/calendar_page.dart';
@@ -17,6 +18,9 @@ import 'package:project/view/setting/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SqlDatabase();
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (create) => PageIndex()),
