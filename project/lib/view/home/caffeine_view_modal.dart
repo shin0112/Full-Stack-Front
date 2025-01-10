@@ -16,6 +16,15 @@ class CaffeineViewModal with ChangeNotifier {
   late Timer _midnightTimer;
 
   // todo: 나이, 키, 몸무게로 적정 카페인 구하기 함수
+  CaffeineViewModal() {
+    _setMidnightResetTimer();
+  }
+
+  @override
+  void dispose() {
+    cancelTimer();
+    super.dispose();
+  }
 
   void _setMidnightResetTimer() {
     final now = DateTime.now();
@@ -23,7 +32,13 @@ class CaffeineViewModal with ChangeNotifier {
     final durationUntilMidnight = midnight.difference(now);
 
     _midnightTimer = Timer(durationUntilMidnight, () {
-      _date = DateFormat("yyyy년 MM월 dd일").format(DateTime.now());
+      final newDate = DateFormat("yyyy년 MM월 dd일").format(DateTime.now());
+
+      if (newDate != _date) {
+        _date = newDate;
+        notifyListeners();
+      }
+
       _setMidnightResetTimer();
     });
   }
@@ -38,7 +53,9 @@ class CaffeineViewModal with ChangeNotifier {
     notifyListeners();
   }
 
-  CaffeineViewModal() {
-    _setMidnightResetTimer();
+  void cancelTimer() {
+    if (_midnightTimer.isActive) {
+      _midnightTimer.cancel();
+    }
   }
 }
