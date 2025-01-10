@@ -1,12 +1,7 @@
-import 'dart:ffi' hide Size;
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:path/path.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
-import 'package:project/db/sqlite3/sqlite3.dart';
 import 'package:project/view/calendar/calendar_page.dart';
 import 'package:project/view/calendar/calendar_view_model.dart';
 import 'package:project/view/home/beverage_view_model.dart';
@@ -20,8 +15,6 @@ import 'package:project/view/home/hotlist_view_model.dart';
 import 'package:project/view/setting/setting_page.dart';
 import 'package:project/view/setting/user_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:sqlite3/open.dart';
-import 'package:sqlite3/sqlite3.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -37,16 +30,6 @@ void main() {
     ],
     child: const MyApp(),
   ));
-
-  open.overrideFor(OperatingSystem.android, _openOnAndroid);
-  final db = sqlite3.openInMemory();
-  setupDatabase(db);
-}
-
-DynamicLibrary _openOnAndroid() {
-  final scriptDir = File(Platform.script.toFilePath()).parent;
-  final libraryNextToScript = File(join(scriptDir.path, 'sqlite3.so'));
-  return DynamicLibrary.open(libraryNextToScript.path);
 }
 
 class MyApp extends StatelessWidget {
