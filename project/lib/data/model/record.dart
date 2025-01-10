@@ -7,7 +7,7 @@ class Record {
   double caffeine;
   String title;
   String detail;
-  String createdAt;
+  DateTime createdAt;
 
   Record({
     required this.id,
@@ -27,7 +27,7 @@ class Record {
       caffeine: json["caffeine"] as double,
       title: json["title"] as String,
       detail: json["detail"] as String,
-      createdAt: json["createdAt"] as String,
+      createdAt: DateTime.parse(json["createdAt"] as String),
     );
   }
 
