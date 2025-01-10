@@ -14,8 +14,6 @@ class CalendarViewModel with ChangeNotifier {
   final RecordRepository _recordRepository = RecordRepository();
   final BrandRepository _brandRepository = BrandRepository();
 
-  int _recordId = 1;
-
   DateTime get focusedDay => _focusedDay;
   DateTime _focusedDay = DateTime.now();
 
@@ -78,8 +76,7 @@ class CalendarViewModel with ChangeNotifier {
   }
 
   void _fetchData() async {
-    final list = await _recordRepository.getRecordList();
-    _recordId = list.last.id;
+    final list = await _recordRepository.findAll();
     _brandNameMap = await _brandRepository.getBrandIdNameMap();
     log(_brandNameMap.toString());
 
@@ -97,7 +94,6 @@ class CalendarViewModel with ChangeNotifier {
 
   void saveRecordFromBeverage(Beverage beverage) {
     final Record newRecord = Record(
-      id: ++_recordId,
       title: beverage.name,
       brandId: beverage.brandId,
       caffeine: beverage.caffeine,
@@ -119,7 +115,6 @@ class CalendarViewModel with ChangeNotifier {
 
   void saveRecordFromHotlist(Hotlist hotlist) {
     final Record newRecord = Record(
-      id: ++_recordId,
       caffeine: hotlist.caffeine,
       title: hotlist.name,
       detail: hotlist.detail,
