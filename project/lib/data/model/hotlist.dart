@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Hotlist {
   int? id;
   String name;
@@ -35,9 +33,9 @@ class Hotlist {
       caffeine: map['caffeine'] as double,
     );
   }
-}
 
-Future<List<Hotlist>> parseHotlistFromJson(String jsonString) async {
-  final List<dynamic> jsonData = json.decode(jsonString);
-  return jsonData.map((item) => Hotlist.fromMap(item)).toList();
+  @override
+  String toString() {
+    return 'Hotlist{id: $id, name: $name, detail: $detail, caffeine: $caffeine}';
+  }
 }

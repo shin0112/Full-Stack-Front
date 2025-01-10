@@ -34,8 +34,7 @@ class HotlistViewModel with ChangeNotifier {
       detail: detail,
       caffeine: caffeine,
     );
-
-    Hotlist saved = await _hotlistRepository.insertHotlist(hotlist);
+    final Hotlist saved = await _hotlistRepository.insertHotlist(hotlist);
 
     _items.add(saved);
     notifyListeners();
