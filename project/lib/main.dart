@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/config/database/hive_database.dart';
 import 'package:project/config/database/sql_database.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
@@ -20,6 +21,7 @@ import 'package:provider/provider.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SqlDatabase();
+  HiveDatabase();
 
   runApp(MultiProvider(
     providers: [
@@ -87,7 +89,7 @@ class MainWidget extends State<MyStatefulWidget> {
   ];
 
   final List<Widget> _widgetOptions = const <Widget>[
-    HomePage(),
+    SingleChildScrollView(child: HomePage()),
     CalendarPage(),
     CommunityPage(),
     SettingPage(),
@@ -123,9 +125,7 @@ class MainWidget extends State<MyStatefulWidget> {
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      body: SingleChildScrollView(
-        child: _widgetOptions[context.read<PageIndex>().index],
-      ),
+      body: _widgetOptions[context.read<PageIndex>().index],
       bottomNavigationBar: Container(
         decoration: ShapeDecoration(
           color: Theme.of(context).colorScheme.onPrimary,

@@ -1,33 +1,33 @@
-import 'dart:convert';
+import 'package:hive_ce/hive.dart';
 
-class User {
-  int? id;
-  int? age;
-  String? name;
-  String? username;
-  String? password;
-  double? height;
-  double? weight;
+class User extends HiveObject {
+  int id;
+  int age;
+  String name;
+  String username;
+  String password;
+  double height;
+  double weight;
 
   User({
-    this.id,
-    this.age,
-    this.name,
-    this.username,
-    this.password,
-    this.height,
-    this.weight,
+    this.id = 1,
+    this.age = 20,
+    this.name = "",
+    this.username = "example@email.com",
+    this.password = "",
+    this.height = 175.0,
+    this.weight = 60.0,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: json['id'] as int?,
-      age: json['age'] as int?,
-      name: json['name'] as String?,
-      username: json['username'] as String?,
-      password: json['password'] as String?,
-      height: (json['height'] as int).toDouble() / 10,
-      weight: (json['weight'] as int).toDouble() / 10,
+      id: map['id'] as int,
+      age: map['age'] as int,
+      name: map['name'] as String,
+      username: map['username'] as String,
+      password: map['password'] as String,
+      height: map['height'] as double,
+      weight: map['weight'] as double,
     );
   }
 
@@ -38,13 +38,8 @@ class User {
       'name': name,
       'username': username,
       'password': password,
-      'height': height! * 10,
-      'weight': weight! * 10,
+      'height': height * 10,
+      'weight': weight * 10,
     };
   }
-}
-
-Future<User> parseUserFromJson(String jsonString) async {
-  final List<dynamic> jsonData = json.decode(jsonString);
-  return User.fromJson(jsonData[0]);
 }

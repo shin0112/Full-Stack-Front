@@ -16,22 +16,24 @@ class UserViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchData() async {
-    _user = await _userRepository.fetchData();
+    _user = await _userRepository.getUser();
     _userId = _user.id;
 
     notifyListeners();
   }
 
-  void updateData(
+  void updateUser(
     String name,
     int age,
     double height,
     double weight,
   ) {
+    
     _user.name = name;
     _user.age = age;
     _user.height = height;
     _user.weight = weight;
+    
     notifyListeners();
   }
 }
