@@ -5,12 +5,12 @@ class UserDatasource {
   UserDatasource();
 
   Future<void> saveUser(User user) async {
-    final userBox = HiveDatabase().userBox;
+    final userBox = await HiveDatabase().userBox;
     await userBox.add(user);
   }
 
   Future<User> getUser() async {
-    final userBox = HiveDatabase().userBox;
+    final userBox = await HiveDatabase().userBox;
     final Map<String, dynamic> map = await userBox.get('user');
 
     return User.fromMap(map);

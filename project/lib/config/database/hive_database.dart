@@ -6,11 +6,14 @@ import 'package:project/config/database/hive_registrar.g.dart';
 class HiveDatabase {
   static final HiveDatabase instance = HiveDatabase._instance();
 
-  LazyBox get userBox => _userBox;
-  late LazyBox _userBox;
+  LazyBox? _userBox;
 
-  HiveDatabase._instance() {
-    _initDatabase();
+  HiveDatabase._instance();
+
+  Future<LazyBox> get userBox async {
+    if (_userBox != null) return _userBox!;
+    await _initDatabase();
+    return _userBox!;
   }
 
   factory HiveDatabase() {
