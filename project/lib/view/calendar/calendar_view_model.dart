@@ -2,6 +2,8 @@ import 'dart:collection';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:project/data/model/beverage.dart';
+import 'package:project/data/model/hotlist.dart';
 import 'package:project/data/model/record.dart';
 import 'package:project/data/repository/brand_repository.dart';
 import 'package:project/data/repository/record_repository.dart';
@@ -11,6 +13,8 @@ import 'package:table_calendar/table_calendar.dart';
 class CalendarViewModel with ChangeNotifier {
   final RecordRepository _recordRepository = RecordRepository();
   final BrandRepository _brandRepository = BrandRepository();
+
+  int _recordId = 1;
 
   DateTime get focusedDay => _focusedDay;
   DateTime _focusedDay = DateTime.now();
@@ -34,6 +38,11 @@ class CalendarViewModel with ChangeNotifier {
     equals: isSameDay,
     hashCode: getHashCode,
   );
+
+  CalendarViewModel() {
+    _fetchData();
+    getRecordForDay(_selectedDay!);
+  }
 
   List<Record> getRecordForDay(DateTime day) {
     _selectedRecordList = recordList[day] ?? [];
@@ -68,13 +77,9 @@ class CalendarViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  CalendarViewModel() {
-    _fetchData();
-    getRecordForDay(_selectedDay!);
-  }
-
   void _fetchData() async {
     final list = await _recordRepository.getRecordList();
+    _recordId = list.last.id;
     _brandNameMap = await _brandRepository.getBrandIdNameMap();
     log(_brandNameMap.toString());
 
@@ -85,6 +90,49 @@ class CalendarViewModel with ChangeNotifier {
       } else {
         recordList[key] = [record];
       }
+    }
+
+    notifyListeners();
+  }
+
+  void saveRecordFromBeverage(Beverage beverage, int userId) {
+    final Record newRecord = Record(
+      id: ++_recordId,
+      userId: userId,
+      title: beverage.name,
+      brandId: beverage.brandId,
+      caffeine: beverage.caffeine,
+      detail: "",
+      createdAt: DateTime.now(),
+    );
+
+    final key = newRecord.createdAt;
+
+    if (recordList.containsKey(key)) {
+      recordList[key]!.add(newRecord);
+    } else {
+      recordList[key] = [newRecord];
+    }
+
+    notifyListeners();
+  }
+
+  void saveRecordFromHotlist(Hotlist hotlist, int userId) {
+    final Record newRecord = Record(
+      id: ++_recordId,
+      userId: userId,
+      caffeine: hotlist.caffeine,
+      title: hotlist.name,
+      detail: hotlist.detail,
+      createdAt: DateTime.now(),
+    );
+
+    final key = newRecord.createdAt;
+
+    if (recordList.containsKey(key)) {
+      recordList[key]!.add(newRecord);
+    } else {
+      recordList[key] = [newRecord];
     }
 
     notifyListeners();
