@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -30,8 +28,8 @@ class SqlDatabase {
   }
 
   void _databaseCreate(Database db, int version) async {
-    try {
-      await db.execute('''
+    await db.transaction((txn) async {
+      await txn.execute('''
       CREATE TABLE hotlist (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -40,7 +38,7 @@ class SqlDatabase {
       )
     ''');
 
-      await db.execute('''
+      await txn.execute('''
       CREATE TABLE record (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         brandId INTEGER,
@@ -50,9 +48,10 @@ class SqlDatabase {
         createdAt TEXT NOT NULL
       )
     ''');
-    } catch (e) {
-      log("Database creation error: $e");
-      rethrow;
-    }
+    });
+  }
+
+  Future close() async {
+    _database!.close();
   }
 }
