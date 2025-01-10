@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 String addObjectPostposition(String input) {
+  if (input.isEmpty) return "";
+
   final lastChar = input.characters.last;
   final codeUnit = lastChar.codeUnitAt(0);
 
