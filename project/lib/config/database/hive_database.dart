@@ -22,5 +22,10 @@ class HiveDatabase {
   Future<void> _initDatabase() async {
     await Hive.initFlutter();
     _userBox = await Hive.openLazyBox('user');
+
+    final path = Directory.current.path;
+    Hive
+      ..init(path)
+      ..registerAdapters();
   }
 }
