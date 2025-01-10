@@ -11,8 +11,6 @@ class UserDatasource {
 
   Future<User> getUser() async {
     final userBox = await HiveDatabase().userBox;
-    final Map<String, dynamic> map = await userBox.get('user');
-
-    return User.fromMap(map);
+    return userBox.getAt(0)!;
   }
 }
