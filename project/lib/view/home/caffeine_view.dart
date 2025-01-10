@@ -1,45 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gif/gif.dart';
-import 'package:intl/intl.dart';
 import 'package:project/config/themes/theme.dart';
 import 'package:project/view/home/caffeine_view_modal.dart';
 import 'package:project/widgets/line.dart';
 import 'package:provider/provider.dart';
 
-class TodayCaffeineView extends StatefulWidget {
+class TodayCaffeineView extends StatelessWidget {
   const TodayCaffeineView({super.key});
-
-  @override
-  State<StatefulWidget> createState() => TodayCaffeineViewState();
-}
-
-class TodayCaffeineViewState extends State<TodayCaffeineView> {
-  String date = DateFormat("yyyy년 MM월 dd일").format(DateTime.now());
-  late Timer _midnightTimer;
-
-  // to do: 나이, 키, 몸무게로 적정 카페인 구하기 함수
-
-  void _setMidnightResetTimer() {
-    final now = DateTime.now();
-    final midnight = DateTime(now.year, now.month, now.day + 1);
-    final durationUntilMidnight = midnight.difference(now);
-
-    _midnightTimer = Timer(durationUntilMidnight, () {
-      setState(() {
-        date = DateFormat("yyyy년 MM월 dd일").format(DateTime.now());
-      });
-      _setMidnightResetTimer();
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _setMidnightResetTimer();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +78,10 @@ class TodayCaffeineViewState extends State<TodayCaffeineView> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     // 상단 text container
-                    _buildTopTextSection(context),
+                    _buildTopTextSection(
+                      context,
+                      provider.date,
+                    ),
                     SizedBox(height: 4.sp),
                     const HorizontalLine(width: 282),
                     SizedBox(height: 4.sp),
@@ -130,7 +101,7 @@ class TodayCaffeineViewState extends State<TodayCaffeineView> {
     );
   }
 
-  Widget _buildTopTextSection(BuildContext context) {
+  Widget _buildTopTextSection(BuildContext context, String date) {
     TextStyle dateTextStyle = TextStyle(
       color: Theme.of(context).colorScheme.secondary,
       fontSize: 14.sp,
