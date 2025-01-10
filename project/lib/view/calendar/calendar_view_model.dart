@@ -27,9 +27,6 @@ class CalendarViewModel with ChangeNotifier {
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
   RangeSelectionMode get rangeSelectionMode => _rangeSelectionMode;
 
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
-
   Map<int, String> get brandNameMap => _brandNameMap;
   Map<int, String> _brandNameMap = {};
 
@@ -54,29 +51,10 @@ class CalendarViewModel with ChangeNotifier {
     if (!isSameDay(_selectedDay, selectedDay)) {
       _selectedDay = selectedDay;
       _focusedDay = focusedDay;
-      _rangeStart = null;
-      _rangeEnd = null;
       _rangeSelectionMode = RangeSelectionMode.toggledOff;
     }
 
     getRecordForDay(selectedDay);
-    notifyListeners();
-  }
-
-  void onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
-    _selectedDay = null;
-    _focusedDay = focusedDay;
-    _rangeStart = start;
-    _rangeEnd = end;
-    _rangeSelectionMode = RangeSelectionMode.toggledOn;
-
-    if (start != null && end != null) {
-      _selectedRecordList = getRecordListForRange(start, end);
-    } else if (start != null) {
-      _selectedRecordList = getRecordForDay(start);
-    } else if (end != null) {
-      _selectedRecordList = getRecordForDay(end);
-    }
     notifyListeners();
   }
 
