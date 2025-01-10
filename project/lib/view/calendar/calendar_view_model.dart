@@ -19,8 +19,8 @@ class CalendarViewModel with ChangeNotifier {
   DateTime get focusedDay => _focusedDay;
   DateTime _focusedDay = DateTime.now();
 
-  DateTime? get selectedDay => _selectedDay;
-  DateTime? _selectedDay = DateTime.now();
+  DateTime get selectedDay => _selectedDay;
+  DateTime _selectedDay = DateTime.now();
 
   CalendarFormat get calendarFormat => _calendarFormat;
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -41,7 +41,7 @@ class CalendarViewModel with ChangeNotifier {
 
   CalendarViewModel() {
     _fetchData();
-    getRecordForDay(_selectedDay!);
+    getRecordForDay(_selectedDay);
   }
 
   List<Record> getRecordForDay(DateTime day) {
@@ -114,6 +114,7 @@ class CalendarViewModel with ChangeNotifier {
       recordList[key] = [newRecord];
     }
 
+    getRecordForDay(key);
     notifyListeners();
   }
 
@@ -135,6 +136,7 @@ class CalendarViewModel with ChangeNotifier {
       recordList[key] = [newRecord];
     }
 
+    getRecordForDay(key);
     notifyListeners();
   }
 
