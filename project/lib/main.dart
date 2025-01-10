@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/config/database/hive_database.dart';
 import 'package:project/config/database/sql_database.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
@@ -20,6 +21,7 @@ import 'package:provider/provider.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SqlDatabase();
+  HiveDatabase();
 
   runApp(MultiProvider(
     providers: [
