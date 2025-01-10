@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+// todo: 나이, 키, 몸무게로 적정 카페인 구하기 함수
 class CaffeineViewModal with ChangeNotifier {
   double get todayCaffeine => _todayCaffeine;
   double _todayCaffeine = 0;
@@ -15,7 +16,6 @@ class CaffeineViewModal with ChangeNotifier {
 
   late Timer _midnightTimer;
 
-  // todo: 나이, 키, 몸무게로 적정 카페인 구하기 함수
   CaffeineViewModal() {
     _setMidnightResetTimer();
   }
