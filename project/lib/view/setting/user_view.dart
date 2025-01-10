@@ -43,7 +43,7 @@ class UserView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            user.name ?? "",
+            user.name,
             style: Theme.of(context)
                 .textTheme
                 .titleLarge
@@ -140,7 +140,7 @@ class UsernameView extends StatelessWidget {
                           ?.copyWith(fontSize: 14.sp),
                     ),
                     Text(
-                      user.username ?? "example@email.com",
+                      user.username,
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium
@@ -168,10 +168,10 @@ class UserUpdateDialogState extends State<UserUpdateDialog> {
   @override
   Widget build(BuildContext context) {
     final User user = context.read<UserViewModel>().user;
-    String name = user.name ?? "";
-    int age = user.age ?? 20;
-    double weight = user.weight ?? 168.0;
-    double height = user.height ?? 62.7;
+    String name = user.name;
+    int age = user.age;
+    double weight = user.weight;
+    double height = user.height;
 
     return Dialog(
       child: Container(
