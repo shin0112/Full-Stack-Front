@@ -123,7 +123,9 @@ class MainWidget extends State<MyStatefulWidget> {
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      body: _widgetOptions[context.read<PageIndex>().index],
+      body: SingleChildScrollView(
+        child: _widgetOptions[context.read<PageIndex>().index],
+      ),
       bottomNavigationBar: Container(
         decoration: ShapeDecoration(
           color: Theme.of(context).colorScheme.onPrimary,
