@@ -40,5 +40,17 @@ class SqlDatabase {
       caffeine REAL NOT NULL
     );
   ''');
+
+    // Create Record table
+    db.execute('''
+    CREATE TABLE record (
+      id INTEGER AUTOINCREMENT NOT NULL PRIMARY KEY,
+      brandId INTEGER,
+      caffeine REAL NOT NULL,
+      title TEXT NOT NULL,
+      detail TEXT NOT NULL,
+      createdAt TEXT NOT NULL
+    );
+  ''');
   }
 }
