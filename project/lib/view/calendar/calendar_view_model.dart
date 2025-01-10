@@ -20,6 +20,9 @@ class CalendarViewModel with ChangeNotifier {
   DateTime get selectedDay => _selectedDay;
   DateTime _selectedDay = DateTime.now();
 
+  double get dailyTotalCaffeine => _dailyTotalCaffeine;
+  double _dailyTotalCaffeine = 0.0;
+
   CalendarFormat get calendarFormat => _calendarFormat;
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
@@ -44,6 +47,13 @@ class CalendarViewModel with ChangeNotifier {
 
   List<Record> getRecordForDay(DateTime day) {
     _selectedRecordList = recordList[day] ?? [];
+
+    double sum = 0.0;
+    for (Record record in _selectedRecordList) {
+      sum += record.caffeine;
+    }
+    _dailyTotalCaffeine = sum;
+
     return _selectedRecordList;
   }
 
