@@ -69,9 +69,4 @@ class HotlistDatasource {
       whereArgs: [hotlist.id],
     );
   }
-
-  Future close() async {
-    var db = await SqlDatabase().database;
-    db.close();
-  }
 }

@@ -85,9 +85,4 @@ class RecordDatasource {
       whereArgs: [record.id],
     );
   }
-
-  Future close() async {
-    var db = await SqlDatabase().database;
-    db.close();
-  }
 }
