@@ -6,7 +6,16 @@ class UserRepository {
 
   UserRepository();
 
-  Future<User> fetchData() async {
+  Future<User> getUser() async {
     return await _userDatasource.getUser();
+  }
+
+  Future<User> updateUser(
+    String name,
+    int age,
+    double height,
+    double weight,
+  ) async {
+    return await _userDatasource.saveUser(name, age, height, weight);
   }
 }

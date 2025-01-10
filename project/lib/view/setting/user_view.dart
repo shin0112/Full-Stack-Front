@@ -255,7 +255,7 @@ class UserUpdateDialogState extends State<UserUpdateDialog> {
                 onPressConfirm: () {
                   context
                       .read<UserViewModel>()
-                      .updateData(name, age, height, weight);
+                      .updateUser(name, age, height, weight);
                   Navigator.pop(context);
                 },
                 onPressCancel: () {

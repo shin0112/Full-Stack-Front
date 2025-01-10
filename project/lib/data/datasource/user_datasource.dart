@@ -4,9 +4,22 @@ import 'package:project/data/model/user.dart';
 class UserDatasource {
   UserDatasource();
 
-  Future<void> saveUser(User user) async {
+  Future<User> saveUser(
+    String name,
+    int age,
+    double height,
+    double weight,
+  ) async {
     final userBox = await HiveDatabase().userBox;
-    await userBox.add(user);
+    final user = userBox.getAt(0)!;
+
+    user.name = name;
+    user.age = age;
+    user.height = height;
+    user.weight = weight;
+
+    user.save();
+    return userBox.getAt(0)!;
   }
 
   Future<User> getUser() async {
