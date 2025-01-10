@@ -34,7 +34,7 @@ class SqlDatabase {
     // Create Hotlist table
     await db.execute('''
     CREATE TABLE hotlist (
-      id INTEGER NOT NULL PRIMARY KEY,
+      id INTEGER AUTOINCREMENT NOT NULL PRIMARY KEY,
       name TEXT NOT NULL,
       detail TEXT NOT NULL,
       caffeine REAL NOT NULL
