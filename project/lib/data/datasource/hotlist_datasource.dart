@@ -43,7 +43,7 @@ class HotlistDatasource {
     );
 
     if (maps.isEmpty) {
-      throw Exception("해당 즐겨찾기 없음");
+      return [];
     }
 
     return maps

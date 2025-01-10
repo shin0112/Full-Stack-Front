@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 class Hotlist {
-  int id;
+  int? id;
   String name;
   String detail;
   double caffeine;
 
   Hotlist({
-    required this.id,
+    this.id,
     required this.name,
     required this.detail,
     required this.caffeine,
@@ -15,11 +15,14 @@ class Hotlist {
 
   Map<String, Object?> toMap() {
     final map = <String, Object?>{
-      'id': id,
       'name': name,
       'detail': detail,
       'caffeine': caffeine,
     };
+
+    if (id != null) {
+      map['id'] = id;
+    }
 
     return map;
   }
