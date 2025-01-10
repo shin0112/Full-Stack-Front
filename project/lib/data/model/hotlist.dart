@@ -1,42 +1,41 @@
-import 'dart:convert';
-
 class Hotlist {
-  int id;
-  int? userId;
+  int? id;
   String name;
   String detail;
   double caffeine;
 
   Hotlist({
-    required this.id,
-    required this.userId,
+    this.id,
     required this.name,
     required this.detail,
     required this.caffeine,
   });
 
-  factory Hotlist.fromJson(Map<String, dynamic> json) {
+  Map<String, Object?> toMap() {
+    final map = <String, Object?>{
+      'name': name,
+      'detail': detail,
+      'caffeine': caffeine,
+    };
+
+    if (id != null) {
+      map['id'] = id;
+    }
+
+    return map;
+  }
+
+  factory Hotlist.fromMap(Map<String, Object?> map) {
     return Hotlist(
-      id: json['id'] as int,
-      userId: json['userId'] as int,
-      name: json['name'] as String,
-      detail: json['detail'] as String,
-      caffeine: (json['caffeine'] as int).toDouble() / 10,
+      id: map['id'] as int,
+      name: map['name'] as String,
+      detail: map['detail'] as String,
+      caffeine: map['caffeine'] as double,
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'userId': userId,
-      'name': name,
-      'detail': detail,
-      'caffeine': caffeine * 10,
-    };
+  @override
+  String toString() {
+    return 'Hotlist{id: $id, name: $name, detail: $detail, caffeine: $caffeine}';
   }
-}
-
-Future<List<Hotlist>> parseHotlistFromJson(String jsonString) async {
-  final List<dynamic> jsonData = json.decode(jsonString);
-  return jsonData.map((item) => Hotlist.fromJson(item)).toList();
 }

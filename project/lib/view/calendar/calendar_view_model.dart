@@ -14,8 +14,6 @@ class CalendarViewModel with ChangeNotifier {
   final RecordRepository _recordRepository = RecordRepository();
   final BrandRepository _brandRepository = BrandRepository();
 
-  int _recordId = 1;
-
   DateTime get focusedDay => _focusedDay;
   DateTime _focusedDay = DateTime.now();
 
@@ -78,8 +76,7 @@ class CalendarViewModel with ChangeNotifier {
   }
 
   void _fetchData() async {
-    final list = await _recordRepository.getRecordList();
-    _recordId = list.last.id;
+    final list = await _recordRepository.findAll();
     _brandNameMap = await _brandRepository.getBrandIdNameMap();
     log(_brandNameMap.toString());
 
@@ -95,45 +92,45 @@ class CalendarViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void saveRecordFromBeverage(Beverage beverage, int? userId) {
-    final Record newRecord = Record(
-      id: ++_recordId,
-      userId: userId,
-      title: beverage.name,
-      brandId: beverage.brandId,
-      caffeine: beverage.caffeine,
-      detail: "",
-      createdAt: DateTime.now(),
+  void saveRecordFromBeverage(Beverage beverage) async {
+    final Record saved = await _recordRepository.insertRecord(
+      Record(
+        title: beverage.name,
+        brandId: beverage.brandId,
+        caffeine: beverage.caffeine,
+        detail: "",
+        createdAt: DateTime.now(),
+      ),
     );
 
-    final key = newRecord.createdAt;
+    final key = saved.createdAt;
 
     if (recordList.containsKey(key)) {
-      recordList[key]!.add(newRecord);
+      recordList[key]!.add(saved);
     } else {
-      recordList[key] = [newRecord];
+      recordList[key] = [saved];
     }
 
     getRecordForDay(key);
     notifyListeners();
   }
 
-  void saveRecordFromHotlist(Hotlist hotlist, int? userId) {
-    final Record newRecord = Record(
-      id: ++_recordId,
-      userId: userId,
-      caffeine: hotlist.caffeine,
-      title: hotlist.name,
-      detail: hotlist.detail,
-      createdAt: DateTime.now(),
+  void saveRecordFromHotlist(Hotlist hotlist) async {
+    final Record saved = await _recordRepository.insertRecord(
+      Record(
+        caffeine: hotlist.caffeine,
+        title: hotlist.name,
+        detail: hotlist.detail,
+        createdAt: DateTime.now(),
+      ),
     );
 
-    final key = newRecord.createdAt;
+    final key = saved.createdAt;
 
     if (recordList.containsKey(key)) {
-      recordList[key]!.add(newRecord);
+      recordList[key]!.add(saved);
     } else {
-      recordList[key] = [newRecord];
+      recordList[key] = [saved];
     }
 
     getRecordForDay(key);

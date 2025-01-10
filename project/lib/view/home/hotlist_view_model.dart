@@ -13,28 +13,30 @@ class HotlistViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchData() async {
-    _items = await _hotlistRepository.getItems();
+    _items = await _hotlistRepository.findAll();
     notifyListeners();
   }
 
-  void deleteHotList(Hotlist hotlist) {
+  void deleteHotList(Hotlist hotlist) async {
+    await _hotlistRepository.deleteHotlist(hotlist.id!);
+
     _items.remove(hotlist);
     notifyListeners();
   }
 
   void createHotList(
-    int? userId,
     String name,
     String detail,
     double caffeine,
-  ) {
-    items.add(Hotlist(
-      id: _items.last.id + 1,
-      userId: userId,
+  ) async {
+    final Hotlist hotlist = Hotlist(
       name: name,
       detail: detail,
       caffeine: caffeine,
-    ));
+    );
+    final Hotlist saved = await _hotlistRepository.insertHotlist(hotlist);
+
+    _items.add(saved);
     notifyListeners();
   }
 }

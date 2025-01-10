@@ -7,7 +7,6 @@ import 'package:project/utils/add_object_postposition.dart';
 import 'package:project/view/calendar/calendar_view_model.dart';
 import 'package:project/view/home/beverage_view_model.dart';
 import 'package:project/view/home/caffeine_view_modal.dart';
-import 'package:project/view/setting/user_view_model.dart';
 import 'package:project/widgets/caffeine_box.dart';
 import 'package:project/widgets/section/dialog_button_section.dart';
 import 'package:provider/provider.dart';
@@ -219,10 +218,7 @@ class BeverageView extends StatelessWidget {
                 context
                     .read<CaffeineViewModal>()
                     .setTodayCaffeine(item.caffeine);
-                context.read<CalendarViewModel>().saveRecordFromBeverage(
-                      item,
-                      context.read<UserViewModel>().userId,
-                    );
+                context.read<CalendarViewModel>().saveRecordFromBeverage(item);
               },
               onPressCancel: () {
                 Navigator.pop(context);
