@@ -13,7 +13,7 @@ class HotlistViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchData() async {
-    _items = await _hotlistRepository.getItems();
+    _items = await _hotlistRepository.findAll();
     notifyListeners();
   }
 
