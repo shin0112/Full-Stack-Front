@@ -29,4 +29,8 @@ class UserViewModel with ChangeNotifier {
     _item[0].weight = weight;
     notifyListeners();
   }
+
+  int getUserId() {
+    return item[0].id;
+  }
 }
