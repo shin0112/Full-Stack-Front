@@ -5,7 +5,6 @@ import 'package:project/utils/add_object_postposition.dart';
 import 'package:project/view/calendar/calendar_view_model.dart';
 import 'package:project/view/home/caffeine_view_modal.dart';
 import 'package:project/view/home/hotlist_view_model.dart';
-import 'package:project/view/setting/user_view_model.dart';
 import 'package:project/widgets/icon_box.dart';
 import 'package:project/widgets/line.dart';
 import 'package:project/widgets/section/dialog_button_section.dart';
@@ -244,10 +243,9 @@ class HotlistView extends StatelessWidget {
                   context
                       .read<CaffeineViewModal>()
                       .setTodayCaffeine(hotlist.caffeine);
-                  context.read<CalendarViewModel>().saveRecordFromHotlist(
-                        hotlist,
-                        context.read<UserViewModel>().userId,
-                      );
+                  context
+                      .read<CalendarViewModel>()
+                      .saveRecordFromHotlist(hotlist);
                 },
                 onPressCancel: () {
                   Navigator.pop(context);
@@ -403,7 +401,6 @@ class HotlistAddDialogState extends State<HotlistAddDialog> {
               child: DialogButtonSection(
                 onPressConfirm: () {
                   context.read<HotlistViewModel>().createHotList(
-                        context.read<UserViewModel>().user.id,
                         name,
                         detail,
                         caffeine,
