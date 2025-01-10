@@ -2,15 +2,15 @@ import 'dart:io';
 
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:project/config/database/hive_registrar.g.dart';
+import 'package:project/data/model/user.dart';
 
 class HiveDatabase {
   static final HiveDatabase instance = HiveDatabase._instance();
-
-  LazyBox? _userBox;
-
   HiveDatabase._instance();
 
-  Future<LazyBox> get userBox async {
+  Box? _userBox;
+
+  Future<Box> get userBox async {
     if (_userBox != null) return _userBox!;
     await _initDatabase();
     return _userBox!;
@@ -22,7 +22,11 @@ class HiveDatabase {
 
   Future<void> _initDatabase() async {
     await Hive.initFlutter();
-    _userBox = await Hive.openLazyBox('user');
+    _userBox = await Hive.openBox('user');
+
+    if (await _userBox!.getAt(0) == null) {
+      _userBox!.add(User());
+    }
 
     final path = Directory.current.path;
     Hive
