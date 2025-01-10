@@ -1,12 +1,12 @@
-import 'package:flutter/services.dart';
+import 'package:project/data/datasource/user_datasource.dart';
 import 'package:project/data/model/user.dart';
 
 class UserRepository {
+  final UserDatasource _userDatasource = UserDatasource();
+
   UserRepository();
 
   Future<User> fetchData() async {
-    final String jsonString =
-        await rootBundle.loadString('assets/dummy/user.json');
-    return parseUserFromJson(jsonString);
+    return await _userDatasource.getUser();
   }
 }
