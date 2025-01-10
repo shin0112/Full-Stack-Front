@@ -3,6 +3,7 @@ import 'package:project/data/model/record.dart';
 
 class RecordRepository {
   final RecordDatasource _recordDatasource = RecordDatasource();
+
   RecordRepository();
 
   Future<List<Record>> findAll() async {
@@ -11,5 +12,9 @@ class RecordRepository {
 
   Future<Record> insertRecord(Record record) async {
     return await _recordDatasource.insert(record);
+  }
+
+  Future<void> deleteRecord(int id) async {
+    await _recordDatasource.delete(id);
   }
 }
