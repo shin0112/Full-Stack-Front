@@ -10,12 +10,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    final UserRepository userRepository;
+    final private UserRepository userRepository;
 
     @Override
     public UserIdResponse createInitialUser() {
-        User user = userRepository.create()
-            .orElseThrow(() -> new RuntimeException("user create fail"));
+        User user = userRepository.save(new User());
         return UserIdResponse.of(user);
     }
 }
