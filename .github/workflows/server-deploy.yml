@@ -21,4 +21,5 @@
           run: chmod +x ./server/gradlew
 
         - name: Build with Gradle Wrapper
-          run: ./server/gradlew build
+          working-directory: ./server
+          run: ./gradlew build
