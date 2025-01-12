@@ -156,7 +156,7 @@ class PostBoxState extends State<PostBox> {
                         ?.copyWith(fontSize: 16.sp),
                   ),
                   Text(
-                    widget.post.context,
+                    widget.post.content,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
