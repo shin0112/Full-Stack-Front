@@ -13,4 +13,8 @@ class PostRepository {
   Future<List<Post>> getMine() async {
     return await _postDatasource.findMine();
   }
+
+  Future<Post> create(String title, String content) async {
+    return await _postDatasource.create(title, content);
+  }
 }

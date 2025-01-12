@@ -38,6 +38,13 @@ class PostViewModel with ChangeNotifier {
     if (_myPostList.isEmpty) {
       _myPostList = await _postRepository.getMine();
     }
+  }
+
+  Future<void> create(String title, String content) async {
+    Post post = await _postRepository.create(title, content);
+    items.add(post);
+    myPostList.add(post);
+
     notifyListeners();
   }
 

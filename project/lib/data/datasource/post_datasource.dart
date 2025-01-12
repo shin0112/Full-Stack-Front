@@ -81,9 +81,10 @@ class PostDatasource {
     return postList;
   }
 
-  Future<void> create(String title, String content) async {
+  Future<Post> create(String title, String content) async {
     var userBox = await HiveDatabase().userBox;
     var userId = userBox.getAt(0)!.id;
+    late Map<String, dynamic> json;
 
     try {
       final url = Uri.parse("$baseUrl/posts");
@@ -103,6 +104,9 @@ class PostDatasource {
 
       if (response.statusCode == 200) {
         log("게시물 생성 성공");
+
+        final String responseBody = utf8.decode(response.bodyBytes);
+        json = jsonDecode(responseBody);
       } else {
         log("게시물 생성 실패: 상태 코드 ${response.statusCode}");
       }
@@ -110,5 +114,7 @@ class PostDatasource {
       log("게시물 생성 중 오류 발생: $e");
       rethrow;
     }
+
+    return Post.fromJson(json);
   }
 }
