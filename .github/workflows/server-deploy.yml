@@ -76,6 +76,11 @@
               sudo docker stop $CONTAINER_ID
               sudo docker rm $CONTAINER_ID
               fi
+
+              EXISTING_IMAGE_ID=$(sudo docker images -q ${{ env.DOCKER_IMAGE_NAME }}:latest)
+              if [ ! -z "$EXISTING_IMAGE_ID" ]; then
+                sudo docker rmi $EXISTING_IMAGE_ID
+              fi
     
               sudo docker pull ${{ env.DOCKER_IMAGE_NAME }}:latest
               sudo docker run --name ${{ env.CONTAINER_NAME }} -d -p 80:8080 -e TZ=Asia/Seoul ${{ env.DOCKER_IMAGE_NAME }}:latest
