@@ -18,7 +18,10 @@ class PostView extends StatelessWidget {
         // todo: 글쓰기 버튼 추가
         child: Column(
           children: [
-            const PostButtonSection(),
+            _buildPostModeButtonSection(
+              context,
+              provider,
+            ),
             const HorizontalLine(width: 360),
             SizedBox(
               height: 56.sp * provider.items.length,
@@ -36,43 +39,36 @@ class PostView extends StatelessWidget {
       ),
     );
   }
-}
 
-class PostMode {
-  const PostMode(this.mode, this.title);
-  final int mode;
-  final String title;
-}
-
-class PostButtonSection extends StatefulWidget {
-  const PostButtonSection({super.key});
-
-  @override
-  State<StatefulWidget> createState() => PostButtonSectionState();
-}
-
-class PostButtonSectionState extends State<PostButtonSection> {
-  static const List<PostMode> postModeList = <PostMode>[
-    PostMode(0, '전체'),
-    PostMode(1, '인기'),
-    PostMode(2, 'MY'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildPostModeButtonSection(
+    BuildContext context,
+    PostViewModel provider,
+  ) {
     final TextStyle buttonTextStyle =
         Theme.of(context).textTheme.labelMedium!.copyWith(
               fontSize: 14.sp,
               color: MaterialTheme.coffee.seed,
             );
+    final TextStyle selectedButtonTextStyle =
+        Theme.of(context).textTheme.labelMedium!.copyWith(
+              fontSize: 14.sp,
+              color: Theme.of(context).colorScheme.onPrimary,
+            );
     final ButtonStyle buttonStyle = TextButton.styleFrom(
-        shape: RoundedRectangleBorder(
-      borderRadius: const BorderRadius.all(Radius.circular(100)),
-      side: BorderSide(
-        color: MaterialTheme.coffee.seed,
-        width: 1,
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.all(Radius.circular(100)),
+        side: BorderSide(
+          color: MaterialTheme.coffee.seed,
+          width: 1,
+        ),
       ),
-    ));
+    );
+    final ButtonStyle selectedButtonStyle = TextButton.styleFrom(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(100)),
+      ),
+      backgroundColor: MaterialTheme.coffee.seed,
+    );
 
     return Container(
       height: 56.sp,
@@ -81,21 +77,25 @@ class PostButtonSectionState extends State<PostButtonSection> {
         // todo: mode 변경 로직 및 버튼 로직 작성
         children: [
           TextButton(
-            style: buttonStyle,
-            onPressed: () {},
-            child: Text("전체", style: buttonTextStyle),
+            style: provider.mode.mode == 0 ? selectedButtonStyle : buttonStyle,
+            onPressed: () {
+              provider.changeMode(0);
+            },
+            child: Text("전체",
+                style: provider.mode.mode == 0
+                    ? selectedButtonTextStyle
+                    : buttonTextStyle),
           ),
           SizedBox(width: 10.sp),
           TextButton(
-            style: buttonStyle,
-            onPressed: () {},
-            child: Text("인기", style: buttonTextStyle),
-          ),
-          SizedBox(width: 10.sp),
-          TextButton(
-            style: buttonStyle,
-            onPressed: () {},
-            child: Text("MY", style: buttonTextStyle),
+            style: provider.mode.mode == 1 ? selectedButtonStyle : buttonStyle,
+            onPressed: () {
+              provider.changeMode(1);
+            },
+            child: Text("MY",
+                style: provider.mode.mode == 1
+                    ? selectedButtonTextStyle
+                    : buttonTextStyle),
           ),
         ],
       ),
