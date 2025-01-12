@@ -16,6 +16,6 @@ class UserRepository {
     double height,
     double weight,
   ) async {
-    return await _userDatasource.saveUser(name, age, height, weight);
+    return await _userDatasource.updateUser(name, age, height, weight);
   }
 }

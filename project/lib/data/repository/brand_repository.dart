@@ -15,7 +15,6 @@ class BrandRepository {
 
   Future<Map<int, String>> getBrandIdNameMap() async {
     Map<String, List<Brand>> categoryList = await getBrandList();
-
     Map<int, String> brandIdNameMap = {};
 
     for (var entry in categoryList.entries) {

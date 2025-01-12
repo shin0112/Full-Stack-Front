@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:project/config/database/hive_database.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:project/config/database/sql_database.dart';
 import 'package:project/config/themes/text.dart';
 import 'package:project/config/themes/theme.dart';
@@ -18,10 +19,11 @@ import 'package:project/view/setting/setting_page.dart';
 import 'package:project/view/setting/user_view_model.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SqlDatabase();
-  HiveDatabase();
+  await Hive.initFlutter();
+  await dotenv.load(fileName: ".env");
 
   runApp(MultiProvider(
     providers: [
@@ -45,6 +47,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<UserViewModel>().user;
+
     TextTheme textTheme = createTextTheme(context, "Roboto", "Roboto");
     MaterialTheme theme = MaterialTheme(textTheme);
 
