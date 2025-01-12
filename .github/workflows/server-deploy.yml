@@ -20,6 +20,9 @@
             java-version: '17'
             distribution: 'temurin'
 
+        - name: Create directories for application.yml
+          run: mkdir -p ./server/src/main/resources
+      
         - name: Setup application.yml
           run: echo "${{ secrets.APPLICATION_YML }}" > ./server/src/main/resources/application.yml
 
