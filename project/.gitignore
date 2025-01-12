@@ -152,3 +152,4 @@ app.*.symbols
 
 assets/
 lib/config/themes
+*.env
