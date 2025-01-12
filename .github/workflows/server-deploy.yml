@@ -47,18 +47,6 @@
             docker build -t ${{ env.DOCKER_IMAGE_NAME }}:latest -f server/Dockerfile .
             docker push ${{ env.DOCKER_IMAGE_NAME }}:latest
 
-        - name: Deploy to EC2
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{ env.EC2_HOST }}
-            username: ${{ env.EC2_SSH_USER }}
-            key: ${{ env.EC2_SSH_KEY }}
-            script: |
-              docker pull ${{ env.DOCKER_IMAGE_NAME }}:latest
-              docker stop coffhy
-              docker rm coffhy
-              docker run -d -p 8080:8080 -p 50000:50000 --name coffhy ${{ env.DOCKER_IMAGE_NAME }}:latest
-
     deploy:
       runs-on: ubuntu-latest
       needs: build-and-push-docker-image
@@ -75,11 +63,6 @@
               if [ ! -z "$CONTAINER_ID" ]; then
               sudo docker stop $CONTAINER_ID
               sudo docker rm $CONTAINER_ID
-              fi
-
-              EXISTING_IMAGE_ID=$(sudo docker images -q ${{ env.DOCKER_IMAGE_NAME }}:latest)
-              if [ ! -z "$EXISTING_IMAGE_ID" ]; then
-                sudo docker rmi $EXISTING_IMAGE_ID
               fi
     
               sudo docker pull ${{ env.DOCKER_IMAGE_NAME }}:latest
