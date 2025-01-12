@@ -3,9 +3,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:project/data/repository/record_repository.dart';
 
 // todo: 나이, 키, 몸무게로 적정 카페인 구하기 함수
 class CaffeineViewModal with ChangeNotifier {
+  final RecordRepository _recordRepository = RecordRepository();
+
   double get todayCaffeine => _todayCaffeine;
   double _todayCaffeine = 0;
 
@@ -18,6 +21,7 @@ class CaffeineViewModal with ChangeNotifier {
   late Timer _midnightTimer;
 
   CaffeineViewModal() {
+    _fetchData();
     _setMidnightResetTimer();
   }
 
@@ -25,6 +29,16 @@ class CaffeineViewModal with ChangeNotifier {
   void dispose() {
     cancelTimer();
     super.dispose();
+  }
+
+  void _fetchData() async {
+    List<double> caffeineList = await _recordRepository.findTodayCaffeine();
+
+    for (double caffeine in caffeineList) {
+      _todayCaffeine += caffeine;
+    }
+
+    notifyListeners();
   }
 
   void _setMidnightResetTimer() {
@@ -52,8 +66,18 @@ class CaffeineViewModal with ChangeNotifier {
     return weight * maxCaffeinePerKg.toInt();
   }
 
-  void setTodayCaffeine(double caffeine) {
+  void plusTodayCaffeine(double caffeine) {
     _todayCaffeine += caffeine;
+    notifyListeners();
+  }
+
+  void minusTodayCaffeine(double caffeine) {
+    _todayCaffeine -= caffeine;
+
+    if (_todayCaffeine < 0) {
+      _todayCaffeine = 0;
+    }
+
     notifyListeners();
   }
 
