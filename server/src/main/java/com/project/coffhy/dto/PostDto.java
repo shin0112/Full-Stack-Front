@@ -1,5 +1,7 @@
 package com.project.coffhy.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.coffhy.domain.Post;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -16,11 +18,15 @@ public class PostDto {
         String title;
         String content;
         int like;
+        @JsonProperty("isLike")
         boolean isLike;
         LocalDateTime createdAt;
         LocalDateTime updatedAt;
 
-        public static PostResponse of(Post post, boolean isLike) {
+        public static PostResponse of(
+            final Post post,
+            final boolean isLike
+        ) {
             return PostResponse.builder()
                 .id(post.getId())
                 .userId(post.getUserId())
