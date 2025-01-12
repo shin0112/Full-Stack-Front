@@ -133,8 +133,13 @@ class PostView extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        // todo: 터치 시 로직 작성, 좋아요 추가
-        onTap: () {},
+        onTap: () => showDialog(
+          context: context,
+          builder: (BuildContext context) => _buildPostReadDialog(
+            context,
+            post,
+          ),
+        ),
         child: Container(
           width: 328.sp,
           height: 88.sp,
@@ -183,6 +188,77 @@ class PostView extends StatelessWidget {
                   ],
                 ),
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPostReadDialog(
+    BuildContext context,
+    Post post,
+  ) {
+    return Dialog.fullscreen(
+      child: Container(
+        padding: EdgeInsets.only(top: 20.sp, right: 20.sp, left: 20.sp),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              Container(
+                height: 48.sp,
+                width: 360.sp,
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      width: 1,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+                child: Text(
+                  post.title,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontSize: 22.sp,
+                      ),
+                ),
+              ),
+              SizedBox(height: 10.sp),
+              Container(
+                height: 300.sp,
+                width: 360.sp,
+                padding: EdgeInsets.all(10.sp),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 1, color: Theme.of(context).colorScheme.onSurface),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  post.content,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: 14.sp,
+                      ),
+                ),
+              ),
+              SizedBox(height: 10.sp),
+              Container(
+                width: 360.sp,
+                alignment: Alignment.centerRight,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "닫기",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontSize: 14.sp,
+                        ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.sp),
             ],
           ),
         ),
