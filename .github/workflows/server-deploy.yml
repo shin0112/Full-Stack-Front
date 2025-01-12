@@ -2,8 +2,14 @@
     push:
       branches:
         - develop
+  env:
+    DOCKER_IMAGE_NAME: "${{ secrets.DOCKER_USERNAME }}/coffhy"
+    EC2_HOST: ${{ secrets.EC2_HOST }}
+    EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+    EC2_SSH_USER: ubuntu
+
   jobs:
-    build:
+    build-and-push-docker-image:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4
@@ -14,6 +20,9 @@
             java-version: '17'
             distribution: 'temurin'
 
+        - name: Setup application.yml
+          run: echo "${{ secrets.APPLICATION_YML }}" > ./server/src/main/resources/application.yml
+
         - name: Setup Gradle
           uses: gradle/actions/setup-gradle@v4 # v4.0.0
 
@@ -23,3 +32,44 @@
         - name: Build with Gradle Wrapper
           working-directory: ./server
           run: ./gradlew build
+
+        - name: Login to Docker Hub using Access Token
+          run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+        - name: Build and push Docker image
+          run: |
+            docker build -t ${{ env.DOCKER_IMAGE_NAME }}:latest .
+            docker push ${{ env.DOCKER_IMAGE_NAME }}:latest
+
+        - name: Deploy to EC2
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ env.EC2_HOST }}
+            username: ${{ env.EC2_SSH_USER }}
+            key: ${{ env.EC2_SSH_KEY }}
+            script: |
+              docker pull ${{ env.DOCKER_IMAGE_NAME }}:latest
+              docker stop coffhy
+              docker rm coffhy
+              docker run -d -p 8080:8080 -p 50000:50000 --name coffhy ${{ env.DOCKER_IMAGE_NAME }}:latest
+
+    deploy:
+      runs-on: ubuntu-latest
+      needs: build-and-push-docker-image
+      steps:
+        - name: Deploy to EC2
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ env.EC2_HOST }}
+            username: ${{ env.EC2_SSH_USER }}
+            key: ${{ env.EC2_SSH_KEY }}
+            script: |
+              CONTAINER_ID=$(sudo docker ps -q --filter "publish=80-8080")
+
+              if [ ! -z "$CONTAINER_ID" ]; then
+              sudo docker stop $CONTAINER_ID
+              sudo docker rm $CONTAINER_ID
+              fi
+    
+              sudo docker pull ${{ env.DOCKER_HUB }}
+              sudo docker run --name ${{ env.CONTAINER_NAME }} -d -p 80:8080 -e TZ=Asia/Seoul ${{ env.DOCKER_HUB }}
