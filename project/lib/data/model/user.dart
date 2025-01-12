@@ -27,15 +27,4 @@ class User extends HiveObject {
       weight: map['weight'] as double,
     );
   }
-
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'id': id,
-  //     'age': age,
-  //     'name': name,
-  //     'username': username,
-  //     'height': height * 10,
-  //     'weight': weight * 10,
-  //   };
-  // }
 }
