@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:project/config/database/sql_database.dart';
@@ -22,6 +23,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SqlDatabase();
   await Hive.initFlutter();
+  await dotenv.load(fileName: ".env");
 
   runApp(MultiProvider(
     providers: [
