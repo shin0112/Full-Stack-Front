@@ -34,8 +34,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void createPost(final PostRequest postRequest) {
+    public PostResponse createPost(final PostRequest postRequest) {
         Post post = PostRequest.toEntity(postRequest);
-        postRepository.save(post);
+        return PostResponse.of(postRepository.save(post), false);
     }
 }

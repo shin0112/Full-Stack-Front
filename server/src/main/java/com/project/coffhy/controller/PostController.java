@@ -36,8 +36,8 @@ public class PostController {
 
     @PostMapping()
     public ApiResponse<?> createPost(@RequestBody PostRequest postRequest) {
-        postService.createPost(postRequest);
-        return ApiResponse.success(null);
+        PostResponse postResponse = postService.createPost(postRequest);
+        return ApiResponse.success(postResponse);
     }
 }
 

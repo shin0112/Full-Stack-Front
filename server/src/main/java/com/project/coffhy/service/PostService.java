@@ -10,5 +10,5 @@ public interface PostService {
 
     List<PostResponse> getPostMine(Long userId);
 
-    void createPost(PostDto.PostRequest postRequest);
+    PostResponse createPost(PostDto.PostRequest postRequest);
 }
