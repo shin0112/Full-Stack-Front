@@ -20,7 +20,6 @@ class PostView extends StatelessWidget {
         children: [
           SizedBox(
             height: getHeight(620, size),
-            // todo: 글쓰기 버튼 추가
             child: Column(
               children: [
                 _buildPostModeButtonSection(
@@ -29,11 +28,11 @@ class PostView extends StatelessWidget {
                 ),
                 const HorizontalLine(width: 360),
                 SizedBox(
-                  height: 56.sp * provider.items.length,
                   child: provider.items.isEmpty
                       ? const Center(child: Text("준비 중입니다."))
                       : ListView(
                           scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
                           children: (provider.mode.mode == 0
                                   ? provider.items
                                   : provider.myPostList)
