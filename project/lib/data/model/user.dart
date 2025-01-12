@@ -11,8 +11,8 @@ class User extends HiveObject {
   User({
     this.id = 0,
     this.age = 20,
-    this.name = "",
-    this.username = "example@email.com",
+    this.name = "user",
+    this.username = "",
     this.height = 175.0,
     this.weight = 60.0,
   });
@@ -28,14 +28,14 @@ class User extends HiveObject {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'age': age,
-      'name': name,
-      'username': username,
-      'height': height * 10,
-      'weight': weight * 10,
-    };
-  }
+  // Map<String, dynamic> toJson() {
+  //   return {
+  //     'id': id,
+  //     'age': age,
+  //     'name': name,
+  //     'username': username,
+  //     'height': height * 10,
+  //     'weight': weight * 10,
+  //   };
+  // }
 }
