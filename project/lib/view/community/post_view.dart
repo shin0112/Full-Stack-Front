@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/theme.dart';
 import 'package:project/data/model/post.dart';
+import 'package:project/utils/get_size.dart';
 import 'package:project/view/community/post_view_model.dart';
 import 'package:project/widgets/icon_box.dart';
 import 'package:project/widgets/line.dart';
@@ -12,32 +13,49 @@ class PostView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.sizeOf(context);
     return Consumer<PostViewModel>(
-      builder: (context, provider, child) => SizedBox(
-        height: 620.sp,
-        // todo: 글쓰기 버튼 추가
-        child: Column(
-          children: [
-            _buildPostModeButtonSection(
-              context,
-              provider,
+      builder: (context, provider, child) => Stack(
+        children: [
+          SizedBox(
+            height: getHeight(620, size),
+            // todo: 글쓰기 버튼 추가
+            child: Column(
+              children: [
+                _buildPostModeButtonSection(
+                  context,
+                  provider,
+                ),
+                const HorizontalLine(width: 360),
+                SizedBox(
+                  height: 56.sp * provider.items.length,
+                  child: provider.items.isEmpty
+                      ? const Center(child: Text("준비 중입니다."))
+                      : ListView(
+                          scrollDirection: Axis.vertical,
+                          children: (provider.mode.mode == 0
+                                  ? provider.items
+                                  : provider.myPostList)
+                              .map((item) => PostBox(post: item))
+                              .toList(),
+                        ),
+                ),
+              ],
             ),
-            const HorizontalLine(width: 360),
-            SizedBox(
-              height: 56.sp * provider.items.length,
-              child: provider.items.isEmpty
-                  ? const Center(child: Text("준비 중입니다."))
-                  : ListView(
-                      scrollDirection: Axis.vertical,
-                      children: (provider.mode.mode == 0
-                              ? provider.items
-                              : provider.myPostList)
-                          .map((item) => PostBox(post: item))
-                          .toList(),
-                    ),
+          ),
+          Positioned(
+            bottom: 10.sp,
+            right: 18.sp,
+            child: FloatingActionButton(
+              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+              onPressed: () {},
+              child: Icon(
+                Icons.edit_outlined,
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -118,57 +136,61 @@ class PostBoxState extends State<PostBox> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      // todo: 터치 시 로직 작성, 좋아요 추가
-      onTap: () {},
-      child: Container(
-        width: 328.sp,
-        height: 88.sp,
-        padding: EdgeInsets.symmetric(vertical: 16.sp, horizontal: 12.sp),
-        decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-            color: Theme.of(context).colorScheme.outline,
-          )),
-          borderRadius: BorderRadius.circular(6),
-          color: Theme.of(context).colorScheme.surfaceContainerLowest,
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 64.sp,
-              height: 64.sp,
-              color: Theme.of(context).colorScheme.secondaryContainer,
-              alignment: Alignment.center,
-              child: const IconBox(icon: Icons.local_cafe_outlined),
-            ),
-            SizedBox(width: 16.sp),
-            SizedBox(
-              width: 216.sp,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.post.title,
-                    maxLines: 1,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(fontSize: 16.sp),
-                  ),
-                  Text(
-                    widget.post.content,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontSize: 14.sp,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                  ),
-                ],
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        // todo: 터치 시 로직 작성, 좋아요 추가
+        onTap: () {},
+        child: Container(
+          width: 328.sp,
+          height: 88.sp,
+          padding: EdgeInsets.symmetric(vertical: 16.sp, horizontal: 12.sp),
+          decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+              color: Theme.of(context).colorScheme.outline,
+            )),
+            borderRadius: BorderRadius.circular(6),
+            color: Theme.of(context).colorScheme.surfaceContainerLowest,
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 64.sp,
+                height: 64.sp,
+                color: Theme.of(context).colorScheme.secondaryContainer,
+                alignment: Alignment.center,
+                child: const IconBox(icon: Icons.local_cafe_outlined),
               ),
-            ),
-          ],
+              SizedBox(width: 16.sp),
+              SizedBox(
+                width: 216.sp,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.post.title,
+                      maxLines: 1,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontSize: 16.sp),
+                    ),
+                    Text(
+                      widget.post.content,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontSize: 14.sp,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
