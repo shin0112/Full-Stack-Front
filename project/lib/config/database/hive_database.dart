@@ -22,9 +22,10 @@ class HiveDatabase {
     await Hive.initFlutter();
     Hive.registerAdapters();
 
+    // await Hive.deleteBoxFromDisk('user');
     _userBox = await Hive.openBox<User>('user');
 
-    if (_userBox!.getAt(0) == null) {
+    if (_userBox!.isEmpty) {
       _userBox!.add(User());
     }
   }

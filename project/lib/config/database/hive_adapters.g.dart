@@ -19,8 +19,8 @@ class UserAdapter extends TypeAdapter<User> {
     return User(
       id: fields[0] == null ? 0 : (fields[0] as num).toInt(),
       age: fields[1] == null ? 20 : (fields[1] as num).toInt(),
-      name: fields[2] == null ? "" : fields[2] as String,
-      username: fields[3] == null ? "example@email.com" : fields[3] as String,
+      name: fields[2] == null ? "user" : fields[2] as String,
+      username: fields[3] == null ? "" : fields[3] as String,
       height: fields[4] == null ? 175.0 : (fields[4] as num).toDouble(),
       weight: fields[5] == null ? 60.0 : (fields[5] as num).toDouble(),
     );
