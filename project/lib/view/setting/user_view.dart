@@ -43,7 +43,7 @@ class UserView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            user.name,
+            "${user.name}@${user.id}",
             style: Theme.of(context)
                 .textTheme
                 .titleLarge
