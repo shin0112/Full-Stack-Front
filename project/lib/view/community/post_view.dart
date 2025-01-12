@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/theme.dart';
 import 'package:project/data/model/post.dart';
+import 'package:project/utils/get_size.dart';
 import 'package:project/view/community/post_view_model.dart';
 import 'package:project/widgets/icon_box.dart';
 import 'package:project/widgets/line.dart';
+import 'package:project/widgets/section/dialog_button_section.dart';
 import 'package:provider/provider.dart';
 
 class PostView extends StatelessWidget {
@@ -12,90 +14,109 @@ class PostView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.sizeOf(context);
     return Consumer<PostViewModel>(
-      builder: (context, provider, child) => SizedBox(
-        height: 620.sp,
-        // todo: 글쓰기 버튼 추가
-        child: Column(
-          children: [
-            const PostButtonSection(),
-            const HorizontalLine(width: 360),
-            SizedBox(
-              height: 56.sp * provider.items.length,
-              child: provider.items.isEmpty
-                  ? const Center(child: Text("준비 중입니다."))
-                  : ListView(
-                      scrollDirection: Axis.vertical,
-                      children: provider.items
-                          .map((item) => PostBox(post: item))
-                          .toList(),
-                    ),
+      builder: (context, provider, child) => Stack(
+        children: [
+          SizedBox(
+            height: getHeight(620, size),
+            child: Column(
+              children: [
+                _buildPostModeButtonSection(
+                  context,
+                  provider,
+                ),
+                const HorizontalLine(width: 360),
+                SizedBox(
+                  child: provider.items.isEmpty
+                      ? const Center(child: Text("준비 중입니다."))
+                      : ListView(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          children: (provider.mode.mode == 0
+                                  ? provider.items
+                                  : provider.myPostList)
+                              .map((item) => PostBox(post: item))
+                              .toList(),
+                        ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          Positioned(
+            bottom: 10.sp,
+            right: 18.sp,
+            child: FloatingActionButton(
+              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) => const PostAddDialog()),
+              child: Icon(
+                Icons.edit_outlined,
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
-}
 
-class PostMode {
-  const PostMode(this.mode, this.title);
-  final int mode;
-  final String title;
-}
-
-class PostButtonSection extends StatefulWidget {
-  const PostButtonSection({super.key});
-
-  @override
-  State<StatefulWidget> createState() => PostButtonSectionState();
-}
-
-class PostButtonSectionState extends State<PostButtonSection> {
-  static const List<PostMode> postModeList = <PostMode>[
-    PostMode(0, '전체'),
-    PostMode(1, '인기'),
-    PostMode(2, 'MY'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildPostModeButtonSection(
+    BuildContext context,
+    PostViewModel provider,
+  ) {
     final TextStyle buttonTextStyle =
         Theme.of(context).textTheme.labelMedium!.copyWith(
               fontSize: 14.sp,
               color: MaterialTheme.coffee.seed,
             );
+    final TextStyle selectedButtonTextStyle =
+        Theme.of(context).textTheme.labelMedium!.copyWith(
+              fontSize: 14.sp,
+              color: Theme.of(context).colorScheme.onPrimary,
+            );
     final ButtonStyle buttonStyle = TextButton.styleFrom(
-        shape: RoundedRectangleBorder(
-      borderRadius: const BorderRadius.all(Radius.circular(100)),
-      side: BorderSide(
-        color: MaterialTheme.coffee.seed,
-        width: 1,
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.all(Radius.circular(100)),
+        side: BorderSide(
+          color: MaterialTheme.coffee.seed,
+          width: 1,
+        ),
       ),
-    ));
+    );
+    final ButtonStyle selectedButtonStyle = TextButton.styleFrom(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(100)),
+      ),
+      backgroundColor: MaterialTheme.coffee.seed,
+    );
 
     return Container(
       height: 56.sp,
       padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 10.sp),
       child: Row(
-        // todo: mode 변경 로직 및 버튼 로직 작성
         children: [
           TextButton(
-            style: buttonStyle,
-            onPressed: () {},
-            child: Text("전체", style: buttonTextStyle),
+            style: provider.mode.mode == 0 ? selectedButtonStyle : buttonStyle,
+            onPressed: () {
+              provider.changeMode(0);
+            },
+            child: Text("전체",
+                style: provider.mode.mode == 0
+                    ? selectedButtonTextStyle
+                    : buttonTextStyle),
           ),
           SizedBox(width: 10.sp),
           TextButton(
-            style: buttonStyle,
-            onPressed: () {},
-            child: Text("인기", style: buttonTextStyle),
-          ),
-          SizedBox(width: 10.sp),
-          TextButton(
-            style: buttonStyle,
-            onPressed: () {},
-            child: Text("MY", style: buttonTextStyle),
+            style: provider.mode.mode == 1 ? selectedButtonStyle : buttonStyle,
+            onPressed: () {
+              provider.changeMode(1);
+            },
+            child: Text("MY",
+                style: provider.mode.mode == 1
+                    ? selectedButtonTextStyle
+                    : buttonTextStyle),
           ),
         ],
       ),
@@ -117,57 +138,114 @@ class PostBoxState extends State<PostBox> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      // todo: 터치 시 로직 작성, 좋아요 추가
-      onTap: () {},
-      child: Container(
-        width: 328.sp,
-        height: 88.sp,
-        padding: EdgeInsets.symmetric(vertical: 16.sp, horizontal: 12.sp),
-        decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-            color: Theme.of(context).colorScheme.outline,
-          )),
-          borderRadius: BorderRadius.circular(6),
-          color: Theme.of(context).colorScheme.surfaceContainerLowest,
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 64.sp,
-              height: 64.sp,
-              color: Theme.of(context).colorScheme.secondaryContainer,
-              alignment: Alignment.center,
-              child: const IconBox(icon: Icons.local_cafe_outlined),
-            ),
-            SizedBox(width: 16.sp),
-            SizedBox(
-              width: 216.sp,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.post.title,
-                    maxLines: 1,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(fontSize: 16.sp),
-                  ),
-                  Text(
-                    widget.post.context,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontSize: 14.sp,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                  ),
-                ],
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        // todo: 터치 시 로직 작성, 좋아요 추가
+        onTap: () {},
+        child: Container(
+          width: 328.sp,
+          height: 88.sp,
+          padding: EdgeInsets.symmetric(vertical: 16.sp, horizontal: 12.sp),
+          decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+              color: Theme.of(context).colorScheme.outline,
+            )),
+            borderRadius: BorderRadius.circular(6),
+            color: Theme.of(context).colorScheme.surfaceContainerLowest,
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 64.sp,
+                height: 64.sp,
+                color: Theme.of(context).colorScheme.secondaryContainer,
+                alignment: Alignment.center,
+                child: const IconBox(icon: Icons.local_cafe_outlined),
               ),
-            ),
-          ],
+              SizedBox(width: 16.sp),
+              SizedBox(
+                width: 216.sp,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.post.title,
+                      maxLines: 1,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontSize: 16.sp),
+                    ),
+                    Text(
+                      widget.post.content,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontSize: 14.sp,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PostAddDialog extends StatefulWidget {
+  const PostAddDialog({super.key});
+
+  @override
+  State<StatefulWidget> createState() => PostAddDialogState();
+}
+
+class PostAddDialogState extends State<PostAddDialog> {
+  String title = "";
+  String content = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog.fullscreen(
+      child: Container(
+        padding: EdgeInsets.only(top: 20.sp, right: 20.sp, left: 20.sp),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              TextField(
+                onChanged: (value) => {title = value},
+                decoration: const InputDecoration(
+                  labelText: "제목",
+                ),
+              ),
+              SizedBox(height: 10.sp),
+              TextField(
+                maxLines: 30,
+                onChanged: (value) => {content = value},
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 10.sp),
+              DialogButtonSection(
+                onPressConfirm: () {
+                  context.read<PostViewModel>().create(title, content);
+                  Navigator.pop(context);
+                },
+                onPressCancel: () {
+                  Navigator.pop(context);
+                },
+              ),
+              SizedBox(height: 20.sp),
+            ],
+          ),
         ),
       ),
     );
