@@ -10,6 +10,10 @@ class RecordRepository {
     return await _recordDatasource.findAll();
   }
 
+  Future<List<double>> findTodayCaffeine() async {
+    return await _recordDatasource.findTodayCaffeine();
+  }
+
   Future<Record> insertRecord(Record record) async {
     return await _recordDatasource.insert(record);
   }

@@ -217,7 +217,7 @@ class BeverageView extends StatelessWidget {
                 Navigator.pop(context);
                 context
                     .read<CaffeineViewModal>()
-                    .setTodayCaffeine(item.caffeine);
+                    .plusTodayCaffeine(item.caffeine);
                 context.read<CalendarViewModel>().saveRecordFromBeverage(item);
               },
               onPressCancel: () {

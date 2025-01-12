@@ -175,6 +175,13 @@ class CalendarViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteRecord(Record record) async {
+    recordList[record.createdAt]!.remove(record);
+    await _recordRepository.deleteRecord(record.id!);
+
+    notifyListeners();
+  }
+
   List<DateTime> _daysInRange(DateTime first, DateTime last) {
     final dayCount = last.difference(first).inDays + 1;
     return List.generate(

@@ -242,7 +242,7 @@ class HotlistView extends StatelessWidget {
                   Navigator.pop(context);
                   context
                       .read<CaffeineViewModal>()
-                      .setTodayCaffeine(hotlist.caffeine);
+                      .plusTodayCaffeine(hotlist.caffeine);
                   context
                       .read<CalendarViewModel>()
                       .saveRecordFromHotlist(hotlist);
