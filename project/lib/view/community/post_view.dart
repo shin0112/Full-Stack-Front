@@ -6,6 +6,7 @@ import 'package:project/utils/get_size.dart';
 import 'package:project/view/community/post_view_model.dart';
 import 'package:project/widgets/icon_box.dart';
 import 'package:project/widgets/line.dart';
+import 'package:project/widgets/section/dialog_button_section.dart';
 import 'package:provider/provider.dart';
 
 class PostView extends StatelessWidget {
@@ -48,7 +49,9 @@ class PostView extends StatelessWidget {
             right: 18.sp,
             child: FloatingActionButton(
               backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-              onPressed: () {},
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) => const PostAddDialog()),
               child: Icon(
                 Icons.edit_outlined,
                 color: Theme.of(context).colorScheme.onSecondaryContainer,
@@ -189,6 +192,59 @@ class PostBoxState extends State<PostBox> {
                   ],
                 ),
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PostAddDialog extends StatefulWidget {
+  const PostAddDialog({super.key});
+
+  @override
+  State<StatefulWidget> createState() => PostAddDialogState();
+}
+
+class PostAddDialogState extends State<PostAddDialog> {
+  String title = "";
+  String content = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog.fullscreen(
+      child: Container(
+        padding: EdgeInsets.only(top: 20.sp, right: 20.sp, left: 20.sp),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              TextField(
+                onChanged: (value) => {title = value},
+                decoration: const InputDecoration(
+                  labelText: "제목",
+                ),
+              ),
+              SizedBox(height: 10.sp),
+              TextField(
+                maxLines: 30,
+                onChanged: (value) => {content = value},
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 10.sp),
+              DialogButtonSection(
+                onPressConfirm: () {
+                  context.read<PostViewModel>().create(title, content);
+                  Navigator.pop(context);
+                },
+                onPressCancel: () {
+                  Navigator.pop(context);
+                },
+              ),
+              SizedBox(height: 20.sp),
             ],
           ),
         ),
