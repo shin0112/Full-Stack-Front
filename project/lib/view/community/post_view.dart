@@ -29,7 +29,9 @@ class PostView extends StatelessWidget {
                   ? const Center(child: Text("준비 중입니다."))
                   : ListView(
                       scrollDirection: Axis.vertical,
-                      children: provider.items
+                      children: (provider.mode.mode == 0
+                              ? provider.items
+                              : provider.myPostList)
                           .map((item) => PostBox(post: item))
                           .toList(),
                     ),
