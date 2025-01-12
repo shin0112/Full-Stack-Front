@@ -74,7 +74,6 @@ class PostView extends StatelessWidget {
       height: 56.sp,
       padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 10.sp),
       child: Row(
-        // todo: mode 변경 로직 및 버튼 로직 작성
         children: [
           TextButton(
             style: provider.mode.mode == 0 ? selectedButtonStyle : buttonStyle,

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Post {
   int id;
   int userId;
