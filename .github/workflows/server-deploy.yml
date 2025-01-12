@@ -57,4 +57,4 @@
               docker pull ${{ env.DOCKER_IMAGE_NAME }}:latest
               docker stop coffhy
               docker rm coffhy
-              docker run -d -p 8080:8080 -v coffhy.db:coffhy.db -p 50000:50000 --name coffhy ${{ env.DOCKER_IMAGE_NAME }}:latest
+              docker run -d -p 8080:8080 -v /home/ubuntu/coffhy.db:/coffhy_db --name coffhy ${{ env.DOCKER_IMAGE_NAME }}:latest
