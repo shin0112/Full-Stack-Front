@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/config/themes/theme.dart';
 import 'package:project/view/calendar/calendar_view_model.dart';
+import 'package:project/view/home/caffeine_view_modal.dart';
 import 'package:project/widgets/caffeine_box.dart';
 import 'package:project/widgets/line.dart';
 import 'package:provider/provider.dart';
@@ -38,8 +39,7 @@ class CalendarView extends StatelessWidget {
                     )
                   : _buildRecordList(
                       context,
-                      provider.selectedRecordList,
-                      provider.brandNameMap,
+                      provider,
                     )),
         ],
       );
@@ -104,8 +104,7 @@ class CalendarView extends StatelessWidget {
 
   Widget _buildRecordList(
     BuildContext context,
-    List<Record> selectedRecordList,
-    Map<int, String> brandNameMap,
+    CalendarViewModel provider,
   ) {
     TextStyle titleTextStyle =
         Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14.sp);
@@ -115,50 +114,135 @@ class CalendarView extends StatelessWidget {
         );
 
     return ListView.builder(
-      itemCount: selectedRecordList.length,
+      itemCount: provider.selectedRecordList.length,
       itemBuilder: (context, index) {
-        final record = selectedRecordList[index];
-        return Container(
-          height: 44.sp,
-          width: 320.sp,
-          padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 10.sp),
-          margin: EdgeInsets.only(bottom: 10.sp),
-          decoration: BoxDecoration(
-            border: Border.all(
-                color: Theme.of(context).colorScheme.onSurfaceVariant),
+        final record = provider.selectedRecordList[index];
+        return Column(children: [
+          Material(
             borderRadius: BorderRadius.circular(12.0),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Text(record.title, style: titleTextStyle),
-                  SizedBox(width: 10.sp),
-                  record.brandId == null
-                      ? const SizedBox.shrink()
-                      : Container(
-                          width: 43.sp,
-                          height: 24.sp,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            brandNameMap[record.brandId] ?? "",
-                            style: brandTextStyle,
-                          ),
-                        ),
-                ],
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12.0),
+              onLongPress: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) => Dialog(
+                          child: _buildDeleteItemDialog(
+                        context,
+                        provider,
+                        record,
+                      ))),
+              child: Container(
+                height: 44.sp,
+                width: 320.sp,
+                padding:
+                    EdgeInsets.symmetric(vertical: 10.sp, horizontal: 10.sp),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text(record.title, style: titleTextStyle),
+                        SizedBox(width: 10.sp),
+                        record.brandId == null
+                            ? const SizedBox.shrink()
+                            : Container(
+                                width: 43.sp,
+                                height: 24.sp,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(
+                                  provider.brandNameMap[record.brandId] ?? "",
+                                  style: brandTextStyle,
+                                ),
+                              ),
+                      ],
+                    ),
+                    CaffeineBox(caffeine: record.caffeine)
+                  ],
+                ),
               ),
-              CaffeineBox(caffeine: record.caffeine)
-            ],
+            ),
           ),
-        );
+          SizedBox(height: 10.sp),
+        ]);
       },
+    );
+  }
+
+  Widget _buildDeleteItemDialog(
+    BuildContext context,
+    CalendarViewModel provider,
+    Record record,
+  ) {
+    return Container(
+      height: 120.sp,
+      width: 340.sp,
+      padding: EdgeInsets.all(20.sp),
+      child: Column(
+        children: [
+          SizedBox(
+            width: 300.sp,
+            child: Text(
+              "${record.title} 기록을 삭제하시겠습니까?",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(fontSize: 14.sp),
+            ),
+          ),
+          SizedBox(height: 20.sp),
+          SizedBox(
+            width: 300.sp,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // 확인 버튼
+                FilledButton(
+                  onPressed: () {
+                    if (record.createdAt.day == DateTime.now().day) {
+                      context
+                          .read<CaffeineViewModal>()
+                          .minusTodayCaffeine(record.caffeine);
+                    }
+                    provider.deleteRecord(record);
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "확인",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontSize: 14.sp,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
+                ),
+                SizedBox(width: 6.sp),
+                // 취소 버튼
+                OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    "취소",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontSize: 14.sp,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
