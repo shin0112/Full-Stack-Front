@@ -36,7 +36,10 @@ class PostView extends StatelessWidget {
                           children: (provider.mode.mode == 0
                                   ? provider.items
                                   : provider.myPostList)
-                              .map((item) => PostBox(post: item))
+                              .map((item) => _buildPostBox(
+                                    context,
+                                    item,
+                                  ))
                               .toList(),
                         ),
                 ),
@@ -122,22 +125,11 @@ class PostView extends StatelessWidget {
       ),
     );
   }
-}
 
-class PostBox extends StatefulWidget {
-  final Post post;
-
-  const PostBox({super.key, required this.post});
-
-  @override
-  State<StatefulWidget> createState() => PostBoxState();
-}
-
-class PostBoxState extends State<PostBox> {
-  PostBoxState();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildPostBox(
+    BuildContext context,
+    Post post,
+  ) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -171,7 +163,7 @@ class PostBoxState extends State<PostBox> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.post.title,
+                      post.title,
                       maxLines: 1,
                       style: Theme.of(context)
                           .textTheme
@@ -179,7 +171,7 @@ class PostBoxState extends State<PostBox> {
                           ?.copyWith(fontSize: 16.sp),
                     ),
                     Text(
-                      widget.post.content,
+                      post.content,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
