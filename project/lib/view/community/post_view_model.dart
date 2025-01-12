@@ -14,8 +14,11 @@ class PostViewModel with ChangeNotifier {
   List<Post> get items => _items;
   List<Post> _items = [];
 
-  List<Post> get myPostList => _myPostList;
   List<Post> _myPostList = [];
+  List<Post> get myPostList {
+    _getMyPostList();
+    return _myPostList;
+  }
 
   PostMode get mode => _mode;
   PostMode _mode = postModeList[0];
@@ -34,7 +37,7 @@ class PostViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getMyPostList() async {
+  Future<void> _getMyPostList() async {
     if (_myPostList.isEmpty) {
       _myPostList = await _postRepository.getMine();
     }
