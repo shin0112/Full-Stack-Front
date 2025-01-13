@@ -140,7 +140,9 @@ class BeverageView extends StatelessWidget {
           ),
           Expanded(
             child: ListView(
-              children: provider.beverageList.map((item) {
+              children: (provider.beverageList.toList()
+                    ..sort((a, b) => a.name.compareTo(b.name)))
+                  .map((item) {
                 if (provider.selectedId == item.brandId) {
                   return Material(
                     color: Colors.transparent,
