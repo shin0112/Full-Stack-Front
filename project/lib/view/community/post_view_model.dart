@@ -30,6 +30,7 @@ class PostViewModel with ChangeNotifier {
 
   PostViewModel() {
     _fetchData();
+    _getMyPostList();
   }
 
   Future<void> _fetchData() async {
@@ -40,6 +41,7 @@ class PostViewModel with ChangeNotifier {
   Future<void> _getMyPostList() async {
     if (_myPostList.isEmpty) {
       _myPostList = await _postRepository.getMine();
+      notifyListeners();
     }
   }
 
