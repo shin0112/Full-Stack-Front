@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -84,7 +85,6 @@ class PostDatasource {
   Future<Post> create(String title, String content) async {
     var userBox = await HiveDatabase().userBox;
     var userId = userBox.getAt(0)!.id;
-    late Map<String, dynamic> json;
 
     try {
       final url = Uri.parse("$baseUrl/posts");
@@ -97,7 +97,7 @@ class PostDatasource {
             body: jsonEncode({
               'userId': userId,
               'title': title,
-              'context': content,
+              'content': content,
             }),
           )
           .timeout(const Duration(seconds: 5));
@@ -106,15 +106,16 @@ class PostDatasource {
         log("게시물 생성 성공");
 
         final String responseBody = utf8.decode(response.bodyBytes);
-        json = jsonDecode(responseBody);
+        log("$responseBody");
+
+        return Post.fromJson(jsonDecode(responseBody));
       } else {
         log("게시물 생성 실패: 상태 코드 ${response.statusCode}");
+        throw HttpException("게시물 생성 실패: 상태 코드 ${response.statusCode}");
       }
     } catch (e) {
       log("게시물 생성 중 오류 발생: $e");
       rethrow;
     }
-
-    return Post.fromJson(json);
   }
 }
