@@ -42,7 +42,6 @@ class CalendarViewModel with ChangeNotifier {
 
   CalendarViewModel() {
     _fetchData();
-    notifyListeners();
   }
 
   void _fetchData() async {
@@ -60,7 +59,6 @@ class CalendarViewModel with ChangeNotifier {
       }
     }
 
-    onDaySelected(_selectedDay, _focusedDay);
     _saveSelectedDayData();
 
     notifyListeners();
@@ -102,7 +100,6 @@ class CalendarViewModel with ChangeNotifier {
       _selectedDay = selectedDay;
       _focusedDay = focusedDay;
       _rangeSelectionMode = RangeSelectionMode.toggledOff;
-
       _saveSelectedDayData();
     }
 
@@ -151,6 +148,7 @@ class CalendarViewModel with ChangeNotifier {
       recordList[key] = [saved];
     }
 
+    _saveSelectedDayData();
     notifyListeners();
   }
 
@@ -172,6 +170,7 @@ class CalendarViewModel with ChangeNotifier {
       recordList[key] = [saved];
     }
 
+    _saveSelectedDayData();
     notifyListeners();
   }
 
@@ -179,6 +178,7 @@ class CalendarViewModel with ChangeNotifier {
     recordList[record.createdAt]!.remove(record);
     await _recordRepository.deleteRecord(record.id!);
 
+    _saveSelectedDayData();
     notifyListeners();
   }
 
