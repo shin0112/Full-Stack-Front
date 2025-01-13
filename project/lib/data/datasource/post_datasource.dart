@@ -108,7 +108,8 @@ class PostDatasource {
         final String responseBody = utf8.decode(response.bodyBytes);
         log("$responseBody");
 
-        return Post.fromJson(jsonDecode(responseBody));
+        final Map<String, dynamic> json = jsonDecode(responseBody);
+        return Post.fromJson(json['data']);
       } else {
         log("게시물 생성 실패: 상태 코드 ${response.statusCode}");
         throw HttpException("게시물 생성 실패: 상태 코드 ${response.statusCode}");
